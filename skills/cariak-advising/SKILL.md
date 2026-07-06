@@ -34,10 +34,30 @@ The advisor skill exists because any single LLM perspective — including CARIAK
 
 | Adjacent Skill | Boundary |
 |---|---|
-| cariak-pitching | Pitching calls advising in Phase 3. Advising returns counsel; pitching owns the converge decision. |
-| cariak-grinding | Grinding calls advising to stress-test research questions. Advising returns counsel; grinding owns the spec. |
-| cariak-reflecting | Reflecting reviews post-research quality. Advising reviews pre-commitment problem framing. |
-| cariak-validating | Validating seeks refutation of findings. Advising seeks perspective on problem/direction. |
+| cariak-pitching | Pitching calls advising in Phase 2d (ANTITHESIS: Devil's Advocate challenge) and Phase 3 (SYNTHESIS: multi-persona counsel). Advising returns counsel; pitching owns the converge decision. |
+| cariak-grinding | Grinding calls advising in Phase 2.5 (ANTITHESIS: Methodologist granularity check). Advising returns counsel; grinding owns the spec. |
+| cariak-planning | Planning calls advising after task decomposition (ANTITHESIS: System Architect coverage check). Advising returns counsel; planning owns the plan. |
+| cariak-researching | Researching calls advising per sub-agent finding (ANTITHESIS: Domain Expert review). Advising runs in parallel across findings. |
+| cariak-synthesizing | Synthesizing calls advising after cross-source merge (ANTITHESIS: Contradiction Hunter challenge). Advising returns identified contradictions. |
+| cariak-validating | Validating calls advising for each claim (ANTITHESIS: Falsificationist challenge). Advising actively attempts to falsify grade-A claims. |
+| cariak-reflecting | Reflecting calls advising after quality assessment (ANTITHESIS: Blind Spot Auditor). Advising identifies what was NOT researched. |
+| cariak-closing | Closing verifies that EVERY phase had its advisor gate passed before allowing close. |
+
+### How Other Cariak Skills Use Advising — The Dialectic Advisor Pattern
+
+Every Cariak phase follows a THESIS → ANTITHESIS → SYNTHESIS dialectic where the **ANTITHESIS step is always a dispatch to this advisor skill** with a specific persona. The advisor is a different model/persona — never self-critique. The advisor must cite sources for their challenges (Iron Law: no claim without source).
+
+See the persona rotation table in `references/advisor-phase-mapping.csv` for the full mapping of phase → thesis output → advisor persona → challenge type.
+
+| Phase | Thesis | Advisor Persona | What Advisor Challenges |
+|---|---|---|---|
+| Pitching | Brainstorm results | Devil's Advocate + Domain Expert | "Are you asking the right question? What assumptions are untested?" |
+| Grinding | GWT research spec draft | Methodologist + Skeptic | "Are these GWT scenarios testable? Are they granular enough? What edge cases are missing?" |
+| Planning | Task decomposition | System Architect + Ops Reviewer | "Are tasks truly independent? Hidden dependencies? Can each task complete in <10 min?" |
+| Researching | Per-sub-agent findings | Domain Expert (rotated per topic) | "Is this finding biased? What sources contradict it? What's the confidence?" |
+| Synthesizing | Cross-source merge | Contradiction Hunter + Devil's Advocate | "Where do sources disagree? What's being cherry-picked? What narrative is being forced?" |
+| Validating | Claim verification | Falsificationist (Popper-style) | "How would you PROVE this wrong? What evidence would flip the verdict?" |
+| Reflecting | Quality assessment | Blind Spot Auditor | "What did we NOT research? What source types are missing? What's the weakest finding?" |
 
 ### Hard Gates
 
@@ -173,6 +193,7 @@ Steps:
 | Trigger | Location | Action |
 |---|---|---|
 | `references/advisor-personas.csv` | Phase 1 | Load to enumerate and select personas |
+| `references/advisor-phase-mapping.csv` | Phase 1 | Full mapping of phase → thesis → advisor persona → challenge type |
 | `../../references/brainstorming-methods.csv` | Phase 2 (if pitching context) | Reference for divergent framing |
 | `../../references/citation-standards.csv` | Phase 2 (Gate 1) | Validate citation format in counsel responses |
 
@@ -357,6 +378,7 @@ Langkah:
 | Trigger | Lokasi | Aksi |
 |---|---|---|
 | `references/advisor-personas.csv` | Phase 1 | Muat untuk enumerasi dan seleksi persona |
+| `references/advisor-phase-mapping.csv` | Phase 1 | Pemetaan lengkap fase → tesis → persona advisor → tipe challenge |
 | `../../references/brainstorming-methods.csv` | Phase 2 (jika konteks pitching) | Referensi untuk framing divergen |
 | `../../references/citation-standards.csv` | Phase 2 (Gate 1) | Validasi format sitiran dalam respons nasihat |
 

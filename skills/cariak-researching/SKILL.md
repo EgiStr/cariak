@@ -66,6 +66,15 @@ GATE 3: EVERY FINDING MUST CITE SOURCE
   Every claim in every findings.md MUST have an inline citation
   pointing to a source in the bibliography.
   Uncited claims → findings rejected, sub-agent re-run.
+
+GATE 4: PER-FINDING ADVISOR REVIEW MANDATORY (ANTITHESIS)
+  For each sub-agent's findings file, a Domain Expert advisor
+  MUST independently review the output for bias, source quality,
+  missing counter-evidence, and confidence assessment.
+  All advisor reviews MUST be dispatched in PARALLEL in a single message.
+  Advisor reviews MUST cite sources for their challenges.
+  If an advisor flags findings for re-research → re-dispatch the
+  sub-agent with adjusted queries BEFORE handoff to synthesizing.
 ```
 
 ### Phase 0: Preflight
@@ -192,6 +201,32 @@ For each findings file, check:
 
 This is a QUICK audit, not a deep review. The deep review happens in `cariak-synthesizing` and `cariak-validating`.
 
+### Phase 4.5: Per-Finding Advisor Review (ANTITHESIS)
+
+**Objective:** For each sub-agent's findings, dispatch a Domain Expert advisor to independently review the output.
+
+This is the THESIS → ANTITHESIS step for each research lens. Each sub-agent's findings are the thesis. Now an independent Domain Expert advisor must review them.
+
+1. **For each sub-agent's findings file, dispatch a Domain Expert advisor in PARALLEL:**
+   - The advisor is a **different model/persona**, not self-critique.
+   - The advisor's job: check bias, source quality, missing counter-evidence, confidence assessment.
+   - The advisor MUST cite sources for their challenges (Iron Law: no claim without source).
+   - **IMPORTANT:** These advisor reviews run IN PARALLEL with each other — dispatch all 5 (or however many sub-agents had findings) in a single message.
+2. **Advisor challenge questions for each findings file:**
+   - "Is this finding biased? What perspective is over-represented or under-represented?"
+   - "What sources contradict this finding? What counter-evidence was missed?"
+   - "What is the actual confidence level of these findings based on source quality?"
+   - "What source types are missing from this domain's findings?"
+3. **Advisor returns (for each findings file):**
+   - Bias assessment with specific examples.
+   - List of missing counter-evidence or contradicting sources.
+   - Confidence reassessment per finding.
+   - Recommendation: accept as-is, flag for re-research, or supplement with additional sources.
+
+**GATE 4 check:** All advisor reviews dispatched in parallel and returned? Are there any findings flagged for re-research? If yes → re-dispatch the flagged sub-agent with adjusted queries.
+
+**Output:** Per-finding advisor review reports — bias flags, missing evidence, confidence reassessment. These feed into the handoff summary to `cariak-synthesizing`.
+
 ### Phase 5: Handoff to Synthesizing
 
 **Objective:** Transfer all findings to `cariak-synthesizing`.
@@ -312,6 +347,15 @@ GATE 3: SETIAP TEMUAN HARUS MENGUTIP SUMBER
   Setiap klaim dalam setiap findings.md HARUS memiliki kutipan inline
   yang menunjuk ke sumber di bibliografi.
   Klaim tanpa kutipan → temuan ditolak, sub-agen dijalankan ulang.
+
+GATE 4: TINJAUAN ADVISOR PER TEMUAN WAJIB (ANTITESIS)
+  Untuk setiap file temuan sub-agen, advisor Domain Expert HARUS
+  meninjau output secara independen untuk bias, kualitas sumber,
+  bukti tanding yang hilang, dan penilaian kepercayaan.
+  Semua tinjauan advisor HARUS dikirim PARALEL dalam satu pesan.
+  Tinjauan advisor HARUS menyitir sumber untuk tantangan mereka.
+  Jika advisor men-flag temuan untuk riset ulang → kirim ulang
+  sub-agen dengan query yang disesuaikan SEBELUM handoff ke synthesizing.
 ```
 
 ### Fase 0: Preflight
@@ -437,6 +481,32 @@ Untuk setiap file temuan, cek:
 | Flag bias | Bias sumber dicatat | Teruskan ke synthesizing |
 
 Ini adalah audit CEPAT, bukan tinjauan mendalam. Tinjauan mendalam terjadi di `cariak-synthesizing` dan `cariak-validating`.
+
+### Fase 4.5: Tinjauan Advisor per Temuan (ANTITESIS)
+
+**Tujuan:** Untuk setiap file temuan sub-agen, kirim advisor Domain Expert untuk meninjau output secara independen.
+
+Ini adalah langkah TESIS → ANTITESIS untuk setiap lensa riset. Temuan setiap sub-agen adalah tesis. Sekarang advisor Domain Expert independen harus meninjaunya.
+
+1. **Untuk setiap file temuan sub-agen, kirim advisor Domain Expert secara PARALEL:**
+   - Advisor adalah **model/persona BERBEDA**, bukan kritik-diri.
+   - Tugas advisor: periksa bias, kualitas sumber, bukti tanding yang hilang, penilaian kepercayaan.
+   - Advisor HARUS menyitir sumber untuk tantangan mereka (Hukum Besi: tidak ada klaim tanpa sumber).
+   - **PENTING:** Tinjauan advisor ini berjalan PARALEL satu sama lain — kirim semua 5 (atau berapa pun sub-agen yang punya temuan) dalam satu pesan.
+2. **Pertanyaan challenge advisor untuk setiap file temuan:**
+   - "Apakah temuan ini bias? Perspektif apa yang terlalu terwakili atau kurang terwakili?"
+   - "Sumber apa yang mengkontradiksi temuan ini? Bukti tanding apa yang terlewat?"
+   - "Berapa tingkat kepercayaan aktual dari temuan ini berdasarkan kualitas sumber?"
+   - "Tipe sumber apa yang hilang dari temuan domain ini?"
+3. **Advisor mengembalikan (untuk setiap file temuan):**
+   - Penilaian bias dengan contoh spesifik.
+   - Daftar bukti tanding atau sumber kontradiksi yang hilang.
+   - Penilaian ulang kepercayaan per temuan.
+   - Rekomendasi: terima apa adanya, flag untuk riset ulang, atau suplemen dengan sumber tambahan.
+
+**Cek GATE 4:** Semua tinjauan advisor dikirim paralel dan kembali? Apakah ada temuan yang di-flag untuk riset ulang? Jika ya → kirim ulang sub-agen yang di-flag dengan query yang disesuaikan.
+
+**Output:** Laporan tinjauan advisor per temuan — flag bias, bukti hilang, penilaian ulang kepercayaan. Ini menjadi input ke ringkasan handoff ke `cariak-synthesizing`.
 
 ### Fase 5: Handoff ke Synthesizing
 

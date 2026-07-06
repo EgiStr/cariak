@@ -116,6 +116,26 @@ function detectAgents() {
 
 // ─── commands ─────────────────────────────────────────────────────────────
 
+// --- report (delegates to cli/report.js) ---
+function cmdReport(argv, jsonMode) {
+  const { run } = require('./report');
+  // report.js handles its own output, pass flags through
+  const reportArgv = [];
+  // reconstruct argv from parsed flags for report.js
+  for (let i = 0; i < argv.length; i++) {
+    const a = argv[i];
+    reportArgv.push(a);
+    if ((a === '--input' || a === '--template' || a === '--output') && i + 1 < argv.length) {
+      reportArgv.push(argv[++i]);
+    }
+  }
+  // ensure --json flag is passed if jsonMode is true
+  if (jsonMode && !reportArgv.includes('--json')) {
+    reportArgv.push('--json');
+  }
+  run(reportArgv);
+}
+
 // --- setup ---
 function cmdSetup(targetAgent, jsonMode) {
   const agents = detectAgents();
@@ -520,6 +540,8 @@ function cmdHelp() {
     '  doctor [--strict]                  Verify Cariak environment',
     '  validate                           Validate project files (CSV, frontmatter, templates)',
     '  bundle [skill-name] [--output <dir>]  Package skill(s) into .skill ZIP archives',
+    '  report --input <json> [--template <name>] [--output <file.docx>]',
+    '                                     Generate professional DOCX report',
     '  version                            Print version',
     '  help                               Show this help',
     '',
@@ -532,6 +554,7 @@ function cmdHelp() {
     '  npx cariak-pi setup --agent opencode',
     '  npx cariak-pi doctor --strict',
     '  npx cariak-pi validate --json',
+    '  npx cariak-pi report --input references.json --template research-report --output report.docx',
     '  npx cariak-pi version',
   ].join('\n'));
 }
@@ -590,6 +613,9 @@ function main() {
       if (jsonMode && result) console.log(JSON.stringify(result));
       break;
     }
+    case 'report':
+      cmdReport(cmdArgs, jsonMode);
+      break;
     case 'version':
       cmdVersion();
       break;

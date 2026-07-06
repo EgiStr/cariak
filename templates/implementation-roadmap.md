@@ -1,4 +1,5 @@
 <!-- CARIAK TEMPLATE: implementation-roadmap - v1.1 -->
+<!-- PRIMARY OUTPUT: .docx (generated via npx cariak-pi report). This .md is a fallback. -->
 # Implementation Roadmap
 
 ## Bahasa Indonesia

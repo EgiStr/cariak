@@ -46,6 +46,13 @@ A pitch-exploration.md with at least one confirmed research direction MUST exist
 **GATE 2: GWT MUST BE DERIVED FROM PITCH**
 Every Given/When/Then research question must trace back to a research direction in the pitch. No orphan questions. If a question cannot be traced, it is out of scope.
 
+**GATE 2.5: ADVISOR GRANULARITY CHALLENGE MANDATORY — ANTITHESIS BEFORE SCOPE**
+The Methodologist + Skeptic advisor challenge (Phase 2.5) is not optional. Before defining scope and success metrics:
+1. The drafted GWT research questions (thesis) must be challenged by an independent advisor (antithesis).
+2. The advisor must check granularity, testability, edge cases, and implicit assumptions.
+3. The advisor output must be incorporated into scope definitions in Phase 3.
+4. Do not skip the antithesis step. Proceeding from thesis (draft questions) directly to scope without the advisor challenge produces untestable specs.
+
 **GATE 3: USER MUST APPROVE SPEC**
 Before handing off to planning, present the research-spec.md to the user for approval. The user must confirm the questions, scope, and success metrics are correct.
 
@@ -90,6 +97,31 @@ Use question-frameworks.csv to select appropriate frameworks:
 - First Principles
 - MECE (Mutually Exclusive, Collectively Exhaustive)
 - Hypothesis-Driven
+
+#### Phase 2.5: Advisor Granularity Check (ANTITHESIS)
+
+**Goal:** Challenge the research questions and GWT scenarios with a Methodologist + Skeptic advisor before committing to scope and format.
+
+This is the THESIS → ANTITHESIS step. The drafted research questions are the thesis. Now an independent advisor must challenge their granularity and testability.
+
+1. **Dispatch a Methodologist + Skeptic advisor sub-agent** (via `cariak-advising`):
+   - The advisor is a **different model/persona**, not self-critique.
+   - The advisor's job: find over-broad questions, untestable scenarios, edge case gaps.
+   - The advisor MUST cite sources for their challenges (Iron Law: no claim without source).
+2. **Advisor challenge questions:**
+   - "Are these research questions granular enough? Can each be answered in <10 min of research?"
+   - "Are these GWT scenarios actually testable? What edge cases are missing?"
+   - "What implicit assumptions in the GWT framing would break the question?"
+   - "Are any questions actually multiple questions in disguise that need splitting?"
+3. **Advisor returns:**
+   - List of questions that are too broad (need splitting).
+   - GWT scenarios missing edge cases or failure conditions.
+   - Untestable assumptions baked into the GWT framing.
+   - Specific rewrite recommendations.
+
+**Gate N check:** Advisor granularity challenge executed BEFORE proceeding to scope definition and BDD formulation? If no → halt and run the challenge. The advisor output feeds into Phase 3 (Scope & Success Metrics).
+
+**Output:** Advisor granularity report — questions to split, edge cases to add, assumptions to test.
 
 #### Phase 3: Define Scope & Success Metrics
 For each research question, define:
@@ -208,6 +240,13 @@ Sebuah pitch-exploration.md dengan minimal satu arah riset yang dikonfirmasi HAR
 **GATE 2: GWT HARUS DITURUNKAN DARI PITCH**
 Setiap pertanyaan riset Given/When/Then harus dapat ditelusuri kembali ke arah riset di pitch. Tidak ada pertanyaan yatim. Jika pertanyaan tidak dapat ditelusuri, itu di luar lingkup.
 
+**GATE 2.5: ADVISOR GRANULARITY CHALLENGE WAJIB — ANTITESIS SEBELUM SCOPE**
+Challenge advisor Methodologist + Skeptic (Fase 2.5) tidak opsional. Sebelum mendefinisikan scope dan metrik keberhasilan:
+1. Pertanyaan riset GWT yang dirancang (tesis) harus ditantang oleh advisor independen (antitesis).
+2. Advisor harus memeriksa granularitas, testabilitas, edge case, dan asumsi implisit.
+3. Output advisor harus diintegrasikan ke dalam definisi scope di Fase 3.
+4. Jangan lewati langkah antitesis. Melanjutkan dari tesis (draft pertanyaan) langsung ke scope tanpa advisor challenge menghasilkan spec yang tidak dapat diuji.
+
 **GATE 3: PENGGUNA HARUS MENYETUJUI SPEC**
 Sebelum menyerahkan ke planning, presentasikan research-spec.md kepada pengguna untuk persetujuan. Pengguna harus mengkonfirmasi pertanyaan, lingkup, dan metrik keberhasilan sudah benar.
 
@@ -252,6 +291,31 @@ Gunakan question-frameworks.csv untuk memilih framework yang tepat:
 - First Principles
 - MECE (Mutually Exclusive, Collectively Exhaustive)
 - Hypothesis-Driven
+
+#### Fase 2.5: Pemeriksaan Granularitas Advisor (ANTITESIS)
+
+**Tujuan:** Menantang pertanyaan riset dan skenario GWT dengan advisor Methodologist + Skeptic sebelum komitmen ke scope dan format.
+
+Ini adalah langkah TESIS → ANTITESIS. Pertanyaan riset yang dirancang adalah tesis. Sekarang advisor independen harus menantang granularitas dan testabilitasnya.
+
+1. **Kirim advisor Methodologist + Skeptic** (via `cariak-advising`):
+   - Advisor adalah **model/persona BERBEDA**, bukan kritik-diri.
+   - Tugas advisor: temukan pertanyaan terlalu luas, skenario tidak teruji, celah edge case.
+   - Advisor HARUS menyitir sumber untuk tantangan mereka.
+2. **Pertanyaan challenge advisor:**
+   - "Apakah pertanyaan riset ini cukup granular? Bisakah masing-masing dijawab dalam <10 menit riset?"
+   - "Apakah skenario GWT ini benar-benar dapat diuji? Edge case apa yang hilang?"
+   - "Asumsi implisit apa dalam framing GWT yang akan merusak pertanyaan?"
+   - "Apakah ada pertanyaan yang sebenarnya multiple pertanyaan tersamar yang perlu dipecah?"
+3. **Advisor mengembalikan:**
+   - Daftar pertanyaan yang terlalu luas (perlu dipecah).
+   - Skenario GWT yang kehilangan edge case atau kondisi kegagalan.
+   - Asumsi tidak teruji yang tertanam dalam framing GWT.
+   - Rekomendasi penulisan ulang spesifik.
+
+**Cek Gate N:** Advisor granularity challenge dieksekusi SEBELUM melanjutkan ke definisi scope dan formulasi BDD? Jika tidak → berhenti dan jalankan challenge. Output advisor menjadi input ke Fase 3 (Tentukan Lingkup & Metrik).
+
+**Output:** Laporan granularitas advisor — pertanyaan untuk dipecah, edge case untuk ditambahkan, asumsi untuk diuji.
 
 #### Fase 3: Tentukan Lingkup & Metrik Keberhasilan
 Untuk setiap pertanyaan riset, tentukan:

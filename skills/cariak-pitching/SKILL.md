@@ -65,13 +65,13 @@ NO OUTPUT until preflight is complete. If preflight fails (files missing), note 
 
 Phase 1 (Clarify) ends with the user explicitly confirming the problem statement. Silence or vague approval ("sure", "I guess") is NOT confirmation. The user must restate or explicitly agree to the problem statement in their own words. If the user cannot articulate the problem, return to clarifying questions.
 
-**GATE 2: ADVISOR CALL MANDATORY IN PHASE 3**
+**GATE 2: ADVISOR CHALLENGE MANDATORY — THESIS → ANTITHESIS → SYNTHESIS**
 
-The advisor counsel step is not optional. In Phase 3:
-1. Output ALL brainstorming method results to the conversation FIRST.
-2. THEN call `cariak-advising` skill (or the `advisor()` tool) with the method results.
-3. Use personas selected from `advisor-personas.csv`.
-4. Do not skip this step. Even if the problem seems clear, advisor counsel surfaces blind spots.
+The advisor challenge + counsel pipeline is not optional. The dialectic must run in full:
+1. Phase 2 = THESIS: Output ALL brainstorming method results to the conversation.
+2. Phase 2d = ANTITHESIS: Dispatch Devil's Advocate advisor to challenge the brainstorm results. Find blind spots, missing angles, untested assumptions. Advisor must cite sources.
+3. Phase 3 = MULTI-PERSONA SYNTHESIS: Dispatch 3-5 advisor personas to synthesize challenge + brainstorm into counsel.
+4. Do not skip any step. Even if the problem seems clear, the advisor dialectic surfaces blind spots. The antithesis step (Phase 2d) is the critical challenge — do not proceed from thesis (brainstorm) directly to synthesis (converge) without passing through antithesis.
 
 **GATE 3: USER MUST APPROVE PITCH BRIEF**
 
@@ -147,9 +147,34 @@ For each method:
 
 **Output:** All method results visible in conversation. Do NOT proceed to Phase 3 until all methods are output.
 
-### Phase 3: Advisor Counsel
+### Phase 2d: Advisor Challenge (ANTITHESIS)
 
-**Goal:** Get multi-persona perspectives on the divergent outputs before converging.
+**Goal:** Challenge the brainstorming output with a Devil's Advocate + Domain Expert advisor persona BEFORE convergence.
+
+This is the THESIS → ANTITHESIS step. The brainstorm results are the thesis. Now an independent advisor must challenge them.
+
+1. **Dispatch a Devil's Advocate advisor sub-agent** (via `cariak-advising` with a single advisor persona):
+   - The advisor persona is a **different model/persona**, not self-critique.
+   - The advisor's job: find blind spots, missing angles, counter-evidence, bias.
+   - The advisor MUST cite sources for their challenges (Iron Law: no claim without source).
+2. **Advisor challenge questions:**
+   - "Are we asking the right question? What assumptions are untested?"
+   - "What angles of the problem were NOT explored by the brainstorming methods?"
+   - "What biases are present in how the problem was framed?"
+   - "What counter-perspectives are missing from the divergent output?"
+3. **Advisor returns:**
+   - Blind spots identified in the brainstorming output.
+   - Missing angles the methods did not explore.
+   - Untested assumptions in the problem framing.
+   - Specific recommendations: what to revisit, what to drop.
+
+**Gate 2 check:** Advisor challenge executed? All method results output to conversation BEFORE the challenge? If no → halt and complete the gate. The advisor challenge output is a MANDATORY input to Phase 4 (Converge).
+
+**Output:** Advisor challenge results — blind spots, missing angles, untested assumptions.
+
+### Phase 3: Advisor Counsel (Multi-Persona SYNTHESIS)
+
+**Goal:** Get multi-persona perspectives on the divergent outputs + advisor challenge results before converging.
 
 1. **Select 3-5 personas** from `advisor-personas.csv` based on the problem type:
    - Always include at least one skeptic/critical persona.
@@ -158,6 +183,7 @@ For each method:
 2. **Call `cariak-advising` skill (or `advisor()` tool)** with:
    - The problem statement (from Phase 1).
    - All brainstorming method outputs (from Phase 2).
+   - The advisor challenge results (from Phase 2d).
    - The selected personas.
 3. **Receive counsel** — each persona provides:
    - Blind spots identified.
@@ -165,13 +191,11 @@ For each method:
    - Directions worth dropping.
    - Questions the exploration missed.
 
-**Gate 2 check:** Advisor call executed? All method results output to conversation BEFORE the call? If no → halt and complete the gate.
-
 **Output:** Advisor counsel synthesized and presented.
 
-### Phase 4: Converge
+### Phase 4: Converge (SYNTHESIS)
 
-**Goal:** Synthesize divergent outputs + advisor counsel into 2-3 research directions.
+**Goal:** Synthesize divergent outputs + advisor challenge + advisor counsel into 2-3 research directions.
 
 For each research direction:
 
@@ -351,13 +375,13 @@ TIDAK ADA OUTPUT sampai preflight selesai. Jika preflight gagal (file hilang), c
 
 Fase 1 (Clarify) berakhir dengan pengguna secara eksplisit mengonfirmasi pernyataan masalah. Diam atau persetujuan samar ("ya", "kira-kira") BUKAN konfirmasi. Pengguna harus menyatakan ulang atau secara eksplisit setuju dengan pernyataan masalah dengan kata-kata mereka sendiri. Jika pengguna tidak dapat mengartikulasikan masalahnya, kembali ke pertanyaan klarifikasi.
 
-**GATE 2: PANGGILAN ADVISOR WAJIB DI FASE 3**
+**GATE 2: ADVISOR CHALLENGE WAJIB — TESIS → ANTITESIS → SINTESIS**
 
-Langkah konsultasi advisor tidak opsional. Di Fase 3:
-1. Output SEMUA hasil metode brainstorming ke percakapan PERTAMA.
-2. KEMUDIAN panggil skill `cariak-advising` (atau tool `advisor()`) dengan hasil metode.
-3. Gunakan persona yang dipilih dari `advisor-personas.csv`.
-4. Jangan lewati langkah ini. Bahkan jika masalah terlihat jelas, konsultasi advisor mengungkap titik buta.
+Pipeline advisor challenge + counsel tidak opsional. Dialektika harus berjalan penuh:
+1. Fase 2 = TESIS: Output SEMUA hasil metode brainstorming ke percakapan.
+2. Fase 2d = ANTITESIS: Kirim advisor Devil's Advocate untuk menantang hasil brainstorming. Temukan titik buta, sudut yang hilang, asumsi yang belum diuji. Advisor harus menyitir sumber.
+3. Fase 3 = SINTESIS MULTI-PERSONA: Kirim 3-5 persona advisor untuk mensintesiskan challenge + brainstorm menjadi nasihat.
+4. Jangan lewati langkah mana pun. Bahkan jika masalah terlihat jelas, dialektika advisor mengungkap titik buta. Langkah antitesis (Fase 2d) adalah challenge kritis — jangan lanjut dari tesis (brainstorm) langsung ke sintesis (konvergen) tanpa melewati antitesis.
 
 **GATE 3: PENGGUNA HARUS MENYETUJUI PITCH BRIEF**
 
@@ -433,9 +457,34 @@ Untuk setiap metode:
 
 **Output:** Semua hasil metode terlihat di percakapan. JANGAN lanjut ke Fase 3 sampai semua metode dioutput.
 
-### Fase 3: Konsultasi Advisor
+### Fase 2d: Advisor Challenge (ANTITESIS)
 
-**Tujuan:** Mendapatkan perspektif multi-persona pada output divergen sebelum konvergen.
+**Tujuan:** Menantang output brainstorming dengan advisor Devil's Advocate + Domain Expert SEBELUM konvergensi.
+
+Ini adalah langkah TESIS → ANTITESIS. Hasil brainstorming adalah tesis. Sekarang advisor independen harus menantangnya.
+
+1. **Kirim advisor Devil's Advocate** (via `cariak-advising` dengan satu persona advisor):
+   - Persona advisor adalah **model/persona BERBEDA**, bukan kritik-diri.
+   - Tugas advisor: temukan titik buta, sudut yang hilang, bukti tanding, bias.
+   - Advisor HARUS menyitir sumber untuk tantangan mereka (Hukum Besi: tidak ada klaim tanpa sumber).
+2. **Pertanyaan challenge advisor:**
+   - "Apakah kita menanyakan pertanyaan yang tepat? Asumsi apa yang belum diuji?"
+   - "Sudut masalah apa yang TIDAK dieksplorasi oleh metode brainstorming?"
+   - "Bias apa yang ada dalam cara masalah diframing?"
+   - "Perspektif tandingan apa yang hilang dari output divergen?"
+3. **Advisor mengembalikan:**
+   - Titik buta yang diidentifikasi dalam output brainstorming.
+   - Sudut yang hilang yang tidak dieksplorasi metode.
+   - Asumsi yang belum diuji dalam framing masalah.
+   - Rekomendasi spesifik: apa yang perlu ditinjau ulang, apa yang perlu dijatuhkan.
+
+**Cek Gate 2:** Advisor challenge dieksekusi? Semua hasil metode dioutput ke percakapan SEBELUM challenge? Jika tidak → berhenti dan selesaikan gate. Output advisor challenge adalah input WAJIB ke Fase 4 (Konvergen).
+
+**Output:** Hasil advisor challenge — titik buta, sudut yang hilang, asumsi yang belum diuji.
+
+### Fase 3: Konsultasi Advisor (SINTESIS Multi-Persona)
+
+**Tujuan:** Mendapatkan perspektif multi-persona pada output divergen + hasil advisor challenge sebelum konvergen.
 
 1. **Pilih 3-5 persona** dari `advisor-personas.csv` berdasarkan tipe masalah:
    - Selalu sertakan setidaknya satu persona skeptis/kritis.
@@ -444,6 +493,7 @@ Untuk setiap metode:
 2. **Panggil skill `cariak-advising` (atau tool `advisor()`)** dengan:
    - Pernyataan masalah (dari Fase 1).
    - Semua output metode brainstorming (dari Fase 2).
+   - Hasil advisor challenge (dari Fase 2d).
    - Persona yang dipilih.
 3. **Terima nasihat** — setiap persona memberikan:
    - Titik buta yang diidentifikasi.
@@ -451,11 +501,9 @@ Untuk setiap metode:
    - Arah yang layak dijatuhkan.
    - Pertanyaan yang terlewat dari eksplorasi.
 
-**Cek Gate 2:** Panggilan advisor dieksekusi? Semua hasil metode dioutput ke percakapan SEBELUM panggilan? Jika tidak → berhenti dan selesaikan gate.
-
 **Output:** Nasihat advisor disintesis dan disajikan.
 
-### Fase 4: Konvergen
+### Fase 4: Konvergen (SINTESIS)
 
 **Tujuan:** Mensintesiskan output divergen + nasihat advisor menjadi 2-3 arah riset.
 

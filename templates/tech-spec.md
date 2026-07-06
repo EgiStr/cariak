@@ -1,4 +1,5 @@
 <!-- CARIAK TEMPLATE: tech-spec - v1.1 -->
+<!-- PRIMARY OUTPUT: .docx (generated via npx cariak-pi report). This .md is a fallback. -->
 # Technical Specification
 
 ## Bahasa Indonesia

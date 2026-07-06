@@ -1,4 +1,5 @@
 <!-- CARIAK TEMPLATE: prd - v1.1 -->
+<!-- PRIMARY OUTPUT: .docx (generated via npx cariak-pi report). This .md is a fallback. -->
 # Product Requirements Document
 
 ## Bahasa Indonesia

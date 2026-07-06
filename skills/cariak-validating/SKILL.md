@@ -31,6 +31,10 @@ For every key claim, at least one selected research method must actively seek to
 
 Every piece of evidence cited in the validation report must have a source. Sources must be traceable. URLs must be live (or archived). Paper references must include DOIs or arXiv IDs.
 
+**LAW 4: ADVISOR FALSIFICATION MANDATORY**
+
+At least one advisor persona must actively attempt to falsify every grade-A claim. The Falsificationist advisor (Phase 4.5) is not optional — it is the external antithesis that tests whether the claim survives a genuine attempt at refutation. A claim that survives an independent falsification attempt is worth more than one only ever confirmed. If the Falsificationist advisor was not dispatched for any claim, the validation for that claim is incomplete and must be re-run.
+
 ### When to Use
 
 - `cariak-synthesizing` has produced `research-report.md` and handed off
@@ -164,6 +168,31 @@ For each claim, execute the selected methods:
 8. **cross-reference:** Check the claim against independent databases (e.g., Snopes, FactCheck, academic databases).
 
 **Execution note:** Methods may invoke research sub-agents (`cariak-researching` sub-agents) to gather evidence. This is expected.
+
+### Phase 4.5: Falsificationist Challenge (ANTITHESIS)
+
+**Goal:** Dispatch a Falsificationist (Popper-style) advisor to actively attempt to PROVE each grade-A claim wrong.
+
+This is the THESIS → ANTITHESIS step. The collected evidence for each claim is the thesis. Now an independent Falsificationist advisor must try to break it. This is MANDATORY per Iron Law 2 (SEEK REFUTATION) and Law 4 (ADVISOR FALSIFICATION MANDATORY).
+
+1. **For each grade-A (high-stakes, foundational) claim, dispatch a Falsificationist advisor** (via `cariak-advising` with a Popper-style skeptic persona):
+   - The advisor is a **different model/persona**, not self-critique.
+   - The advisor's job: actively design experiments to falsify the claim, not confirm it.
+   - The advisor MUST cite sources for every counter-argument.
+2. **Advisor challenge questions for each claim:**
+   - "How would you PROVE this claim wrong? Design a falsification test."
+   - "What evidence would flip the verdict from Confirmed to Refuted?"
+   - "What is the strongest counter-argument that was NOT considered by the validation methods?"
+   - "If this claim were false, what pattern of evidence would we expect to see — and do we see it?"
+3. **Advisor returns (for each claim):**
+   - A specific falsification test design.
+   - The strongest counter-argument found (with source citations).
+   - Whether the falsification test was run and what it found.
+   - Verdict impact assessment: does this challenge weaken, strengthen, or flip the current verdict?
+
+**LAW 4 enforcement:** If the Falsificationist advisor was NOT dispatched for a grade-A claim, the validation phase is incomplete. Loop back and run it.
+
+**Output:** Falsificationist challenge report per claim — counter-arguments, falsification test results, verdict impact. These feed into Phase 5 (Grade Verdict) — the verdict must account for the falsificationist's findings.
 
 ### Phase 5: Grade Verdict
 
@@ -310,6 +339,10 @@ Untuk setiap klaim kunci, setidaknya satu metode riset yang dipilih harus aktif 
 
 Setiap bukti yang dikutip dalam laporan validasi harus memiliki sumber. Sumber harus dapat ditelusuri. URL harus hidup (atau diarsipkan). Referensi paper harus menyertakan DOI atau ID arXiv.
 
+**HUKUM 4: ADVISOR FALSIFIKASI WAJIB**
+
+Setidaknya satu persona advisor harus secara aktif berusaha memfalsifikasi setiap klaim grade-A. Advisor Falsificationist (Fase 4.5) tidak opsional — ini adalah antitesis eksternal yang menguji apakah klaim bertahan dari upaya penyangkalan asli. Klaim yang bertahan dari upaya falsifikasi independen bernilai lebih dari yang hanya pernah dikonfirmasi. Jika advisor Falsificationist tidak dikirim untuk klaim apa pun, validasi untuk klaim itu tidak lengkap dan harus dijalankan ulang.
+
 ### Kapan Digunakan
 
 - `cariak-synthesizing` telah menghasilkan `research-report.md` dan menyerahkan
@@ -394,6 +427,31 @@ Muat `references/research-methods.csv`. Metode yang tersedia: source-verificatio
 **Tujuan:** Jalankan metode yang dipilih untuk setiap klaim.
 
 Untuk setiap klaim, eksekusi metode yang dipilih. Metode dapat memanggil sub-agen riset (`cariak-researching` sub-agents) untuk mengumpulkan bukti. Ini diharapkan.
+
+### Fase 4.5: Tantangan Falsificationist (ANTITESIS)
+
+**Tujuan:** Kirim advisor Falsificationist (gaya Popper) untuk secara aktif berusaha MEMBUKTIKAN setiap klaim grade-A salah.
+
+Ini adalah langkah TESIS → ANTITESIS. Bukti yang dikumpulkan untuk setiap klaim adalah tesis. Sekarang advisor Falsificationist independen harus mencoba merusaknya. Ini WAJIB per Hukum Besi 2 (CARI SANGGAHAN) dan Hukum 4 (ADVISOR FALSIFIKASI WAJIB).
+
+1. **Untuk setiap klaim grade-A (high-stakes, fondasional), kirim advisor Falsificationist** (via `cariak-advising` dengan persona skeptik gaya Popper):
+   - Advisor adalah **model/persona BERBEDA**, bukan kritik-diri.
+   - Tugas advisor: secara aktif merancang eksperimen untuk memfalsifikasi klaim, bukan mengonfirmasi.
+   - Advisor HARUS menyitir sumber untuk setiap argumen tandingan.
+2. **Pertanyaan challenge advisor untuk setiap klaim:**
+   - "Bagaimana Anda akan MEMBUKTIKAN klaim ini salah? Rancang tes falsifikasi."
+   - "Bukti apa yang akan membalikkan verdict dari Confirmed ke Refuted?"
+   - "Apa argumen tandingan terkuat yang TIDAK dipertimbangkan oleh metode validasi?"
+   - "Jika klaim ini salah, pola bukti apa yang kita harapkan — dan apakah kita melihatnya?"
+3. **Advisor mengembalikan (untuk setiap klaim):**
+   - Desain tes falsifikasi spesifik.
+   - Argumen tandingan terkuat yang ditemukan (dengan kutipan sumber).
+   - Apakah tes falsifikasi dijalankan dan apa yang ditemukan.
+   - Penilaian dampak verdict: apakah tantangan ini melemahkan, memperkuat, atau membalikkan verdict saat ini?
+
+**Penegakan HUKUM 4:** Jika advisor Falsificationist TIDAK dikirim untuk klaim grade-A, fase validasi tidak lengkap. Loop kembali dan jalankan.
+
+**Output:** Laporan tantangan Falsificationist per klaim — argumen tandingan, hasil tes falsifikasi, dampak verdict. Ini menjadi input ke Fase 5 (Nilai Putusan) — verdict harus memperhitungkan temuan falsificationist.
 
 ### Fase 5: Nilai Putusan
 

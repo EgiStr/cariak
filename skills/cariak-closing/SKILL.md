@@ -92,6 +92,25 @@ Must update the Memory MCP before closing. Specifically:
 
 If memory MCP is unavailable → warn user and proceed with file-only closeout. Do not block.
 
+#### GATE 3: ADVISOR PHASE GATE
+
+Before closing, verify that EVERY phase had its advisor gate passed:
+
+1. Query ResearchSession entities for `advisor_phase` entries for this project.
+2. Verify that each Cariak phase that requires an advisor (pitching, grinding, planning, researching, synthesizing, validating, reflecting) has at least one `advisor_phase` session.
+3. Check the dialectic for each phase:
+   - Pitching: Phase 2d (Devil's Advocate challenge) executed? 
+   - Grinding: Phase 2.5 (Methodologist granularity check) executed?
+   - Planning: Phase 3.5 (System Architect coverage check) executed?
+   - Researching: Phase 4.5 (Per-finding Domain Expert advisor review) executed?
+   - Synthesizing: Phase 3.5 (Contradiction Hunter challenge) executed?
+   - Validating: Phase 4.5 (Falsificationist challenge) executed?
+   - Reflecting: Phase 5.5 (Blind Spot Auditor) executed?
+
+If ANY phase skipped the advisor → `CLOSE_BLOCKED: "Missing advisor gate for phase: <phase_name>. Run the missing advisor challenge before closing."`
+
+**"No close without complete dialectic. Every thesis must have met its antithesis."**
+
 ---
 
 ### Phase 0: Preflight (Silent Scan)
@@ -369,6 +388,11 @@ What would you like to do next?
 5. NO RE-EVALUATION
    Closing reads verdicts and reflection decisions — it never re-reviews claims.
    WHY: Re-evaluating during closing duplicates validating/reflecting and corrupts the audit trail.
+
+6. NO CLOSE WITHOUT COMPLETE DIALECTIC
+   Every Cariak phase must have its advisor gate (ANTITHESIS step) passed before close.
+   Query ResearchSession entities for advisor_phase entries. Any missing advisor challenge → CLOSE_BLOCKED.
+   WHY: Closing without verifying every thesis met its antithesis archives incomplete research. The dialectic is what separates Cariak research from single-perspective search.
 ```
 
 ### Reference Triggers
@@ -470,6 +494,25 @@ Harus memperbarui Memory MCP sebelum menutup. Secara spesifik:
 - Entitas ResearchSession harus dibuat untuk fase penutupan
 
 Jika memory MCP tidak tersedia → peringatkan pengguna dan lanjutkan dengan closeout berbasis file saja. Jangan blokir.
+
+#### GERBANG 3: GERBANG FASE ADVISOR
+
+Sebelum menutup, verifikasi bahwa SETIAP fase memiliki gate advisor yang lulus:
+
+1. Kueri entitas ResearchSession untuk entri `advisor_phase` untuk proyek ini.
+2. Verifikasi bahwa setiap fase Cariak yang memerlukan advisor (pitching, grinding, planning, researching, synthesizing, validating, reflecting) memiliki setidaknya satu sesi `advisor_phase`.
+3. Periksa dialektika untuk setiap fase:
+   - Pitching: Fase 2d (challenge Devil's Advocate) dieksekusi?
+   - Grinding: Fase 2.5 (pemeriksaan granularitas Methodologist) dieksekusi?
+   - Planning: Fase 3.5 (pemeriksaan cakupan System Architect) dieksekusi?
+   - Researching: Fase 4.5 (tinjauan advisor Domain Expert per temuan) dieksekusi?
+   - Synthesizing: Fase 3.5 (challenge Contradiction Hunter) dieksekusi?
+   - Validating: Fase 4.5 (challenge Falsificationist) dieksekusi?
+   - Reflecting: Fase 5.5 (Blind Spot Auditor) dieksekusi?
+
+Jika ADA fase yang melewatkan advisor → `CLOSE_BLOCKED: "Gate advisor hilang untuk fase: <nama_fase>. Jalankan advisor challenge yang hilang sebelum menutup."`
+
+**"Tidak ada penutupan tanpa dialektika lengkap. Setiap tesis harus telah bertemu antitesisnya."**
 
 ---
 
@@ -756,6 +799,11 @@ Apa yang ingin Anda lakukan selanjutnya?
    ulang klaim.
    MENGAPA: Mengevaluasi ulang saat penutupan menduplikasi validating/reflecting
    dan merusak jejak audit.
+
+6. DILARANG MENUTUP TANPA DIALEKTIKA LENGKAP
+   Setiap fase Cariak harus memiliki gate advisor (langkah ANTITESIS) yang lulus sebelum penutupan.
+   Kueri entitas ResearchSession untuk entri advisor_phase. Setiap advisor challenge yang hilang → CLOSE_BLOCKED.
+   MENGAPA: Menutup tanpa memverifikasi setiap tesis bertemu antitesisnya mengarsipkan riset yang tidak lengkap. Dialektika adalah yang membedakan riset Cariak dari pencarian perspektif-tunggal.
 ```
 
 ### Pemicu Referensi

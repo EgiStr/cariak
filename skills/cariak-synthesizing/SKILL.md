@@ -1,6 +1,6 @@
 ---
 name: cariak-synthesizing
-description: Resolve multiple research findings into a coherent, cited, confidence-graded report. Use AFTER cariak-researching when 5 sub-agent findings files exist. Cross-references sources, deduplicates, resolves contradictions, generates research-report.md + references.json, and computes a confidence score. Trigger on "synthesize", "compile research", "merge findings", "sintesis", "gabungkan temuan", or when cariak-researching hands off with 5 findings files.
+description: Resolve multiple research findings into a coherent, cited, confidence-graded report. Use AFTER cariak-researching when 5 sub-agent findings files exist. Cross-references sources, deduplicates, resolves contradictions, generates research-report.docx (primary DOCX output) + research-report.md (plain text fallback) + references.json, and computes a confidence score. Trigger on "synthesize", "compile research", "merge findings", "sintesis", "gabungkan temuan", or when cariak-researching hands off with 5 findings files.
 ---
 
 # Synthesizing / Mensintesis
@@ -68,6 +68,14 @@ When two findings contradict each other:
 4. If resolution is impossible, the report must say "unresolved contradiction" and lower the confidence score
 
 Averaging or hiding contradictions is FORBIDDEN.
+
+**GATE 2.5: ADVISOR CONTRADICTION CHALLENGE MANDATORY — ANTITHESIS BEFORE REPORT**
+
+The Contradiction Hunter + Devil's Advocate advisor challenge (Phase 3.5) is not optional. Before writing the final research report:
+1. The cross-referenced claim registry (thesis) must be challenged by an independent advisor (antithesis).
+2. The advisor must hunt for missed contradictions, cherry-picking, and forced narratives.
+3. Any newly found contradictions must be resolved (loop back to Phase 3) before proceeding.
+4. Do not skip the antithesis step. The synthesis engine's own contradiction detection has blind spots — the independent advisor catches what was missed.
 
 ### Phase 0: Preflight
 
@@ -142,11 +150,42 @@ For each contradiction:
 
 **Gate 2 enforcement:** Every contradiction must appear in the report with both perspectives.
 
-### Phase 4: Generate research-report.md
+### Phase 3.5: Advisor Contradiction Challenge (ANTITHESIS)
 
-**Goal:** Write the synthesized research report.
+**Goal:** Dispatch a Contradiction Hunter + Devil's Advocate advisor to independently challenge the cross-source merge BEFORE writing the final report.
 
-**Structure:**
+This is the THESIS → ANTITHESIS step. The cross-referenced, deduplicated claim registry is the thesis. Now an independent advisor must hunt for contradictions that the synthesis may have missed or suppressed.
+
+1. **Dispatch a Contradiction Hunter + Devil's Advocate advisor sub-agent** (via `cariak-advising`):
+   - The advisor is a **different model/persona**, not self-critique.
+   - The advisor's job: find contradictions, cherry-picking, forced narratives in the cross-source merge.
+   - The advisor MUST cite specific sources for every contradiction they claim.
+2. **Advisor challenge questions:**
+   - "Where do sources disagree? What contradictions did the cross-reference phase miss?"
+   - "What evidence is being cherry-picked? What sources that don't fit the narrative were excluded?"
+   - "What narrative is being forced by the synthesis? What alternative interpretations exist?"
+   - "Which RQs have the weakest evidence base? Where is the confidence over-estimated?"
+3. **Advisor returns:**
+   - List of specific contradictions that need explicit resolution (with source citations).
+   - Evidence of cherry-picking or narrative-forcing.
+   - RQs with weak evidence where confidence should be lowered.
+   - Recommendations: what to re-examine before writing the final report.
+
+**Gate 2.5 check:** Advisor contradiction challenge executed BEFORE writing the final research report? If no → halt and run the challenge. The advisor output feeds back into Phase 3 (resolve any newly found contradictions) before proceeding to Phase 4.
+
+**Output:** Advisor contradiction report — unresolved contradictions, cherry-picking flags, weak-evidence RQs.
+
+### Phase 4: Generate research-report.docx (primary) + research-report.md (fallback)
+
+**Goal:** Write the synthesized research report in professional DOCX format, with a plain-text markdown fallback.
+
+**DOCX generation uses the `npx cariak-pi report` CLI command internally, which drives the `docx` npm package (v9.7.1).**
+
+**Primary output format: DOCX** (McKinsey/BCG-grade professional report with cover page, headers, footers, styled tables, and inline citations).
+
+**Fallback output format: Markdown** — same structure for plain-text consumers.
+
+**Structure (applies to both formats):**
 ```markdown
 # Research Report: [Topic]
 **Date:** YYYY-MM-DD
@@ -189,7 +228,8 @@ For each contradiction:
 [Numbered bibliography — also written to references.json]
 ```
 
-Write to: `docs/cariak/synthesized/YYYY-MM-DD-slug/research-report.md`
+Write DOCX to: `docs/cariak/synthesized/YYYY-MM-DD-slug/research-report.docx`
+Write MD fallback to: `docs/cariak/synthesized/YYYY-MM-DD-slug/research-report.md`
 
 ### Phase 5: Generate references.json
 
@@ -254,7 +294,7 @@ Each RQ gets its own confidence score based on:
 **Goal:** Present the synthesis and hand off.
 
 **Present to user:**
-- Path to `research-report.md` and `references.json`
+- Path to `research-report.docx` (primary), `research-report.md` (fallback), and `references.json`
 - Confidence score (overall + per-RQ)
 - Number of contradictions (resolved / unresolved)
 - Gaps identified
@@ -269,7 +309,7 @@ Each RQ gets its own confidence score based on:
 **Auto-invoke rule:** If confidence ≥ 0.7 and no unresolved contradictions, auto-invoke `cariak-validating` behind a confirmation prompt. If confidence < 0.7, recommend `cariak-reflecting` to trigger re-research.
 
 **Memory update:**
-- Store `ResearchArtifact` (path=research-report.md, type="report", confidence, sources_count)
+- Store `ResearchArtifact` (path=research-report.docx, type="report", confidence, sources_count)
 - Store `ResearchInsight` for each key finding
 - Store `ResearchGap` for each unresolved gap
 
@@ -289,7 +329,7 @@ Each RQ gets its own confidence score based on:
 
 ---
 name: cariak-synthesizing
-description: Menyelesaikan beberapa temuan riset menjadi laporan yang koheren, dikutip, dan diberi nilai kepercayaan. Gunakan SETELAH cariak-researching ketika 5 file temuan sub-agen ada. Cross-reference sumber, deduplikasi, selesaikan kontradiksi, hasilkan research-report.md + references.json, dan hitung skor kepercayaan. Trigger pada "synthesize", "compile research", "merge findings", "sintesis", "gabungkan temuan", atau saat cariak-researching menyerah dengan 5 file temuan.
+description: Menyelesaikan beberapa temuan riset menjadi laporan yang koheren, dikutip, dan diberi nilai kepercayaan. Gunakan SETELAH cariak-researching ketika 5 file temuan sub-agen ada. Cross-reference sumber, deduplikasi, selesaikan kontradiksi, hasilkan research-report.docx (output DOCX primer) + research-report.md (fallback plain text) + references.json, dan hitung skor kepercayaan. Trigger pada "synthesize", "compile research", "merge findings", "sintesis", "gabungkan temuan", atau saat cariak-researching menyerah dengan 5 file temuan.
 ---
 
 ### Prinsip Inti
@@ -317,7 +357,7 @@ Ringkasan mendaftar apa yang ditemukan setiap sub-agen. Sintesis menyelesaikan t
 | Skill Terkait | Hubungan | Aturan Batasan |
 |---|---|---|
 | `cariak-researching` | Hulu | Menyediakan 5 file temuan; synthesizing tidak menjalankan ulang riset |
-| `cariak-validating` | Hilir | Mengonsumsi research-report.md untuk ekstrak klaim kunci untuk sanggahan |
+| `cariak-validating` | Hilir | Mengonsumsi research-report.docx untuk ekstrak klaim kunci untuk sanggahan |
 | `cariak-reflecting` | Hilir (alt) | Bisa menerima sintesis jika validasi dilewati |
 | `cariak-planning` | Loop umpan balik | Bisa memicu re-planning jika sintesis mengungkap celah |
 | `cariak-advising` | Ortogonal | Biasanya tidak dipanggil selama sintesis |
@@ -335,6 +375,14 @@ Setiap pernyataan dalam `research-report.md` HARUS memiliki kutipan inline `[N]`
 **GATE 2: KONTRADIKSI HARUS DISELESAIKAN SECARA EKSPLISIT**
 
 Ketika dua temuan kontradiksi: kedua perspektif harus disajikan dengan kutipan, kontradiksi harus dinamai secara eksplisit, sintesis harus menjelaskan kontradiksi, dan jika resolusi mustahil, laporan harus mengatakan "kontradiksi tidak teratasi" dan menurunkan skor kepercayaan. Membuat rata-rata atau menyembunyikan kontradiksi DILARANG.
+
+**GATE 2.5: ADVISOR CONTRADICTION CHALLENGE WAJIB — ANTITESIS SEBELUM LAPORAN**
+
+Challenge advisor Contradiction Hunter + Devil's Advocate (Fase 3.5) tidak opsional. Sebelum menulis laporan riset final:
+1. Registry klaim yang sudah di-cross-reference (tesis) harus ditantang oleh advisor independen (antitesis).
+2. Advisor harus berburu kontradiksi yang terlewat, cherry-picking, dan narasi paksa.
+3. Setiap kontradiksi baru yang ditemukan harus diselesaikan (loop kembali ke Fase 3) sebelum melanjutkan.
+4. Jangan lewati langkah antitesis. Deteksi kontradiksi mesin sintesis sendiri memiliki titik buta — advisor independen menangkap apa yang terlewat.
 
 ### Fase 0: Preflight
 
@@ -379,13 +427,45 @@ Setelah memuat semua 5 file, Anda seharusnya memiliki: N total klaim, M sumber u
 
 **Penegakan Gate 2:** Setiap kontradiksi harus muncul di laporan dengan kedua perspektif.
 
-### Fase 4: Hasilkan research-report.md
+### Fase 3.5: Advisor Contradiction Challenge (ANTITESIS)
 
-**Tujuan:** Tulis laporan riset yang disintesis.
+**Tujuan:** Kirim advisor Contradiction Hunter + Devil's Advocate untuk menantang cross-source merge secara independen SEBELUM menulis laporan final.
+
+Ini adalah langkah TESIS → ANTITESIS. Registry klaim yang sudah di-cross-reference dan dideduplikasi adalah tesis. Sekarang advisor independen harus berburu kontradiksi yang mungkin terlewat atau ditekan oleh sintesis.
+
+1. **Kirim advisor Contradiction Hunter + Devil's Advocate** (via `cariak-advising`):
+   - Advisor adalah **model/persona BERBEDA**, bukan kritik-diri.
+   - Tugas advisor: temukan kontradiksi, cherry-picking, narasi paksa dalam cross-source merge.
+   - Advisor HARUS menyitir sumber spesifik untuk setiap kontradiksi yang diklaim.
+2. **Pertanyaan challenge advisor:**
+   - "Di mana sumber-sumber tidak setuju? Kontradiksi apa yang terlewat oleh fase cross-reference?"
+   - "Bukti apa yang sedang di-cherry-pick? Sumber apa yang tidak cocok dengan narasi yang dikecualikan?"
+   - "Narasi apa yang sedang dipaksakan oleh sintesis? Interpretasi alternatif apa yang ada?"
+   - "RQ mana yang memiliki basis bukti terlemah? Di mana kepercayaan diestimasi terlalu tinggi?"
+3. **Advisor mengembalikan:**
+   - Daftar kontradiksi spesifik yang perlu resolusi eksplisit (dengan kutipan sumber).
+   - Bukti cherry-picking atau pemaksaan narasi.
+   - RQ dengan bukti lemah di mana kepercayaan harus diturunkan.
+   - Rekomendasi: apa yang perlu ditinjau ulang sebelum menulis laporan final.
+
+**Cek Gate 2.5:** Advisor contradiction challenge dieksekusi SEBELUM menulis laporan riset final? Jika tidak → berhenti dan jalankan challenge. Output advisor kembali ke Fase 3 (selesaikan kontradiksi baru yang ditemukan) sebelum melanjutkan ke Fase 4.
+
+**Output:** Laporan kontradiksi advisor — kontradiksi tidak terselesaikan, flag cherry-picking, RQ dengan bukti lemah.
+
+### Fase 4: Hasilkan research-report.docx (primer) + research-report.md (fallback)
+
+**Tujuan:** Tulis laporan riset yang disintesis dalam format DOCX profesional, dengan fallback markdown plain-text.
+
+**Generasi DOCX menggunakan perintah CLI `npx cariak-pi report` secara internal, yang menjalankan npm package `docx` (v9.7.1).**
+
+**Output primer: DOCX** (laporan profesional tingkat McKinsey/BCG dengan cover page, header, footer, tabel bergaya, dan kutipan inline).
+
+**Output fallback: Markdown** — struktur sama untuk konsumen plain-text.
 
 **Struktur:** Executive Summary, Research Questions Answered (per RQ dengan Finding, Evidence, Contradictions, Confidence), Contradictions & Resolutions, Source Diversity, Gaps Identified, References.
 
-Tulis ke: `docs/cariak/synthesized/YYYY-MM-DD-slug/research-report.md`
+Tulis DOCX ke: `docs/cariak/synthesized/YYYY-MM-DD-slug/research-report.docx`
+Tulis MD fallback ke: `docs/cariak/synthesized/YYYY-MM-DD-slug/research-report.md`
 
 ### Fase 5: Hasilkan references.json
 
@@ -409,7 +489,7 @@ Tulis ke: `docs/cariak/synthesized/YYYY-MM-DD-slug/references.json`
 
 **Tujuan:** Sajikan sintesis dan serahkan.
 
-**Sajikan ke pengguna:** Path ke `research-report.md` dan `references.json`, skor kepercayaan (keseluruhan + per-RQ), jumlah kontradiksi (teratasi/tidak teratasi), celah yang diidentifikasi.
+**Sajikan ke pengguna:** Path ke `research-report.docx` (primer), `research-report.md` (fallback), dan `references.json`, skor kepercayaan (keseluruhan + per-RQ), jumlah kontradiksi (teratasi/tidak teratasi), celah yang diidentifikasi.
 
 **Menu 3 opsi:**
 ```
@@ -420,7 +500,7 @@ Tulis ke: `docs/cariak/synthesized/YYYY-MM-DD-slug/references.json`
 
 **Aturan auto-invoke:** Jika kepercayaan ≥ 0.7 dan tidak ada kontradiksi tidak teratasi, auto-invoke `cariak-validating` di balik prompt konfirmasi. Jika kepercayaan < 0.7, rekomendasikan `cariak-reflecting` untuk memicu re-research.
 
-**Update memory:** Simpan ResearchArtifact (path, type, confidence, sources_count), ResearchInsight untuk setiap temuan kunci, ResearchGap untuk setiap celah tidak teratasi.
+**Update memory:** Simpan ResearchArtifact (path=research-report.docx, type, confidence, sources_count), ResearchInsight untuk setiap temuan kunci, ResearchGap untuk setiap celah tidak teratasi.
 
 ### Reference Triggers
 

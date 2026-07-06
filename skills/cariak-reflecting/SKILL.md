@@ -243,6 +243,7 @@ Based on all assessments:
 - Unresolved contradictions <= 3
 - Question coverage >= 80%
 - No critical gaps identified
+- Blind Spot Audit (Phase 5.5) completed and findings incorporated
 
 → **Decision: PASS. Proceed to document generation or delivery.**
 
@@ -263,6 +264,31 @@ Based on all assessments:
 → **Decision: MANUAL_REVIEW. Ask user.** (GATE 2)
 
 ---
+
+### Phase 5.5: Blind Spot Audit (ANTITHESIS)
+
+**Goal:** Dispatch a Blind Spot Auditor advisor to identify what was NOT researched and what source types are under-represented.
+
+This is the THESIS → ANTITHESIS step. The quality assessment (Phases 1-5) is the thesis. Now an independent advisor must audit what the assessment itself missed.
+
+1. **Dispatch a Blind Spot Auditor advisor sub-agent** (via `cariak-advising`):
+   - The advisor is a **different model/persona**, not self-critique.
+   - The advisor's job: find research areas, source types, and perspectives that were never explored.
+   - The advisor MUST cite specific examples of missing research angles.
+2. **Advisor challenge questions:**
+   - "What did we NOT research? What questions did we never ask?"
+   - "What source types are under-represented or completely absent?"
+   - "What perspectives (geographic, demographic, ideological) are missing from the research?"
+   - "What is the single weakest finding that needs re-research?"
+   - "If we had to re-do this research with unlimited resources, what would we investigate differently?"
+3. **Advisor returns:**
+   - List of un-researched questions and angles.
+   - Source types absent from the research.
+   - Missing perspectives and their potential impact on findings.
+   - Ranked list of weakest findings (with reasoning).
+   - Go/no-go recommendation on re-research for each weak finding.
+
+**Output:** Blind Spot Audit report — un-researched areas, missing source types, weakest findings ranked. This feeds directly into the re-research decision: if the audit finds critical blind spots, the decision may flip from PASS to RE-RESEARCH.
 
 ### Phase 6: Write Reflection Report
 
@@ -641,6 +667,7 @@ Berdasarkan semua penilaian:
 - Kontradiksi tidak terselesaikan <= 3
 - Cakupan pertanyaan >= 80%
 - Tidak ada celah kritis teridentifikasi
+- Blind Spot Audit (Fase 5.5) selesai dan temuan diintegrasikan
 
 → **Keputusan: LULUS. Lanjut ke pembuatan dokumen atau pengiriman.**
 
@@ -661,6 +688,31 @@ Berdasarkan semua penilaian:
 → **Keputusan: MANUAL_REVIEW. Tanya pengguna.** (GATE 2)
 
 ---
+
+### Fase 5.5: Audit Titik Buta (ANTITESIS)
+
+**Tujuan:** Kirim advisor Blind Spot Auditor untuk mengidentifikasi apa yang TIDAK diteliti dan tipe sumber apa yang kurang terwakili.
+
+Ini adalah langkah TESIS → ANTITESIS. Penilaian kualitas (Fase 1-5) adalah tesis. Sekarang advisor independen harus mengaudit apa yang terlewat oleh penilaian itu sendiri.
+
+1. **Kirim advisor Blind Spot Auditor** (via `cariak-advising`):
+   - Advisor adalah **model/persona BERBEDA**, bukan kritik-diri.
+   - Tugas advisor: temukan area riset, tipe sumber, dan perspektif yang tidak pernah dieksplorasi.
+   - Advisor HARUS menyitir contoh spesifik sudut riset yang hilang.
+2. **Pertanyaan challenge advisor:**
+   - "Apa yang TIDAK kita teliti? Pertanyaan apa yang tidak pernah kita tanyakan?"
+   - "Tipe sumber apa yang kurang terwakili atau sama sekali tidak ada?"
+   - "Perspektif apa (geografis, demografis, ideologis) yang hilang dari riset?"
+   - "Apa temuan terlemah tunggal yang perlu riset ulang?"
+   - "Jika kita harus mengulang riset ini dengan sumber daya tak terbatas, apa yang akan kita selidiki secara berbeda?"
+3. **Advisor mengembalikan:**
+   - Daftar pertanyaan dan sudut yang tidak diteliti.
+   - Tipe sumber yang absen dari riset.
+   - Perspektif yang hilang dan dampak potensialnya pada temuan.
+   - Daftar peringkat temuan terlemah (dengan penalaran).
+   - Rekomendasi go/no-go untuk riset ulang setiap temuan lemah.
+
+**Output:** Laporan Blind Spot Audit — area tidak diteliti, tipe sumber hilang, temuan terlemah diperingkat. Ini langsung menjadi input ke keputusan riset ulang: jika audit menemukan titik buta kritis, keputusan bisa berbalik dari LULUS ke RISET ULANG.
 
 ### Phase 6: Tulis Laporan Refleksi
 

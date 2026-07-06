@@ -63,6 +63,14 @@ Each RQ-N in the spec must map to at least one sub-agent assignment block:
 
 No RQ may be left unassigned. No sub-agent may be assigned without at least one query.
 
+**GATE 1.5: ADVISOR COVERAGE CHALLENGE MANDATORY — ANTITHESIS BEFORE PLAN**
+
+The System Architect + Ops Reviewer advisor challenge (Phase 3.5) is not optional. Before writing the final research plan:
+1. The task decomposition (thesis) must be challenged by an independent advisor (antithesis).
+2. The advisor must check task independence, granularity, hidden dependencies, and parallel safety.
+3. The advisor output must be incorporated into the final research plan in Phase 4.
+4. Do not skip the antithesis step. Proceeding from decomposition directly to the plan without the advisor challenge risks missed dependencies and oversized tasks.
+
 **GATE 2: USER MUST APPROVE PLAN BEFORE DISPATCH**
 
 Present the plan summary to the user. Do NOT auto-invoke `cariak-researching`. The user must confirm or request changes. Only after explicit confirmation ("yes", "go", "execute", "lanjut") may the handoff proceed.
@@ -108,13 +116,32 @@ Present the plan summary to the user. Do NOT auto-invoke `cariak-researching`. T
 **Actions:**
 1. Review Clarify Gate responses from the spec (doc-routing question).
 2. Determine which on-demand documents to produce:
-   - `research-report.md` (always — core output).
+   - `research-report.docx` (always — core output, DOCX primary). Generated via `npx cariak-pi report --template research-report`.
+   - `research-report.md` (always — plain text fallback).
    - `references.json` (always — citation database).
-   - `executive-summary.md` (if audience = executive).
-   - `technical-deep-dive.md` (if depth = deep).
-   - `comparison-matrix.md` (if research involves comparison).
-   - `validation-report.md` (if validation requested).
+   - `executive-summary.docx` (if audience = executive). Generated via `npx cariak-pi report --template recommendation-report`.
+   - `technical-deep-dive.docx` (if depth = deep). Generated via `npx cariak-pi report --template technical-report`.
+   - `comparison-matrix.docx` (if research involves comparison). Generated via `npx cariak-pi report --template competitive-analysis`.
+   - `validation-report.docx` (if validation requested).
 3. Record routing decisions in the plan.
+
+**Document format routing table:**
+
+| Document Type | Format (Primary) | Format (Fallback) | Generation Command |
+|---|---|---|---|
+| `research-report` | `.docx` | `.md` | `npx cariak-pi report --template research-report` |
+| `executive-summary` | `.docx` | `.md` | `npx cariak-pi report --template recommendation-report` |
+| `technical-deep-dive` | `.docx` | `.md` | `npx cariak-pi report --template technical-report` |
+| `comparison-matrix` | `.docx` | `.md` | `npx cariak-pi report --template competitive-analysis` |
+| `feasibility-study` | `.docx` | `.md` | `npx cariak-pi report --template feasibility-study` |
+| `prd` | `.docx` | `.md` | `npx cariak-pi report --template prd` |
+| `tech-spec` | `.docx` | `.md` | `npx cariak-pi report --template tech-spec` |
+| `adr` | `.docx` | `.md` | `npx cariak-pi report --template adr` |
+| `risk-register` | `.docx` | `.md` | `npx cariak-pi report --template risk-register` |
+| `literature-review` | `.docx` | `.md` | `npx cariak-pi report --template literature-review` |
+| `experiment-design` | `.docx` | `.md` | `npx cariak-pi report --template experiment-design` |
+| `implementation-roadmap` | `.docx` | `.md` | `npx cariak-pi report --template implementation-roadmap` |
+| `research-proposal` | `.docx` | `.md` | `npx cariak-pi report --template research-proposal` |
 
 #### Phase 3: Decompose to Sub-agent Tasks
 
@@ -135,6 +162,32 @@ Present the plan summary to the user. Do NOT auto-invoke `cariak-researching`. T
 
 **Gate 1 check:** Every RQ has at least one sub-agent assignment with queries.
 
+#### Phase 3.5: Advisor Coverage Check (ANTITHESIS)
+
+**Goal:** Challenge the task decomposition with a System Architect + Ops Reviewer advisor before building the final plan.
+
+This is the THESIS → ANTITHESIS step. The task decomposition is the thesis. Now an independent advisor must challenge its structure and parallelism.
+
+1. **Dispatch a System Architect + Ops Reviewer advisor sub-agent** (via `cariak-advising`):
+   - The advisor is a **different model/persona**, not self-critique.
+   - The advisor's job: find hidden dependencies, oversized tasks, missing coverage.
+   - The advisor MUST cite sources or explicitly state opinion.
+2. **Advisor challenge questions:**
+   - "Are tasks truly independent? Can they run in parallel without data races?"
+   - "Are any tasks too large? Is the granularity correct — each task should be a single research question, not a topic area?"
+   - "What hidden dependencies exist between sub-agent queries that would block parallel execution?"
+   - "Are any research questions under-assigned (too few sub-agents) or over-assigned (wasteful overlap)?"
+   - "Can each task reasonably complete in <10 minutes of agent time?"
+3. **Advisor returns:**
+   - Tasks that should be split (too large).
+   - Hidden dependencies that need sequencing.
+   - Under-covered or over-covered research questions.
+   - Granularity recommendations.
+
+**Gate 1.5 check:** Advisor coverage challenge executed BEFORE building the final research plan? If no → halt and run the challenge. The advisor output feeds into Phase 4 (Build Research Plan).
+
+**Output:** Advisor coverage report — split recommendations, dependency warnings, coverage gaps.
+
 #### Phase 4: Build Research Plan
 
 **Actions:**
@@ -146,9 +199,10 @@ Date: YYYY-MM-DD
 Spec: docs/cariak/spec/YYYY-MM-DD-slug/research-spec.md
 
 ## Output Documents
-- [ ] research-report.md (core)
+- [ ] research-report.docx (core — primary DOCX output)
+- [ ] research-report.md (core — fallback)
 - [ ] references.json (core)
-- [ ] executive-summary.md (if routed)
+- [ ] executive-summary.docx (if routed)
 - [ ] ...
 
 ## Sub-agent Assignments
@@ -266,6 +320,14 @@ Jika ADA pemeriksaan yang gagal → BERHENTI. Jangan dekomposisi. Laporkan eleme
 
 Setiap RQ-N dalam spec harus dipetakan ke setidaknya satu blok penugasan sub-agen. Tidak ada RQ yang boleh tidak ditugaskan. Tidak ada sub-agen yang ditugaskan tanpa setidaknya satu query.
 
+**GATE 1.5: ADVISOR COVERAGE CHALLENGE WAJIB — ANTITESIS SEBELUM RENCANA**
+
+Challenge advisor System Architect + Ops Reviewer (Fase 3.5) tidak opsional. Sebelum menulis rencana riset final:
+1. Dekomposisi tugas (tesis) harus ditantang oleh advisor independen (antitesis).
+2. Advisor harus memeriksa independensi tugas, granularitas, dependensi tersembunyi, dan keamanan paralel.
+3. Output advisor harus diintegrasikan ke dalam rencana riset final di Fase 4.
+4. Jangan lewati langkah antitesis. Melanjutkan dari dekomposisi langsung ke rencana tanpa advisor challenge berisiko dependensi terlewat dan tugas terlalu besar.
+
 **GATE 2: PENGGUNA HARUS MENYETUJUI RENCANA SEBELUM DISPATCH**
 
 Sajikan ringkasan rencana ke pengguna. JANGAN auto-invoke `cariak-researching`. Pengguna harus mengonfirmasi atau meminta perubahan. Hanya setelah konfirmasi eksplisit handoff boleh dilanjutkan.
@@ -293,7 +355,11 @@ Sajikan ringkasan rencana ke pengguna. JANGAN auto-invoke `cariak-researching`. 
 
 **Aksi:**
 1. Tinjau respons Clarify Gate dari spec (pertanyaan doc-routing).
-2. Tentukan dokumen on-demand mana yang akan diproduksi.
+2. Tentukan dokumen on-demand mana yang akan diproduksi:
+   - `research-report.docx` (selalu — output inti, DOCX primer). Dibuat dengan `npx cariak-pi report --template research-report`.
+   - `research-report.md` (selalu — fallback plain text).
+   - `references.json` (selalu — database kutipan).
+   - Dokumen lainnya mengikuti tabel routing format di atas.
 3. Catat keputusan routing dalam rencana.
 
 #### Fase 3: Dekomposisi ke Tugas Sub-agen
@@ -304,6 +370,32 @@ Sajikan ringkasan rencana ke pengguna. JANGAN auto-invoke `cariak-researching`. 
 3. Aturan crafting query: gunakan kata kunci dari RQ, sertakan sinonim, gunakan terminologi formal untuk akademik, istilah colloquial untuk sosial, nama kompetitor untuk market.
 
 **Cek Gate 1:** Setiap RQ memiliki setidaknya satu penugasan sub-agen dengan query.
+
+#### Fase 3.5: Pemeriksaan Cakupan Advisor (ANTITESIS)
+
+**Tujuan:** Menantang dekomposisi tugas dengan advisor System Architect + Ops Reviewer sebelum membangun rencana final.
+
+Ini adalah langkah TESIS → ANTITESIS. Dekomposisi tugas adalah tesis. Sekarang advisor independen harus menantang struktur dan paralelismenya.
+
+1. **Kirim advisor System Architect + Ops Reviewer** (via `cariak-advising`):
+   - Advisor adalah **model/persona BERBEDA**, bukan kritik-diri.
+   - Tugas advisor: temukan dependensi tersembunyi, tugas terlalu besar, cakupan yang hilang.
+   - Advisor HARUS menyitir sumber atau menyatakan opini secara eksplisit.
+2. **Pertanyaan challenge advisor:**
+   - "Apakah tugas benar-benar independen? Bisakah berjalan paralel tanpa race condition?"
+   - "Apakah ada tugas yang terlalu besar? Apakah granularitas benar — setiap tugas harus satu pertanyaan riset, bukan area topik?"
+   - "Dependensi tersembunyi apa yang ada antara query sub-agen yang akan memblokir eksekusi paralel?"
+   - "Apakah ada pertanyaan riset yang kurang ditugaskan (terlalu sedikit sub-agen) atau terlalu banyak ditugaskan (tumpang tindih boros)?"
+   - "Bisakah setiap tugas selesai secara wajar dalam <10 menit waktu agen?"
+3. **Advisor mengembalikan:**
+   - Tugas yang harus dipecah (terlalu besar).
+   - Dependensi tersembunyi yang perlu diurutkan.
+   - Pertanyaan riset yang kurang atau terlalu banyak dicakup.
+   - Rekomendasi granularitas.
+
+**Cek Gate 1.5:** Advisor coverage challenge dieksekusi SEBELUM membangun rencana riset final? Jika tidak → berhenti dan jalankan challenge. Output advisor menjadi input ke Fase 4 (Bangun Rencana Riset).
+
+**Output:** Laporan cakupan advisor — rekomendasi pemecahan, peringatan dependensi, celah cakupan.
 
 #### Fase 4: Bangun Rencana Riset
 

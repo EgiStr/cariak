@@ -17,6 +17,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.0] - 2026-07-06
+### Changed
+- Primary output format changed from .md to .docx (professional-grade)
+- cariak-synthesizing generates DOCX via `npx cariak-pi report`
+- .md templates retained as fallback only
+### Added
+- `npx cariak-pi report` CLI command for DOCX generation
+- Support for 13 document templates in DOCX format
+- `templates/README.md` documenting dual-format template system
+### Fixed
+- Planning phase now properly documented with research-plan.md artifact
+
 ## [1.2.0] - 2026-07-06
 ### Added
 - `.skill` bundle builder (`npx cariak-pi bundle`) — package skills into distributable ZIP archives

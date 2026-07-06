@@ -190,7 +190,8 @@ Based on status "[current]", the next phase is: [next_phase]
 **Actions:**
 
 1. Extract key insights from the current session (ask the invoking skill or parse the artifact).
-2. For each insight, create a `ResearchInsight` entity:
+2. **When other skills save artifacts, also save the advisor challenge outputs as ResearchInsight entities so cumulative bias patterns can be tracked.** Every phase's advisor challenge (ANTITHESIS step) produces a challenge report — these must be stored as `ResearchInsight` entities with `phase_origin` set to the phase name and `advisor_phase: true` observation, enabling cross-phase bias analysis.
+3. For each insight, create a `ResearchInsight` entity:
 
 ```json
 {
@@ -418,7 +419,7 @@ Identifikasi apa yang dihasilkan. Verifikasi file ada (GATE 1). Buat atau perbar
 
 ### Fase 3: Simpan Insight
 
-Ekstrak wawasan kunci. Untuk setiap insight, buat `ResearchInsight` dengan project_id, insight_text, source_refs, confidence, phase_origin. Buat relasi PRODUCED_INSIGHT dan DERIVED_FROM.
+Ekstrak wawasan kunci. **Saat skill lain menyimpan artifact, simpan juga output advisor challenge sebagai entitas ResearchInsight sehingga pola bias kumulatif dapat dilacak.** Setiap advisor challenge fase (langkah ANTITESIS) menghasilkan laporan challenge — ini harus disimpan sebagai entitas `ResearchInsight` dengan `phase_origin` diatur ke nama fase dan observasi `advisor_phase: true`, memungkinkan analisis bias lintas-fase. Untuk setiap insight, buat `ResearchInsight` dengan project_id, insight_text, source_refs, confidence, phase_origin. Buat relasi PRODUCED_INSIGHT dan DERIVED_FROM.
 
 ### Fase 4: Simpan Keputusan
 

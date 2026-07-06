@@ -1,4 +1,5 @@
 <!-- CARIAK TEMPLATE: feasibility-study - v1.1 -->
+<!-- PRIMARY OUTPUT: .docx (generated via npx cariak-pi report). This .md is a fallback. -->
 # Feasibility Study (TELOS Framework)
 
 ## Bahasa Indonesia
