@@ -164,8 +164,8 @@ File: `docs/cariak/spec/YYYY-MM-DD-slug/research-spec.md`
 | Trigger File | Phase Used | Purpose |
 |---|---|---|
 | `references/question-frameworks.csv` | Phase 2 | Select frameworks for structuring research questions |
-| brief-template.md | Phase 4 | Template for research-spec.md structure |
-| advisor-personas.csv | Phase 2 (optional) | If advising is called to stress-test questions |
+| `references/research-spec-template.md` | Phase 4 | Template for research-spec.md structure |
+| `../../references/advisor-personas.csv` | Phase 2 (optional) | If advising is called to stress-test questions |
 
 ---
 
@@ -326,5 +326,5 @@ File: `docs/cariak/spec/YYYY-MM-DD-slug/research-spec.md`
 | File Trigger | Fase Digunakan | Tujuan |
 |---|---|---|
 | `references/question-frameworks.csv` | Fase 2 | Pilih framework untuk menyusun pertanyaan riset |
-| brief-template.md | Fase 4 | Template untuk struktur research-spec.md |
-| advisor-personas.csv | Fase 2 (opsional) | Jika advising dipanggil untuk menguji pertanyaan |
+| `references/research-spec-template.md` | Fase 4 | Template untuk struktur research-spec.md |
+| `../../references/advisor-personas.csv` | Fase 2 (opsional) | Jika advising dipanggil untuk menguji pertanyaan |
