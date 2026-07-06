@@ -1,0 +1,578 @@
+---
+name: cariak-pitching
+description: Pre-research problem exploration. Use BEFORE cariak-grinding when the research problem is unformed or needs exploration. Guides diverge→converge with structured brainstorming methods (from brainstorming-methods.csv) and LLM-to-LLM advisor curation (advisor tool), then produces a pitch exploration doc with problem statement and 2-3 research directions. Trigger on "cariak", "research this", "I want to explore", "deep research", "gali ini", "cariak ini", or when no clear research problem definition exists yet.
+---
+
+# Cariak Pitching / Pitching Cariak
+
+<!-- CARIAK SKILL: cariak-pitching - v1.1 -->
+
+## English
+
+### Core Principle
+
+> **"Diverge first, converge second. Never propose research directions until the problem is fully explored."**
+
+Pitching is the entry point of the CariaK research lifecycle. It exists because most research problems arrive vague, multifaceted, or malformed. Jumping straight to a spec (cariak-grinding) without exploring the problem space produces narrow questions that miss the real opportunity. Pitching forces structured divergence — using curated brainstorming methods and multi-persona advisor counsel — before convergence into 2-3 research directions worth grinding.
+
+### When to Use
+
+- The problem is vague, unformed, or needs exploration before spec-writing.
+- The user says "cariak", "research this", "explore this", "deep research", "gali ini", "cariak ini".
+- A new research project is starting with no clear direction.
+- No `pitch-exploration.md` exists yet in `docs/cariak/spec/`.
+
+### Do NOT Use
+
+- When the problem is already clearly defined (use `cariak-grinding`).
+- When a `research-spec.md` already exists (use `cariak-grinding` or `cariak-planning`).
+- For the "brainstorm" keyword alone — that triggers `cariak-grinding` (brainstorm implies refining, not exploring).
+- When a pitch-exploration.md already exists and the user wants to refine it (use `cariak-grinding`).
+
+### Boundary Table — Adjacent Skills
+
+| Boundary | cariak-pitching | cariak-grinding |
+|---|---|---|
+| Purpose | Explores problem space | Specifies research questions |
+| Output | Produces: 2-3 research directions | Produces: BDD GWT spec |
+| Format | No GWT scenarios | Full GWT spec with acceptance criteria |
+| Input | User intent + project context | pitch-exploration.md (from pitching) |
+
+| Boundary | cariak-pitching | cariak-advising |
+|---|---|---|
+| Purpose | Owns the diverge→converge flow | Provides multi-persona counsel |
+| Invocation | Pitching calls advising in Phase 3 | Advising returns counsel; pitching owns the converge decision |
+
+| Boundary | cariak-pitching | cariak-validating |
+|---|---|---|
+| Purpose | Pre-research exploration | Post-synthesis falsification |
+| Stage | Before research begins | After synthesis completes |
+
+### Hard Gates
+
+**GATE 0: PREFLIGHT MUST COMPLETE BEFORE GREETING USER**
+
+Before any user interaction, silently:
+1. Scan the project directory for existing `docs/cariak/spec/` directories.
+2. Query memory MCP for existing `ResearchProject` entities related to the topic.
+3. Load `references/brainstorming-methods.csv` silently.
+4. Load `references/advisor-personas.csv` silently.
+5. Load `templates/pitch-brief-template.md` silently.
+
+NO OUTPUT until preflight is complete. If preflight fails (files missing), note the missing files and proceed with available context. Do not block the user on missing reference files — degrade gracefully.
+
+**GATE 1: NO DIVERGE WITHOUT PROBLEM CONFIRMATION**
+
+Phase 1 (Clarify) ends with the user explicitly confirming the problem statement. Silence or vague approval ("sure", "I guess") is NOT confirmation. The user must restate or explicitly agree to the problem statement in their own words. If the user cannot articulate the problem, return to clarifying questions.
+
+**GATE 2: ADVISOR CALL MANDATORY IN PHASE 3**
+
+The advisor counsel step is not optional. In Phase 3:
+1. Output ALL brainstorming method results to the conversation FIRST.
+2. THEN call `cariak-advising` skill (or the `advisor()` tool) with the method results.
+3. Use personas selected from `advisor-personas.csv`.
+4. Do not skip this step. Even if the problem seems clear, advisor counsel surfaces blind spots.
+
+**GATE 3: USER MUST APPROVE PITCH BRIEF**
+
+Before invoking `cariak-grinding`, present the complete pitch-exploration.md to the user and ask: "Approve this pitch? (yes / modify / reject)". No handoff to grinding without explicit approval.
+
+### Phase 0: Preflight
+
+**Goal:** Silently gather context before engaging the user.
+
+1. **Scan project context:**
+   - Check `docs/cariak/spec/` for existing pitch docs.
+   - If a slug exists, identify it and note prior work.
+2. **Check memory MCP:**
+   - `memory_search_nodes(query="{project_topic}")` for existing `ResearchProject` entities.
+   - If found, load the entity graph (artifacts, insights, decisions, gaps).
+3. **Load reference files silently:**
+   - `references/brainstorming-methods.csv` — enumerate available methods.
+   - `references/advisor-personas.csv` — enumerate available personas.
+   - `templates/pitch-brief-template.md` — load the pitch doc format.
+
+**Output:** Internal context only. No user output until greeting.
+
+**Gate 0 check:** Preflight complete? If yes → proceed to greeting.
+
+### Phase 1: Clarify (Gate 0)
+
+**Goal:** Understand the user's intent, scope, audience, depth, and document routing before diverging.
+
+Ask clarifying questions ONE AT A TIME (Three Amigos pattern — one question, wait for answer, then next):
+
+1. **Intent:** "What are you trying to understand or decide?"
+2. **Scope:** "What's in scope and what's explicitly out of scope?"
+3. **Audience:** "Who will read the final research output?"
+4. **Depth:** "How deep should this go — overview, moderate, or exhaustive?"
+5. **Doc-routing:** "What output documents do you need? (report, brief, slides, data?)"
+
+After all answers, synthesize a **problem statement** and present it:
+
+```
+## Problem Statement (Draft)
+
+[1-2 sentence problem statement]
+
+In scope: ...
+Out of scope: ...
+Audience: ...
+Depth: ...
+Output docs: ...
+```
+
+**Gate 1 check:** Ask: "Does this problem statement capture your intent? Please confirm or correct." Wait for explicit confirmation. If the user says "yes" without engagement, ask: "Can you restate the problem in your own words?" to verify.
+
+### Phase 2: Problem Diverge
+
+**Goal:** Explore the problem space using structured brainstorming methods.
+
+1. **Select 3-5 methods** from `brainstorming-methods.csv` based on problem type:
+   - If the problem is about *understanding a phenomenon* → select exploratory methods.
+   - If the problem is about *making a decision* → select decision-structuring methods.
+   - If the problem is about *finding opportunities* → select generative methods.
+   - If the problem is about *risk/feasibility* → select critical methods.
+2. **Run each method** and output results to the conversation:
+
+For each method:
+```
+### Method: [method name]
+**Source:** brainstorming-methods.csv, row [N]
+**Output:**
+[Method-specific output — questions, angles, variables, scenarios]
+```
+
+3. **Collect all outputs** — do not filter yet. Divergence means volume.
+
+**Output:** All method results visible in conversation. Do NOT proceed to Phase 3 until all methods are output.
+
+### Phase 3: Advisor Counsel
+
+**Goal:** Get multi-persona perspectives on the divergent outputs before converging.
+
+1. **Select 3-5 personas** from `advisor-personas.csv` based on the problem type:
+   - Always include at least one skeptic/critical persona.
+   - Always include at least one domain expert.
+   - Vary the rest based on problem nature.
+2. **Call `cariak-advising` skill (or `advisor()` tool)** with:
+   - The problem statement (from Phase 1).
+   - All brainstorming method outputs (from Phase 2).
+   - The selected personas.
+3. **Receive counsel** — each persona provides:
+   - Blind spots identified.
+   - Directions worth exploring.
+   - Directions worth dropping.
+   - Questions the exploration missed.
+
+**Gate 2 check:** Advisor call executed? All method results output to conversation BEFORE the call? If no → halt and complete the gate.
+
+**Output:** Advisor counsel synthesized and presented.
+
+### Phase 4: Converge
+
+**Goal:** Synthesize divergent outputs + advisor counsel into 2-3 research directions.
+
+For each research direction:
+
+```
+### Direction [N]: [Direction name]
+
+**Problem angle:** [which aspect of the problem this addresses]
+**Research question (draft):** [the question this direction would grind into]
+**Tradeoffs:**
+- Pros: [what this direction gains]
+- Cons: [what this direction sacrifices]
+- Risk: [what could go wrong]
+**Advisor support:** [which personas endorsed this, which pushed back]
+**Source methods:** [which brainstorming methods generated this]
+```
+
+Produce exactly 2-3 directions. Not 1 (too narrow), not 5+ (too divergent).
+
+**Output:** 2-3 research directions with tradeoffs.
+
+### Phase 5: Pitch Doc
+
+**Goal:** Write the pitch exploration document.
+
+Load `templates/pitch-brief-template.md` and write to:
+
+```
+docs/cariak/spec/YYYY-MM-DD-[kebab-slug]/pitch-exploration.md
+```
+
+**Structure:**
+
+```markdown
+# Pitch Exploration: [Topic]
+
+**Date:** YYYY-MM-DD
+**Slug:** [kebab-slug]
+**Status:** Pitch
+**Author:** CariaK + [user name]
+
+## Problem Statement
+[Confirmed problem statement from Phase 1]
+
+## Scope
+- In scope: ...
+- Out of scope: ...
+
+## Audience & Depth
+- Audience: ...
+- Depth: ...
+
+## Brainstorming Methods Used
+| Method | Purpose | Key Output |
+|---|---|---|
+| [method 1] | ... | ... |
+| [method 2] | ... | ... |
+
+## Advisor Counsel Summary
+[Synthesis of persona perspectives]
+
+## Research Directions
+
+### Direction 1: [name]
+[Full direction with tradeoffs]
+
+### Direction 2: [name]
+[Full direction with tradeoffs]
+
+### Direction 3: [name] (if applicable)
+[Full direction with tradeoffs]
+
+## Output Document Plan
+- [ ] [doc 1]
+- [ ] [doc 2]
+
+## Handoff
+Next: cariak-grinding (refine a direction into a research-spec.md)
+```
+
+**Gate 3 check:** Present the pitch doc path to the user. Ask: "Approve this pitch? (yes / modify / reject)". Wait for explicit approval.
+
+### Phase 6: Handoff
+
+**Goal:** Present the 3-option menu and hand off.
+
+```
+Pitch exploration written to: docs/cariak/spec/[slug]/pitch-exploration.md
+
+What's next?
+1. **Grind a direction** — Invoke cariak-grinding to refine a direction into a BDD spec
+2. **Iterate** — Modify the pitch (add/remove directions, adjust scope, re-run advisor)
+3. **Save and stop** — Pitch saved; resume later with "cariak resume [slug]"
+```
+
+- If option 1 → ask which direction to grind → invoke `cariak-grinding` with the selected direction.
+- If option 2 → return to Phase 2 (re-diverge) or Phase 4 (re-converge) based on user request.
+- If option 3 → invoke `cariak-remembering` to store session state.
+
+### Reference Triggers
+
+| Reference | When to Load |
+|---|---|
+| `references/brainstorming-methods.csv` | Phase 2: select methods for diverge |
+| `references/advisor-personas.csv` | Phase 3: select personas for counsel |
+| `templates/pitch-brief-template.md` | Phase 5: pitch doc format |
+| `docs/cariak/spec/YYYY-MM-DD-slug/pitch-exploration.md` | Phase 5: output path |
+| Memory MCP | Phase 0: load existing project context |
+
+### Output
+
+```
+docs/cariak/spec/YYYY-MM-DD-[kebab-slug]/
+  └── pitch-exploration.md     ← THIS SKILL OUTPUT
+```
+
+### Handoff
+
+Explicit 3-option menu (see Phase 6). No silent auto-invoke. User must choose.
+
+---
+
+## Bahasa Indonesia
+
+### Prinsip Inti
+
+> **"Divergen dulu, konvergen kemudian. Jangan pernah mengusulkan arah riset sebelum masalahnya sepenuhnya dieksplorasi."**
+
+Pitching adalah pintu masuk siklus riset CariaK. Ia ada karena sebagian besar masalah riset datang dalam keadaan samar, multifaset, atau cacat. Langsung melompat ke spec (cariak-grinding) tanpa mengeksplorasi ruang masalah menghasilkan pertanyaan sempit yang melewatkan peluang nyata. Pitching memaksa divergensi terstruktur — menggunakan metode brainstorming yang dikurasi dan konsultasi advisor multi-persona — sebelum konvergensi menjadi 2-3 arah riset yang layak digiling.
+
+### Kapan Digunakan
+
+- Masalahnya samar, belum terbentuk, atau butuh eksplorasi sebelum penulisan spec.
+- Pengguna mengatakan "cariak", "research this", "explore this", "deep research", "gali ini", "cariak ini".
+- Proyek riset baru dimulai tanpa arah yang jelas.
+- Belum ada `pitch-exploration.md` di `docs/cariak/spec/`.
+
+### JANGAN Digunakan
+
+- Saat masalah sudah jelas didefinisikan (gunakan `cariak-grinding`).
+- Saat `research-spec.md` sudah ada (gunakan `cariak-grinding` atau `cariak-planning`).
+- Untuk kata kunci "brainstorm" saja — itu memicu `cariak-grinding` (brainstorm menyiratkan penyempurnaan, bukan eksplorasi).
+- Saat pitch-exploration.md sudah ada dan pengguna ingin menyempurnakannya (gunakan `cariak-grinding`).
+
+### Tabel Batasan — Skill Terkait
+
+| Batasan | cariak-pitching | cariak-grinding |
+|---|---|---|
+| Tujuan | Mengeksplorasi ruang masalah | Menentukan pertanyaan riset |
+| Output | Menghasilkan: 2-3 arah riset | Menghasilkan: BDD GWT spec |
+| Format | Tanpa skenario GWT | Spec GWT penuh dengan kriteria penerimaan |
+| Input | Niat pengguna + konteks proyek | pitch-exploration.md (dari pitching) |
+
+| Batasan | cariak-pitching | cariak-advising |
+|---|---|---|
+| Tujuan | Memiliki alur diverge→converge | Memberikan konsultasi multi-persona |
+| Invokasi | Pitching memanggil advising di Fase 3 | Advising mengembalikan nasihat; pitching memiliki keputusan konverge |
+
+| Batasan | cariak-pitching | cariak-validating |
+|---|---|---|
+| Tujuan | Eksplorasi pra-riset | Falsifikasi pasca-sintesis |
+| Tahap | Sebelum riset dimulai | Setelah sintesis selesai |
+
+### Hard Gates
+
+**GATE 0: PREFLIGHT HARUS SELESAI SEBELUM MENYAPA PENGGUNA**
+
+Sebelum interaksi pengguna apa pun, secara diam-diam:
+1. Pindai direktori proyek untuk direktori `docs/cariak/spec/` yang ada.
+2. Kueri memory MCP untuk entitas `ResearchProject` yang ada terkait topik.
+3. Muat `references/brainstorming-methods.csv` secara diam-diam.
+4. Muat `references/advisor-personas.csv` secara diam-diam.
+5. Muat `templates/pitch-brief-template.md` secara diam-diam.
+
+TIDAK ADA OUTPUT sampai preflight selesai. Jika preflight gagal (file hilang), catat file yang hilang dan lanjutkan dengan konteks yang tersedia. Jangan blokir pengguna karena file referensi hilang — lakukan degradasi graceful.
+
+**GATE 1: TIDAK ADA DIVERGEN TANPA KONFIRMASI MASALAH**
+
+Fase 1 (Clarify) berakhir dengan pengguna secara eksplisit mengonfirmasi pernyataan masalah. Diam atau persetujuan samar ("ya", "kira-kira") BUKAN konfirmasi. Pengguna harus menyatakan ulang atau secara eksplisit setuju dengan pernyataan masalah dengan kata-kata mereka sendiri. Jika pengguna tidak dapat mengartikulasikan masalahnya, kembali ke pertanyaan klarifikasi.
+
+**GATE 2: PANGGILAN ADVISOR WAJIB DI FASE 3**
+
+Langkah konsultasi advisor tidak opsional. Di Fase 3:
+1. Output SEMUA hasil metode brainstorming ke percakapan PERTAMA.
+2. KEMUDIAN panggil skill `cariak-advising` (atau tool `advisor()`) dengan hasil metode.
+3. Gunakan persona yang dipilih dari `advisor-personas.csv`.
+4. Jangan lewati langkah ini. Bahkan jika masalah terlihat jelas, konsultasi advisor mengungkap titik buta.
+
+**GATE 3: PENGGUNA HARUS MENYETUJUI PITCH BRIEF**
+
+Sebelum memanggil `cariak-grinding`, sajikan pitch-exploration.md lengkap ke pengguna dan tanyakan: "Setujui pitch ini? (ya / modifikasi / tolak)". Tidak ada handoff ke grinding tanpa persetujuan eksplisit.
+
+### Fase 0: Preflight
+
+**Tujuan:** Mengumpulkan konteks secara diam-diam sebelum berinteraksi dengan pengguna.
+
+1. **Pindai konteks proyek:**
+   - Cek `docs/cariak/spec/` untuk pitch doc yang ada.
+   - Jika slug ada, identifikasi dan catat pekerjaan sebelumnya.
+2. **Cek memory MCP:**
+   - `memory_search_nodes(query="{topik_proyek}")` untuk entitas `ResearchProject` yang ada.
+   - Jika ditemukan, muat graf entitas (artifacts, insights, decisions, gaps).
+3. **Muat file referensi secara diam-diam:**
+   - `references/brainstorming-methods.csv` — enumerasi metode yang tersedia.
+   - `references/advisor-personas.csv` — enumerasi persona yang tersedia.
+   - `templates/pitch-brief-template.md` — muat format pitch doc.
+
+**Output:** Hanya konteks internal. Tidak ada output ke pengguna sampai sapaan.
+
+**Cek Gate 0:** Preflight selesai? Jika ya → lanjut ke sapaan.
+
+### Fase 1: Clarify (Gate 0)
+
+**Tujuan:** Memahami niat, scope, audiens, kedalaman, dan routing dokumen pengguna sebelum divergen.
+
+Ajukan pertanyaan klarifikasi SATU PER SATU (pola Three Amigos — satu pertanyaan, tunggu jawaban, lalu berikutnya):
+
+1. **Niat:** "Apa yang ingin Anda pahami atau putuskan?"
+2. **Scope:** "Apa yang masuk scope dan apa yang secara eksplisit di luar scope?"
+3. **Audiens:** "Siapa yang akan membaca output riset final?"
+4. **Kedalaman:** "Seberapa dalam ini harus dilakukan — gambaran umum, moderat, atau ekshaustif?"
+5. **Routing dokumen:** "Dokumen output apa yang Anda butuhkan? (laporan, brief, slide, data?)"
+
+Setelah semua jawaban, sintesiskan **pernyataan masalah** dan sajikan:
+
+```
+## Pernyataan Masalah (Draft)
+
+[Pernyataan masalah 1-2 kalimat]
+
+Dalam scope: ...
+Di luar scope: ...
+Audiens: ...
+Kedalaman: ...
+Dokumen output: ...
+```
+
+**Cek Gate 1:** Tanyakan: "Apakah pernyataan masalah ini menangkap niat Anda? Silakan konfirmasi atau koreksi." Tunggu konfirmasi eksplisit. Jika pengguna mengatakan "ya" tanpa keterlibatan, tanyakan: "Bisakah Anda menyatakan ulang masalah dengan kata-kata Anda sendiri?" untuk verifikasi.
+
+### Fase 2: Divergen Masalah
+
+**Tujuan:** Mengeksplorasi ruang masalah menggunakan metode brainstorming terstruktur.
+
+1. **Pilih 3-5 metode** dari `brainstorming-methods.csv` berdasarkan tipe masalah:
+   - Jika masalah tentang *memahami fenomena* → pilih metode eksploratori.
+   - Jika masalah tentang *membuat keputusan* → pilih metode strukturasi keputusan.
+   - Jika masalah tentang *mencari peluang* → pilih metode generatif.
+   - Jika masalah tentang *risiko/kelayakan* → pilih metode kritis.
+2. **Jalankan setiap metode** dan output hasil ke percakapan:
+
+Untuk setiap metode:
+```
+### Metode: [nama metode]
+**Sumber:** brainstorming-methods.csv, baris [N]
+**Output:**
+[Output spesifik metode — pertanyaan, sudut, variabel, skenario]
+```
+
+3. **Kumpulkan semua output** — jangan filter dulu. Divergensi berarti volume.
+
+**Output:** Semua hasil metode terlihat di percakapan. JANGAN lanjut ke Fase 3 sampai semua metode dioutput.
+
+### Fase 3: Konsultasi Advisor
+
+**Tujuan:** Mendapatkan perspektif multi-persona pada output divergen sebelum konvergen.
+
+1. **Pilih 3-5 persona** dari `advisor-personas.csv` berdasarkan tipe masalah:
+   - Selalu sertakan setidaknya satu persona skeptis/kritis.
+   - Selalu sertakan setidaknya satu ahli domain.
+   - Variasikan sisanya berdasarkan sifat masalah.
+2. **Panggil skill `cariak-advising` (atau tool `advisor()`)** dengan:
+   - Pernyataan masalah (dari Fase 1).
+   - Semua output metode brainstorming (dari Fase 2).
+   - Persona yang dipilih.
+3. **Terima nasihat** — setiap persona memberikan:
+   - Titik buta yang diidentifikasi.
+   - Arah yang layak dieksplorasi.
+   - Arah yang layak dijatuhkan.
+   - Pertanyaan yang terlewat dari eksplorasi.
+
+**Cek Gate 2:** Panggilan advisor dieksekusi? Semua hasil metode dioutput ke percakapan SEBELUM panggilan? Jika tidak → berhenti dan selesaikan gate.
+
+**Output:** Nasihat advisor disintesis dan disajikan.
+
+### Fase 4: Konvergen
+
+**Tujuan:** Mensintesiskan output divergen + nasihat advisor menjadi 2-3 arah riset.
+
+Untuk setiap arah riset:
+
+```
+### Arah [N]: [Nama Arah]
+
+**Sudut masalah:** [aspek masalah mana yang diaddress ini]
+**Pertanyaan riset (draft):** [pertanyaan yang akan digiling arah ini]
+**Tradeoff:**
+- Pro: [apa yang diperoleh arah ini]
+- Kontra: [apa yang dikorbankan arah ini]
+- Risiko: [apa yang bisa salah]
+**Dukungan advisor:** [persona mana yang mendukung, mana yang menolak]
+**Metode sumber:** [metode brainstorming mana yang menghasilkan ini]
+```
+
+Hasilkan tepat 2-3 arah. Bukan 1 (terlalu sempit), bukan 5+ (terlalu divergen).
+
+**Output:** 2-3 arah riset dengan tradeoff.
+
+### Fase 5: Dokumen Pitch
+
+**Tujuan:** Menulis dokumen eksplorasi pitch.
+
+Muat `templates/pitch-brief-template.md` dan tulis ke:
+
+```
+docs/cariak/spec/YYYY-MM-DD-[kebab-slug]/pitch-exploration.md
+```
+
+**Struktur:**
+
+```markdown
+# Eksplorasi Pitch: [Topik]
+
+**Tanggal:** YYYY-MM-DD
+**Slug:** [kebab-slug]
+**Status:** Pitch
+**Penulis:** CariaK + [nama pengguna]
+
+## Pernyataan Masalah
+[Pernyataan masalah yang dikonfirmasi dari Fase 1]
+
+## Scope
+- Dalam scope: ...
+- Di luar scope: ...
+
+## Audiens & Kedalaman
+- Audiens: ...
+- Kedalaman: ...
+
+## Metode Brainstorming yang Digunakan
+| Metode | Tujuan | Output Kunci |
+|---|---|---|
+| [metode 1] | ... | ... |
+| [metode 2] | ... | ... |
+
+## Ringkasan Nasihat Advisor
+[Sintesis perspektif persona]
+
+## Arah Riset
+
+### Arah 1: [nama]
+[Arah lengkap dengan tradeoff]
+
+### Arah 2: [nama]
+[Arah lengkap dengan tradeoff]
+
+### Arah 3: [nama] (jika ada)
+[Arah lengkap dengan tradeoff]
+
+## Rencana Dokumen Output
+- [ ] [doc 1]
+- [ ] [doc 2]
+
+## Handoff
+Berikutnya: cariak-grinding (sempurnakan arah menjadi research-spec.md)
+```
+
+**Cek Gate 3:** Sajikan path pitch doc ke pengguna. Tanyakan: "Setujui pitch ini? (ya / modifikasi / tolak)". Tunggu persetujuan eksplisit.
+
+### Fase 6: Handoff
+
+**Tujuan:** Sajikan menu 3 opsi dan serahkan.
+
+```
+Eksplorasi pitch ditulis ke: docs/cariak/spec/[slug]/pitch-exploration.md
+
+Selanjutnya apa?
+1. **Giling arah** — Panggil cariak-grinding untuk menyempurnakan arah menjadi BDD spec
+2. **Iterasi** — Modifikasi pitch (tambah/hapus arah, sesuaikan scope, jalankan ulang advisor)
+3. **Simpan dan berhenti** — Pitch disimpan; lanjut nanti dengan "cariak resume [slug]"
+```
+
+- Jika opsi 1 → tanyakan arah mana yang akan digiling → panggil `cariak-grinding` dengan arah yang dipilih.
+- Jika opsi 2 → kembali ke Fase 2 (divergen ulang) atau Fase 4 (konvergen ulang) berdasarkan permintaan pengguna.
+- Jika opsi 3 → panggil `cariak-remembering` untuk menyimpan state sesi.
+
+### Pemicu Referensi
+
+| Referensi | Kapan Dimuat |
+|---|---|
+| `references/brainstorming-methods.csv` | Fase 2: pilih metode untuk divergen |
+| `references/advisor-personas.csv` | Fase 3: pilih persona untuk konsultasi |
+| `templates/pitch-brief-template.md` | Fase 5: format pitch doc |
+| `docs/cariak/spec/YYYY-MM-DD-slug/pitch-exploration.md` | Fase 5: path output |
+| Memory MCP | Fase 0: muat konteks proyek yang ada |
+
+### Output
+
+```
+docs/cariak/spec/YYYY-MM-DD-[kebab-slug]/
+  └── pitch-exploration.md     ← OUTPUT SKILL INI
+```
+
+### Handoff
+
+Menu 3 opsi eksplisit (lihat Fase 6). Tidak ada auto-invoke diam-diam. Pengguna harus memilih.
