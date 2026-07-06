@@ -378,9 +378,10 @@ This requires human judgment:
 
 | Trigger | Location | Used in Phase |
 |---|---|---|
-| `quality-thresholds.yaml` | `/references/` | Phase 5 (Decision) |
-| `reflection-template.md` | `/templates/` | Phase 6 (Write Report) |
-| `coverage-matrix.csv` | `/references/` | Phase 2 (Coverage) |
+| `references/quality-thresholds.yaml` | references/ | Phase 5 (Decision) |
+| `references/reflection-template.md` | references/ | Phase 6 (Write Report) |
+| `references/coverage-matrix.csv` | references/ | Phase 2 (Coverage) |
+| `references/clear-questions.md` | references/ | Phase 1 (Question Review) |
 | `research-spec.md` | `docs/cariak/spec/` | Phase 1 (Load) |
 | `research-report.md` | `docs/cariak/synthesized/` | Phase 1 (Load) |
 | `validation-report.md` | `docs/cariak/synthesized/` | Phase 1 (Load) |
@@ -775,9 +776,10 @@ Ini membutuhkan keputusan manusia:
 
 | Trigger | Lokasi | Digunakan di Phase |
 |---|---|---|
-| `quality-thresholds.yaml` | `/references/` | Phase 5 (Keputusan) |
-| `reflection-template.md` | `/templates/` | Phase 6 (Tulis Laporan) |
-| `coverage-matrix.csv` | `/references/` | Phase 2 (Cakupan) |
+| `references/quality-thresholds.yaml` | references/ | Phase 5 (Keputusan) |
+| `references/reflection-template.md` | references/ | Phase 6 (Tulis Laporan) |
+| `references/coverage-matrix.csv` | references/ | Phase 2 (Cakupan) |
+| `references/clear-questions.md` | references/ | Phase 1 (Tinjauan Pertanyaan) |
 | `research-spec.md` | `docs/cariak/spec/` | Phase 1 (Muat) |
 | `research-report.md` | `docs/cariak/synthesized/` | Phase 1 (Muat) |
 | `validation-report.md` | `docs/cariak/synthesized/` | Phase 1 (Muat) |

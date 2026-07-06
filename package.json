@@ -1,6 +1,6 @@
 {
   "name": "cariak",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Cariak — Open-Source Deep Research Agent. Multi-source research (internet, social, academic, news, market) with Pocketto-inspired skill pipeline. Bilingual ID+EN.",
   "keywords": [
     "skill",

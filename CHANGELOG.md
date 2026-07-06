@@ -17,6 +17,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.0] - 2026-07-06
+### Added
+- `.skill` bundle builder (`npx cariak-pi bundle`) — package skills into distributable ZIP archives
+- Codex plugin manifest (`.codex-plugin/codex.json`)
+- Cursor plugin manifest (`.cursor-plugin/cursor.json`)
+- Per-skill `references/` directories with copies of shared references
+### Changed
+- Bumped version to 1.2.0
+
 ## [1.1.0] - 2026-07-06
 
 ### Added

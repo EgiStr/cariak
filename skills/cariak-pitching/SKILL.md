@@ -57,7 +57,7 @@ Before any user interaction, silently:
 2. Query memory MCP for existing `ResearchProject` entities related to the topic.
 3. Load `references/brainstorming-methods.csv` silently.
 4. Load `references/advisor-personas.csv` silently.
-5. Load `templates/pitch-brief-template.md` silently.
+5. Load `references/pitch-brief-template.md` silently.
 
 NO OUTPUT until preflight is complete. If preflight fails (files missing), note the missing files and proceed with available context. Do not block the user on missing reference files — degrade gracefully.
 
@@ -90,7 +90,7 @@ Before invoking `cariak-grinding`, present the complete pitch-exploration.md to 
 3. **Load reference files silently:**
    - `references/brainstorming-methods.csv` — enumerate available methods.
    - `references/advisor-personas.csv` — enumerate available personas.
-   - `templates/pitch-brief-template.md` — load the pitch doc format.
+   - `references/pitch-brief-template.md` — load the pitch doc format.
 
 **Output:** Internal context only. No user output until greeting.
 
@@ -196,7 +196,7 @@ Produce exactly 2-3 directions. Not 1 (too narrow), not 5+ (too divergent).
 
 **Goal:** Write the pitch exploration document.
 
-Load `templates/pitch-brief-template.md` and write to:
+Load `references/pitch-brief-template.md` and write to:
 
 ```
 docs/cariak/spec/YYYY-MM-DD-[kebab-slug]/pitch-exploration.md
@@ -276,7 +276,7 @@ What's next?
 |---|---|
 | `references/brainstorming-methods.csv` | Phase 2: select methods for diverge |
 | `references/advisor-personas.csv` | Phase 3: select personas for counsel |
-| `templates/pitch-brief-template.md` | Phase 5: pitch doc format |
+| `references/pitch-brief-template.md` | Phase 5: pitch doc format |
 | `docs/cariak/spec/YYYY-MM-DD-slug/pitch-exploration.md` | Phase 5: output path |
 | Memory MCP | Phase 0: load existing project context |
 
@@ -343,7 +343,7 @@ Sebelum interaksi pengguna apa pun, secara diam-diam:
 2. Kueri memory MCP untuk entitas `ResearchProject` yang ada terkait topik.
 3. Muat `references/brainstorming-methods.csv` secara diam-diam.
 4. Muat `references/advisor-personas.csv` secara diam-diam.
-5. Muat `templates/pitch-brief-template.md` secara diam-diam.
+5. Muat `references/pitch-brief-template.md` secara diam-diam.
 
 TIDAK ADA OUTPUT sampai preflight selesai. Jika preflight gagal (file hilang), catat file yang hilang dan lanjutkan dengan konteks yang tersedia. Jangan blokir pengguna karena file referensi hilang — lakukan degradasi graceful.
 
@@ -376,7 +376,7 @@ Sebelum memanggil `cariak-grinding`, sajikan pitch-exploration.md lengkap ke pen
 3. **Muat file referensi secara diam-diam:**
    - `references/brainstorming-methods.csv` — enumerasi metode yang tersedia.
    - `references/advisor-personas.csv` — enumerasi persona yang tersedia.
-   - `templates/pitch-brief-template.md` — muat format pitch doc.
+   - `references/pitch-brief-template.md` — muat format pitch doc.
 
 **Output:** Hanya konteks internal. Tidak ada output ke pengguna sampai sapaan.
 
@@ -482,7 +482,7 @@ Hasilkan tepat 2-3 arah. Bukan 1 (terlalu sempit), bukan 5+ (terlalu divergen).
 
 **Tujuan:** Menulis dokumen eksplorasi pitch.
 
-Muat `templates/pitch-brief-template.md` dan tulis ke:
+Muat `references/pitch-brief-template.md` dan tulis ke:
 
 ```
 docs/cariak/spec/YYYY-MM-DD-[kebab-slug]/pitch-exploration.md
@@ -562,7 +562,7 @@ Selanjutnya apa?
 |---|---|
 | `references/brainstorming-methods.csv` | Fase 2: pilih metode untuk divergen |
 | `references/advisor-personas.csv` | Fase 3: pilih persona untuk konsultasi |
-| `templates/pitch-brief-template.md` | Fase 5: format pitch doc |
+| `references/pitch-brief-template.md` | Fase 5: format pitch doc |
 | `docs/cariak/spec/YYYY-MM-DD-slug/pitch-exploration.md` | Fase 5: path output |
 | Memory MCP | Fase 0: muat konteks proyek yang ada |
 

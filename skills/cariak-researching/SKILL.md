@@ -227,7 +227,7 @@ Present the user with the handoff menu:
 
 | Trigger | Location | Purpose |
 |---|---|---|
-| `source-taxonomy.csv` | Phase 1 | Determines allowed sources per sub-agent |
+| `references/source-taxonomy.csv` | Phase 1 | Determines allowed sources per sub-agent |
 | Sub-agent definitions (`subagents/*.md`) | Phase 2 | Provides tool lists and output formats |
 | `research-plan.md` | Phase 0, 1 | Source of queries and assignments |
 | Memory MCP | Phase 0 | Project context and re-research flags |
@@ -473,7 +473,7 @@ Sajikan menu handoff kepada pengguna:
 
 | Trigger | Lokasi | Tujuan |
 |---|---|---|
-| `source-taxonomy.csv` | Fase 1 | Menentukan sumber yang diizinkan per sub-agen |
+| `references/source-taxonomy.csv` | Fase 1 | Menentukan sumber yang diizinkan per sub-agen |
 | Definisi sub-agen (`subagents/*.md`) | Fase 2 | Menyediakan daftar tool dan format output |
 | `research-plan.md` | Fase 0, 1 | Sumber kueri dan penugasan |
 | Memory MCP | Fase 0 | Konteks proyek dan flag re-research |

@@ -5,6 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const cp = require('child_process');
 
 // ─── helpers ──────────────────────────────────────────────────────────────
 
@@ -401,6 +402,107 @@ function cmdValidate(jsonMode) {
   }
 }
 
+// --- bundle ---
+function cmdBundle(skillName, outputPath, jsonMode) {
+  const skills = skillName
+    ? [skillName]
+    : fs.readdirSync(SKILLS_DIR, { withFileTypes: true })
+        .filter(d => d.isDirectory())
+        .map(d => d.name)
+        .filter(n => exists(path.join(SKILLS_DIR, n, 'SKILL.md')));
+
+  if (skills.length === 0) {
+    const err = { ok: false, error: `Skill "${skillName}" not found` };
+    if (jsonMode) return err;
+    console.error(`Skill "${skillName}" not found.`);
+    process.exitCode = 1;
+    return;
+  }
+
+  const isWin = process.platform === 'win32';
+  const distDir = outputPath || (skillName ? process.cwd() : path.join(ROOT, 'dist'));
+  if (!exists(distDir)) fs.mkdirSync(distDir, { recursive: true });
+
+  const results = {};
+  const errors = [];
+
+  for (const name of skills) {
+    const skillDir = path.join(SKILLS_DIR, name);
+    const skillMd = path.join(skillDir, 'SKILL.md');
+    const refDir = path.join(skillDir, 'references');
+    const outName = name.endsWith('.skill') ? name : `${name}.skill`;
+    const outFile = path.join(distDir, outName);
+
+    // Create temp staging directory
+    const tmpDir = path.join(os.tmpdir(), `cariak-bundle-${name}-${Date.now()}`);
+    try {
+      fs.mkdirSync(tmpDir, { recursive: true });
+
+      // Copy SKILL.md
+      fs.copyFileSync(skillMd, path.join(tmpDir, 'SKILL.md'));
+
+      // Copy references/ if exists
+      if (exists(refDir) && isDir(refDir)) {
+        const refDest = path.join(tmpDir, 'references');
+        fs.mkdirSync(refDest, { recursive: true });
+        copyDirRecursive(refDir, refDest);
+      }
+
+      // .skillkit-mode marker
+      fs.writeFileSync(path.join(tmpDir, '.skillkit-mode'), 'full\n', 'utf8');
+
+      // Create zip using system command
+      const zipPath = path.join(tmpDir, `${name}.zip`);
+      if (isWin) {
+        cp.execSync(
+          `powershell -NoProfile -Command "Compress-Archive -Path '${tmpDir}\\*' -DestinationPath '${zipPath}' -Force"`,
+          { stdio: 'pipe' }
+        );
+      } else {
+        cp.execSync(`cd "${tmpDir}" && zip -r "${zipPath}" .`, { stdio: 'pipe' });
+      }
+
+      // Move zip to final .skill file (use copy+delete for cross-device safety)
+      if (exists(outFile)) fs.unlinkSync(outFile);
+      fs.copyFileSync(zipPath, outFile);
+      fs.unlinkSync(zipPath);
+
+      results[name] = 'ok';
+      if (!jsonMode) console.log(`  [ok] ${outFile}`);
+    } catch (err) {
+      results[name] = 'failed';
+      errors.push({ skill: name, error: err.message });
+      if (!jsonMode) console.log(`  [failed] ${name}: ${err.message}`);
+    } finally {
+      // Cleanup temp
+      try { fs.rmSync(tmpDir, { recursive: true, force: true }); } catch {}
+    }
+  }
+
+  if (jsonMode) {
+    return { ok: errors.length === 0, results, errors };
+  }
+
+  if (errors.length > 0) {
+    console.log(`\n${errors.length} skill(s) failed to bundle.`);
+    process.exitCode = 1;
+  }
+}
+
+function copyDirRecursive(src, dest) {
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      fs.mkdirSync(destPath, { recursive: true });
+      copyDirRecursive(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
 // --- version ---
 function cmdVersion() {
   console.log(`cariak-pi v${readVersion()}`);
@@ -417,6 +519,7 @@ function cmdHelp() {
     '  setup [--agent <name>]             Link skills to AI agents (default: all)',
     '  doctor [--strict]                  Verify Cariak environment',
     '  validate                           Validate project files (CSV, frontmatter, templates)',
+    '  bundle [skill-name] [--output <dir>]  Package skill(s) into .skill ZIP archives',
     '  version                            Print version',
     '  help                               Show this help',
     '',
@@ -441,6 +544,7 @@ function main() {
   let jsonMode = false;
   let strictMode = false;
   let agentTarget = '';
+  let outputPath = '';
 
   // Parse flags
   for (let i = 0; i < argv.length; i++) {
@@ -449,6 +553,11 @@ function main() {
     if (a === '--strict') { strictMode = true; continue; }
     if (a === '--agent' && i + 1 < argv.length) {
       agentTarget = argv[i + 1];
+      i++;
+      continue;
+    }
+    if (a === '--output' && i + 1 < argv.length) {
+      outputPath = argv[i + 1];
       i++;
       continue;
     }
@@ -473,6 +582,11 @@ function main() {
     }
     case 'validate': {
       const result = cmdValidate(jsonMode);
+      if (jsonMode && result) console.log(JSON.stringify(result));
+      break;
+    }
+    case 'bundle': {
+      const result = cmdBundle(cmdArgs[0] || '', outputPath, jsonMode);
       if (jsonMode && result) console.log(JSON.stringify(result));
       break;
     }

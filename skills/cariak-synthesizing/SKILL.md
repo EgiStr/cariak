@@ -278,6 +278,7 @@ Each RQ gets its own confidence score based on:
 | Reference File | Phase | Purpose |
 |---|---|---|
 | `references/citation-standards.csv` | Phase 4, 5 | Citation format per source type |
+| `references/synthesis-template.md` | Phase 2, 3 | Structure for synthesized findings |
 | `research-spec.md` | Phase 0, 1 | Recover RQs to map findings |
 | 5 findings files | Phase 1 | Source claims and citations |
 | Memory MCP | Phase 0, 7 | Project context and artifact storage |
@@ -426,6 +427,7 @@ Tulis ke: `docs/cariak/synthesized/YYYY-MM-DD-slug/references.json`
 | File Referensi | Fase | Tujuan |
 |---|---|---|
 | `references/citation-standards.csv` | Fase 4, 5 | Format kutipan per tipe sumber |
+| `references/synthesis-template.md` | Fase 2, 3 | Struktur untuk temuan yang disintesis |
 | `research-spec.md` | Fase 0, 1 | Pulihkan RQ untuk petakan temuan |
 | 5 file temuan | Fase 1 | Klaim sumber dan kutipan |
 | Memory MCP | Fase 0, 7 | Konteks proyek dan penyimpanan artifact |
