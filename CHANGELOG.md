@@ -18,16 +18,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 ## [1.3.0] - 2026-07-06
-### Changed
-- Primary output format changed from .md to .docx (professional-grade)
-- cariak-synthesizing generates DOCX via `npx cariak-pi report`
-- .md templates retained as fallback only
+
 ### Added
-- `npx cariak-pi report` CLI command for DOCX generation
-- Support for 13 document templates in DOCX format
-- `templates/README.md` documenting dual-format template system
+- **Dialectic advisor at every phase** — 7 independent advisor personas challenge every pipeline output (THESIS → ANTITHESIS → SYNTHESIS)
+- **7 advisor persona sub-agents**: Devil's Advocate, Methodologist + Skeptic, System Architect, Domain Expert (×5 rotated), Contradiction Hunter, Falsificationist (Popper-style), Blind Spot Auditor
+- `references/advisor-phase-mapping.csv` — complete persona rotation table with challenge questions and output contracts
+- `advisor_phase` observations on `ResearchSession` memory entities — full audit trail of every advisor challenge
+- `advisors/` directory with 7 SKILL.md files, one per advisor persona
+- `npx cariak-pi report` CLI command for DOCX generation with template routing
+- Planning phase artifact: `research-plan.md` is now properly generated and documented
+- Anti-bias architecture documentation — explains why self-critique fails and how independent sub-agents prevent confirmation bias
+- `"Why This Architecture?"` section in README explaining the dialectic approach
+- `"Core Philosophy"` / `"Filosofi Inti"` section in English and Indonesian READMEs
+
+### Changed
+- **Pipeline redesigned**: Former `advising` skill merged into dialectic advisor architecture. Advisor personas now run as independent sub-agents at every phase (Pitching, Grinding, Planning, Researching, Synthesizing, Validating, Reflecting), not as a single standalone phase.
+- **Primary output format**: DOCX (professional-grade) via `npx cariak-pi report --template research-report`. MD format retained as fallback via `--format md`.
+- Skill count updated from 9 to 8 (advising absorbed into advisor gates)
+- Pipeline diagrams updated in all documentation to show advisor gates at each phase
+- Skill Reference tables now include "Key Advisor" / "Advisor Kunci" column
+- **ARCHITECTURE.md** major update: added full "Dialectic Advisor Pattern" section, advisor persona rotation table, updated memory model with ResearchSession and AdvisorPhase entities, updated document generation flow to show DOCX primary path
+- **llms.txt** updated: version, pipeline with advisors, DOCX output format, install commands for v1.3.0
+- Banner badges and all version references updated from v1.1.0 / v1.2.0 to v1.3.0
+- Output documents table: all entries updated to show `.docx` as primary, `.md` as fallback
+- Example session in READMEs expanded to show advisor interactions at every phase
+
 ### Fixed
 - Planning phase now properly documented with research-plan.md artifact
+- Test fixes across the pipeline for advisor gate integration
+
+---
 
 ## [1.2.0] - 2026-07-06
 ### Added
@@ -73,4 +93,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Summary |
 |---|---|---|
+| 1.3.0 | 2026-07-06 | Dialectic advisor architecture — 7 personas challenge every phase. DOCX primary output. Anti-bias by design. |
+| 1.2.0 | 2026-07-06 | Bundle builder, Codex/Cursor plugin manifests, per-skill reference directories |
 | 1.1.0 | 2026-07-06 | Initial public release with 9 skills, 5 sub-agents, 14 document outputs |

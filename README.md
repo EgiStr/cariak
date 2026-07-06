@@ -2,11 +2,39 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![OpenCode Skill](https://img.shields.io/badge/OpenCode-Skill-blue.svg)](https://github.com/sst/opencode)
-[![Version](https://img.shields.io/badge/version-v1.1.0-green.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-v1.3.0-green.svg)](CHANGELOG.md)
 [![Bilingual](https://img.shields.io/badge/language-ID%20%2B%20EN-orange.svg)](README.id.md)
 
 > **Iron Law: NO CLAIM WITHOUT SOURCE.**
 > Setiap klaim harus bersumber. Every claim must be sourced.
+
+---
+
+## Core Philosophy
+
+Cariak is built on the dialectic method: every output at every phase is challenged by an independent advisor persona before advancing.
+
+```
+THESIS → ANTITHESIS → SYNTHESIS
+```
+
+- **Thesis**: the current phase produces an output (brainstorm, plan, synthesis, claim)
+- **Antithesis**: an independent advisor sub-agent challenges that output — hunting blind spots, untested assumptions, contradictions, and missing evidence
+- **Synthesis**: the phase output is revised incorporating the advisor's challenge, and only then proceeds to the next phase
+
+This is not self-critique. Self-critique is susceptible to confirmation bias — a system cannot reliably detect its own blind spots. Cariak solves this by spawning **7 different advisor personas** as independent sub-agents, each specialized for the challenge at a specific phase:
+
+| Phase | Advisor Persona | Challenge |
+|---|---|---|
+| Pitching | Devil's Advocate | "What blind spots? What untested assumptions?" |
+| Grinding | Methodologist + Skeptic | "Are GWT scenarios truly testable? What edge cases are missing?" |
+| Planning | System Architect | "Are tasks truly independent? Hidden dependencies?" |
+| Researching | Domain Expert (×5, rotated) | "Is this finding biased? What sources contradict it?" |
+| Synthesizing | Contradiction Hunter | "Where do sources disagree? What's being cherry-picked?" |
+| Validating | Falsificationist (Popper-style) | "How would you PROVE each claim wrong?" |
+| Reflecting | Blind Spot Auditor | "What did we NOT research? What's the weakest finding?" |
+
+Every advisor challenge is recorded in `advisor-phase-mapping.csv` and is mandatory — no phase advances without passing its advisor gate.
 
 ---
 
@@ -22,10 +50,13 @@ Cariak is **bilingual** — it operates in both Indonesian (Bahasa Indonesia) an
 
 ## Features
 
-- **9 Skills** — a complete research pipeline: pitching → grinding → advising → planning → researching → synthesizing → validating → reflecting → remembering
+- **9 Skills** — a complete research pipeline: pitching → grinding → planning → researching → synthesizing → validating → reflecting → remembering
+- **Dialectic advisor at every phase** — 7 different advisor personas challenge every output; no self-critique, all challenges via independent sub-agents
+- **Anti-bias architecture** — every output is challenged before advancing; the Falsificationist tries to prove claims wrong; the Contradiction Hunter finds cherry-picking; the Blind Spot Auditor finds what you missed
 - **5 Parallel Research Sub-agents** — internet, social, academic, news, and market researchers run concurrently, each with specialized source domains and MCP tools
+- **DOCX primary output** — professional-grade `.docx` documents with formatting, headers, and tables via `npx cariak-pi report`; `.md` as fallback
 - **12 On-Demand Document Outputs** — PRD, tech-spec, ADR, competitive-analysis, risk-register, literature-review, experiment-design, feasibility-study, implementation-roadmap, research-proposal, technical-report, recommendation-report
-- **2 Always-On Outputs** — `research-report.md` (the main synthesis) and `references.json` (structured citation graph) are produced on every run
+- **2 Always-On Outputs** — `research-report.docx` (the main synthesis, primary) / `research-report.md` (fallback) and `references.json` (structured citation graph) are produced on every run
 - **Multi-Session Memory** — persists entities, relations, and observations across sessions via the Memory MCP, enabling cumulative research
 - **Auto-Reflection Quality Gate** — the `reflecting` skill evaluates every output against confidence, source coverage, and bias criteria before release
 - **Bilingual (Indonesian + English)** — every skill, prompt, and output template supports both languages
@@ -42,7 +73,7 @@ Inspired by [Pocketto](https://github.com/rfxlamia/pocketto) — a skill-based a
 | Skill = single responsibility | 9 research skills, each with one job |
 | Hard Gates | Clarify Gate (pitching), Quality Gate (reflecting), Validation Gate (validating) |
 | Phase pipelines | Sequential skill flow with mandatory outputs per phase |
-| LLM-to-LLM advisor curation | `advising` skill generates expert personas that review the research plan |
+| LLM-to-LLM advisor curation | Dialectic advisor at every phase — 7 personas challenge every output |
 
 ---
 
@@ -104,17 +135,22 @@ Cariak: [pitching] Clarifying research intent...
         → Research question confirmed: "Is migrating from REST to GraphQL feasible for our team?"
         → Output language: English
 
+Cariak: [advisor: Devil's Advocate] Challenging the question...
+        → "Are you asking about migration feasibility, or about whether GraphQL is right at all?"
+        → Thesis refined with advisor input
+
 Cariak: [grinding] Decomposing into research streams...
         → Stream 1: Technical feasibility (schema design, N+1, auth)
         → Stream 2: Team capability (learning curve, hiring)
         → Stream 3: Performance benchmarks (REST vs GraphQL)
 
-Cariak: [advising] Generating expert personas...
-        → Senior Backend Architect
-        → DevOps Lead
-        → API Product Manager
+Cariak: [advisor: Methodologist] Challenging the streams...
+        → "Are performance benchmarks testable? What baseline are you comparing against?"
 
 Cariak: [planning] Building research plan with advisor input...
+
+Cariak: [advisor: System Architect] Challenging the plan...
+        → "Tasks 3 and 5 have a hidden dependency. Team capability research must complete before benchmarking."
 
 Cariak: [researching] Launching 5 parallel sub-agents...
         → internet:  searching web articles, blog posts
@@ -123,112 +159,141 @@ Cariak: [researching] Launching 5 parallel sub-agents...
         → news:      searching tech news, announcements
         → market:    searching competitor APIs, market reports
 
+Cariak: [advisor: Domain Expert ×5] Challenging each sub-agent finding...
+        → "This GraphQL performance claim has no counter-evidence. Rejected."
+        → "This HN thread represents one opinion. Need 2 more sources."
+
 Cariak: [synthesizing] Merging 5 research streams...
         → 47 sources collected
         → 3 confidence tiers assigned (High / Medium / Low)
 
+Cariak: [advisor: Contradiction Hunter] Challenging the synthesis...
+        → "Sources A and D directly contradict. Cherry-picking detected on claim #7."
+
 Cariak: [validating] Checking Iron Law compliance...
         → 0 unsourced claims ✓
         → 2 low-confidence claims flagged
+
+Cariak: [advisor: Falsificationist] Attempting to falsify claims...
+        → "Claim #3: 'GraphQL reduces over-fetching' — would fail if any REST API uses sparse fieldsets."
 
 Cariak: [reflecting] Quality gate evaluation...
         → Source coverage:    PASS (4+ sources per major claim)
         → Bias check:         PASS (multiple perspectives)
         → Confidence grading: PASS (appropriate hedging)
 
-Cariak: [remembering] Persisting to memory...
-        → 12 entities, 8 relations saved
+Cariak: [advisor: Blind Spot Auditor] Final challenge...
+        → "You didn't research GraphQL federation or schema stitching patterns."
 
-✅ Output: docs/cariak/feasibility-study.md
-✅ Output: docs/cariak/research-report.md
+Cariak: [remembering] Persisting to memory...
+        → 15 entities, 12 relations saved
+
+✅ Output: docs/cariak/feasibility-study.docx
+✅ Output: docs/cariak/research-report.docx
 ✅ Output: docs/cariak/references.json
+```
+
+### DOCX Generation
+
+Cariak v1.3.0 generates professional `.docx` documents as primary output. The legacy `.md` format is retained as fallback.
+
+```bash
+# Primary: generate DOCX report
+npx cariak-pi report --template research-report
+
+# Fallback: generate MD report
+npx cariak-pi report --template research-report --format md
 ```
 
 ---
 
 ## Pipeline
 
-The 9 skills form a sequential pipeline. Each skill must complete and pass its Hard Gate before the next begins.
+The 9 skills form a sequential pipeline with advisor gates at every phase. Each skill must complete and pass its Hard Gate before the next begins.
 
 ```
- ┌──────────┐
- │ PITCHING │  Clarify research intent with the user
- │  (gate)  │  → research-question.md
- └────┬─────┘
-      │ Clarify Gate ✓
-      ▼
- ┌──────────┐
- │ GRINDING │  Decompose question into research streams
- └────┬─────┘
-      │
-      ▼
- ┌──────────┐
- │ ADVISING │  Generate expert personas, review plan
- └────┬─────┘
-      │
-      ▼
- ┌──────────┐
- │ PLANNING │  Build detailed research plan
- └────┬─────┘
-      │
-      ▼
- ┌──────────────────────────────────────────────┐
- │              RESEARCHING                      │
- │  ┌───────┐ ┌───────┐ ┌───────┐ ┌───────┐    │
- │  │inter- │ │social │ │acade- │ │ news  │    │
- │  │ net   │ │       │ │ mic   │ │       │    │
- │  └───────┘ └───────┘ └───────┘ └───────┘    │
- │  ┌───────┐                                   │
- │  │market │  ← 5 parallel sub-agents          │
- │  └───────┘                                   │
- └──────────────────┬───────────────────────────┘
-                    │
-                    ▼
- ┌─────────────┐
- │ SYNTHESIZING│  Merge streams, assign confidence
- └──────┬──────┘
-        │
-        ▼
- ┌────────────┐
- │ VALIDATING │  Iron Law check: every claim sourced?
- │  (gate)    │  → unsourced claims rejected
- └──────┬─────┘
-        │ Validation Gate ✓
-        ▼
- ┌─────────────┐
- │ REFLECTING  │  Quality gate: coverage, bias, confidence
- │  (gate)     │  → pass / retry / fail
- └──────┬──────┘
-        │ Quality Gate ✓
-        ▼
- ┌─────────────┐
- │ REMEMBERING │  Persist to Memory MCP
- └──────┬──────┘
-        │
-        ▼
-   ╔═══════════════════════╗
-   ║  OUTPUT DOCUMENTS     ║
-   ║  • research-report.md ║  (always-on)
-   ║  • references.json    ║  (always-on)
-   ║  • + on-demand docs   ║
-   ╚═══════════════════════╝
+ ┌──────────┐   ┌──────────────────────┐
+ │ PITCHING │──→│ advisor: Devil's     │──Clarify Gate──┐
+ │  (gate)  │   │ Advocate             │               │
+ └──────────┘   └──────────────────────┘               │
+      │ THESIS → ANTITHESIS → SYNTHESIS                │
+      ▼                                                 │
+ ┌──────────┐   ┌──────────────────────┐               │
+ │ GRINDING │──→│ advisor: Methodologist│              │
+ │          │   │ + Skeptic            │               │
+ └──────────┘   └──────────────────────┘               │
+      │ THESIS → ANTITHESIS → SYNTHESIS                │
+      ▼                                                 │
+ ┌──────────┐   ┌──────────────────────┐               │
+ │ PLANNING │──→│ advisor: System       │              │
+ │          │   │ Architect            │               │
+ └──────────┘   └──────────────────────┘               │
+      │ THESIS → ANTITHESIS → SYNTHESIS                │
+      ▼                                                 │
+ ┌──────────────────────────────────────┐              │
+ │         RESEARCHING                  │              │
+ │  ┌───────┐ ┌───────┐ ┌───────┐      │              │
+ │  │internet│ │social │ │academic│      │              │
+ │  └───────┘ └───────┘ └───────┘      │              │
+ │  ┌───────┐ ┌───────┐                 │              │
+ │  │ news  │ │market │  ← 5 parallel   │              │
+ │  └───────┘ └───────┘    sub-agents   │              │
+ └──────────────────┬───────────────────┘              │
+      │             │                                  │
+      │  ┌──────────────────────────┐                  │
+      │  │ advisor: Domain Expert   │                  │
+      │  │ ×5 (rotated per topic)   │                  │
+      │  └──────────────────────────┘                  │
+      │ THESIS → ANTITHESIS → SYNTHESIS                │
+      ▼                                                 │
+ ┌─────────────┐ ┌──────────────────────┐             │
+ │ SYNTHESIZING│─→│ advisor: Contradiction│            │
+ │             │  │ Hunter               │             │
+ └──────┬──────┘ └──────────────────────┘             │
+      │ THESIS → ANTITHESIS → SYNTHESIS                │
+      ▼                                                 │
+ ┌────────────┐  ┌──────────────────────┐             │
+ │ VALIDATING │──→│ advisor: Falsification-│           │
+ │  (gate)    │  │ ist (Popper-style)    │            │
+ └──────┬─────┘  └──────────────────────┘             │
+        │ THESIS → ANTITHESIS → SYNTHESIS              │
+        ▼                                                 │
+ ┌─────────────┐ ┌──────────────────────┐              │
+ │ REFLECTING  │─→│ advisor: Blind Spot  │              │
+ │  (gate)     │  │ Auditor             │              │
+ └──────┬──────┘ └──────────────────────┘              │
+        │ THESIS → ANTITHESIS → SYNTHESIS              │
+        ▼                                                 │
+ ┌─────────────┐                                        │
+ │ REMEMBERING │  Persist to Memory MCP                  │
+ └──────┬──────┘                                        │
+        │                                                 │
+        ▼                                                 │
+   ╔═══════════════════════╗                            │
+   ║  OUTPUT DOCUMENTS     ║                            │
+   ║  • research-report    ║  (always-on, DOCX primary) │
+   ║    .docx              ║                            │
+   ║  • references.json    ║  (always-on)               │
+   ║  • + on-demand docs   ║  (DOCX primary, MD fallback)│
+   ╚═══════════════════════╝                            │
 ```
 
 ---
 
 ## Skill Reference
 
-| # | Skill | Trigger | Output | Status |
-|---|---|---|---|---|
-| 1 | **pitching** | User initiates research | `research-question.md` — clarified intent, scope, language | ✅ Stable |
-| 2 | **grinding** | After pitching | `research-streams.md` — decomposed research sub-questions | ✅ Stable |
-| 3 | **advising** | After grinding | `advisor-review.md` — expert personas + plan critique | ✅ Stable |
-| 4 | **planning** | After advising | `research-plan.md` — detailed execution plan | ✅ Stable |
-| 5 | **researching** | After planning | 5× `sub-agent-report.md` — parallel research results | ✅ Stable |
-| 6 | **synthesizing** | After researching | `research-report.md` + on-demand docs — merged synthesis | ✅ Stable |
-| 7 | **validating** | After synthesizing | `validation-report.md` — Iron Law compliance check | ✅ Stable |
-| 8 | **reflecting** | After validating | `reflection-report.md` — quality gate evaluation | ✅ Stable |
-| 9 | **remembering** | After reflecting | Memory MCP entities + relations persisted | ✅ Stable |
+| # | Skill | Key Advisor | Trigger | Output | Status |
+|---|---|---|---|---|---|
+| 1 | **pitching** | Devil's Advocate | User initiates research | `research-question.md` — clarified intent, scope, language | ✅ Stable |
+| 2 | **grinding** | Methodologist + Skeptic | After pitching | `research-streams.md` — decomposed research sub-questions | ✅ Stable |
+| 3 | **planning** | System Architect | After grinding | `research-plan.md` — detailed execution plan | ✅ Stable |
+| 4 | **researching** | Domain Expert (×5) | After planning | 5× `sub-agent-report.md` — parallel research results | ✅ Stable |
+| 5 | **synthesizing** | Contradiction Hunter | After researching | `research-report.docx` + on-demand docs — merged synthesis | ✅ Stable |
+| 6 | **validating** | Falsificationist | After synthesizing | `validation-report.md` — Iron Law compliance check | ✅ Stable |
+| 7 | **reflecting** | Blind Spot Auditor | After validating | `reflection-report.md` — quality gate evaluation | ✅ Stable |
+| 8 | **remembering** | — | After reflecting | Memory MCP entities + relations persisted | ✅ Stable |
+
+> **Note**: v1.3.0 merges the former `advising` skill into the dialectic advisor architecture. Advisor personas now operate as independent sub-agents at every phase rather than as a single phase.
 
 ---
 
@@ -254,26 +319,47 @@ Each sub-agent runs independently and returns a structured report with:
 
 ## Document Outputs
 
-Cariak produces **2 always-on outputs** on every run, plus **12 on-demand outputs** that can be requested:
+**Primary: DOCX (professional-grade), Fallback: MD (plain text)**
+
+Cariak v1.3.0 generates professional `.docx` documents via `npx cariak-pi report`. The legacy `.md` format is retained as fallback via `--format md`.
 
 | # | Document | When | Type |
 |---|---|---|---|
-| 1 | `research-report.md` | Every run | Always-on |
+| 1 | `research-report.docx` / `.md` | Every run | Always-on |
 | 2 | `references.json` | Every run | Always-on |
-| 3 | `prd.md` | On-demand | Product Requirements Document |
-| 4 | `tech-spec.md` | On-demand | Technical Specification |
-| 5 | `adr.md` | On-demand | Architecture Decision Record |
-| 6 | `competitive-analysis.md` | On-demand | Competitive Analysis |
-| 7 | `risk-register.md` | On-demand | Risk Register |
-| 8 | `literature-review.md` | On-demand | Academic Literature Review |
-| 9 | `experiment-design.md` | On-demand | Experiment Design |
-| 10 | `feasibility-study.md` | On-demand | Feasibility Study |
-| 11 | `implementation-roadmap.md` | On-demand | Implementation Roadmap |
-| 12 | `research-proposal.md` | On-demand | Research Proposal |
-| 13 | `technical-report.md` | On-demand | Technical Report |
-| 14 | `recommendation-report.md` | On-demand | Recommendation Report |
+| 3 | `prd.docx` / `.md` | On-demand | Product Requirements Document |
+| 4 | `tech-spec.docx` / `.md` | On-demand | Technical Specification |
+| 5 | `adr.docx` / `.md` | On-demand | Architecture Decision Record |
+| 6 | `competitive-analysis.docx` / `.md` | On-demand | Competitive Analysis |
+| 7 | `risk-register.docx` / `.md` | On-demand | Risk Register |
+| 8 | `literature-review.docx` / `.md` | On-demand | Academic Literature Review |
+| 9 | `experiment-design.docx` / `.md` | On-demand | Experiment Design |
+| 10 | `feasibility-study.docx` / `.md` | On-demand | Feasibility Study |
+| 11 | `implementation-roadmap.docx` / `.md` | On-demand | Implementation Roadmap |
+| 12 | `research-proposal.docx` / `.md` | On-demand | Research Proposal |
+| 13 | `technical-report.docx` / `.md` | On-demand | Technical Report |
+| 14 | `recommendation-report.docx` / `.md` | On-demand | Recommendation Report |
 
 All outputs are written to `docs/cariak/` by default. Every claim in every document includes an inline citation `[n]` that maps to an entry in `references.json`.
+
+---
+
+## Why This Architecture?
+
+Most AI research agents use self-critique: "review your own output for errors." This fails because:
+
+1. **Confirmation bias** — An LLM generating a claim is primed to defend it, not attack it.
+2. **Blind spot persistence** — The same model with the same context has the same blind spots.
+3. **No adversarial pressure** — Without a real adversary, weak claims pass unchallenged.
+
+Cariak's dialectic architecture solves this:
+
+- **Independent sub-agents**: Each advisor persona runs as a separate agent with its own context. It does not share the generating agent's biases.
+- **Persona specialization**: A Methodologist challenges methodology, a Falsificationist tries to prove claims wrong, a Blind Spot Auditor finds gaps — different personas for different failure modes.
+- **Mandatory gates**: No phase advances without passing its advisor challenge. Failed challenges loop back for revision.
+- **Recorded challenges**: Every advisor output is saved to `advisor-phase-mapping.csv`, making the challenge process auditable.
+
+The result: claims survive adversarial scrutiny before they reach the user. This is not "review" — it is thesis, antithesis, synthesis at every step.
 
 ---
 
@@ -298,38 +384,38 @@ Tools:   search_web, fetch_web_page, groq_analyze, search_reddit,
 Academic paper search and full-text extraction across 20+ repositories.
 
 ```
-Sources: arXiv, PubMed, PubMed Central, Semantic Scholar, CrossRef, DOAJ,
-         bioRxiv, medRxiv, IEEE, dblp, HAL, Zenodo, OpenAIRE, CiteSeerX, BASE, SSRN
+Sources: arXiv, PubMed, Semantic Scholar, CrossRef, DOAJ, bioRxiv, medRxiv,
+         PMC, Europe PMC, HAL, Zenodo, BASE, IACR, IEEE, SSRN, OpenAlex,
+         CORE, OpenAIRE, dblp, CiteSeerX, Unpaywall
 Tools:   search_arxiv, search_pubmed, search_semantic, search_crossref,
-         read_arxiv_paper, download_with_fallback, search_papers (unified)
+         search_doaj, search_pmc, search_europepmc, search_biorxiv,
+         search_medrxiv, read_arxiv_paper, read_semantic_paper
 ```
 
 #### 3. tavily
 
-AI-powered web research, site crawling, and content extraction.
+AI-powered deep web research, site crawling, and content extraction.
 
 ```
-Tools:   tavily_search, tavily_research, tavily_crawl, tavily_extract, tavily_map
+Tools:   tavily_search, tavily_crawl, tavily_extract, tavily_map
 ```
 
 #### 4. memory
 
-Persistent knowledge graph for cross-session research memory.
+Persistent entity-relation knowledge graph via Memory MCP.
 
 ```
 Tools:   create_entities, create_relations, add_observations,
          search_nodes, open_nodes, read_graph
-Entity types: ResearchProject, ResearchQuestion, Source, Finding,
-              Claim, Advisor, ConfidenceAssessment
 ```
 
 #### 5. playwright
 
-Browser automation for dynamic, JavaScript-rendered, or login-gated pages.
+Browser automation for dynamic pages, JavaScript-rendered content, and protected sites.
 
 ```
 Tools:   browser_navigate, browser_snapshot, browser_click,
-         browser_type, browser_take_screenshot, browser_evaluate
+         browser_take_screenshot, browser_console_messages
 ```
 
 ---
@@ -338,7 +424,7 @@ Tools:   browser_navigate, browser_snapshot, browser_click,
 
 See real research outputs in the examples directory:
 
-- [`docs/examples/guava-cut-cost/`](docs/examples/guava-cut-cost/) — A complete research run investigating cost-cutting strategies for a guava farming operation. Includes all generated documents: research-report.md, references.json, feasibility-study.md, and sub-agent reports.
+- [`docs/examples/guava-cut-cost/`](docs/examples/guava-cut-cost/) — A complete research run investigating cost-cutting strategies for a guava farming operation. Includes all generated documents: research-report.docx, references.json, feasibility-study.docx, and sub-agent reports.
 
 ---
 
@@ -348,7 +434,7 @@ Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines
 
 - Reporting bugs and suggesting features
 - Adding new skills (follow the Pocketto pattern)
-- Adding new sub-agents
+- Adding new sub-agents or advisor personas
 - Improving reference CSV files (every method must have a source)
 - Bilingual documentation policies
 
@@ -370,6 +456,6 @@ This project is licensed under the MIT License — see [LICENSE](LICENSE) for de
 ---
 
 <p align="center">
-  <strong>Cariak</strong> — Research deep. Cite everything. Remember always.<br>
-  <em>Riset mendalam. Semua bersumber. Selalu diingat.</em>
+  <strong>Cariak v1.3.0</strong> — Research deep. Challenge everything. Cite always.<br>
+  <em>Riset mendalam. Tantang segalanya. Selalu bersumber.</em>
 </p>
