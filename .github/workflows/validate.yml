@@ -1,0 +1,102 @@
+name: Validate Cariak
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-skills:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Validate skills
+        run: npx cariak-pi validate
+
+  validate-csv:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Check CSV files are parseable
+        run: |
+          node -e "
+          const fs = require('fs');
+          const path = require('path');
+          const expectedHeaders = {
+            'skills.csv': ['name', 'description', 'phase', 'permissions', 'file'],
+            'subagents.csv': ['name', 'description', 'phase', 'permissions', 'file'],
+            'references.csv': ['name', 'path', 'type', 'description'],
+          };
+          let errors = [];
+          function walk(dir) {
+            for (const entry of fs.readdirSync(dir, {withFileTypes: true})) {
+              const full = path.join(dir, entry.name);
+              if (entry.isDirectory()) walk(full);
+              else if (entry.name.endsWith('.csv')) {
+                try {
+                  const content = fs.readFileSync(full, 'utf8');
+                  const lines = content.trim().split('\n');
+                  if (lines.length === 0) {
+                    errors.push(full + ': empty file');
+                    continue;
+                  }
+                  const headers = lines[0].split(',').map(h => h.trim());
+                  console.log(full + ': headers=' + headers.join(','));
+                } catch (e) {
+                  errors.push(full + ': ' + e.message);
+                }
+              }
+            }
+          }
+          walk('.');
+          if (errors.length > 0) {
+            console.error('CSV errors:');
+            errors.forEach(e => console.error('  ' + e));
+            process.exit(1);
+          }
+          console.log('All CSV files parseable.');
+          "
+
+  check-frontmatter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate SKILL.md frontmatter
+        run: |
+          errors=0
+          while IFS= read -r -d '' file; do
+            first=$(head -1 "$file")
+            if [ "$first" != "---" ]; then
+              echo "ERROR: $file missing opening --- on line 1 (got: $first)"
+              errors=$((errors + 1))
+              continue
+            fi
+            if ! grep -q '^name:' "$file"; then
+              echo "ERROR: $file missing 'name:' field"
+              errors=$((errors + 1))
+            fi
+            if ! grep -q '^description:' "$file"; then
+              echo "ERROR: $file missing 'description:' field"
+              errors=$((errors + 1))
+            fi
+          done < <(find . -name 'SKILL.md' -print0)
+          if [ $errors -gt 0 ]; then
+            echo "Found $errors frontmatter error(s)"
+            exit 1
+          fi
+          echo "All SKILL.md frontmatter valid."

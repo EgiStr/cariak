@@ -1,0 +1,55 @@
+{
+  "name": "cariak",
+  "version": "1.1.0",
+  "description": "Cariak — Open-Source Deep Research Agent. Multi-source research (internet, social, academic, news, market) with Pocketto-inspired skill pipeline. Bilingual ID+EN.",
+  "keywords": [
+    "skill",
+    "deep-research",
+    "research-agent",
+    "ai-agent",
+    "multi-source",
+    "opencode-skill",
+    "claude-code-skill",
+    "codex-skill",
+    "cariak",
+    "pocketto-inspired"
+  ],
+  "author": {
+    "name": "EgiStr (Eggi Satria)",
+    "url": "https://github.com/EgiStr"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EgiStr/cariak.git"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "skills/**",
+    "!skills/**/__pycache__/**",
+    "subagents/**",
+    "templates/**",
+    "references/**",
+    "cli/**",
+    "assets/**",
+    "docs/examples/**",
+    "llms.txt",
+    "README.md",
+    "README.id.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "CODE_OF_CONDUCT.md"
+  ],
+  "scripts": {
+    "test": "node --test test/skills.test.js",
+    "prepublishOnly": "echo 'Publishing cariak to npm...'"
+  },
+  "bin": {
+    "cariak-pi": "cli/index.js"
+  }
+}

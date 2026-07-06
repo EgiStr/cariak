@@ -1,0 +1,69 @@
+{
+  "name": "cariak",
+  "version": "1.1.0",
+  "description": "Cariak — Open-Source Deep Research Agent. Multi-source research (internet, social, academic, news, market) with Pocketto-inspired skill pipeline.",
+  "author": {
+    "name": "EgiStr (Eggi Satria)",
+    "url": "https://github.com/EgiStr"
+  },
+  "repository": "https://github.com/EgiStr/cariak",
+  "license": "MIT",
+  "keywords": ["deep-research", "research-agent", "multi-source", "pocketto-inspired"],
+  "skills": [
+    {
+      "name": "cariak-pitching",
+      "path": "skills/cariak-pitching",
+      "description": "Pre-research problem exploration — diverge→converge brainstorming"
+    },
+    {
+      "name": "cariak-grinding",
+      "path": "skills/cariak-grinding",
+      "description": "Refine pitch into research spec with BDD GWT research questions"
+    },
+    {
+      "name": "cariak-advising",
+      "path": "skills/cariak-advising",
+      "description": "LLM-to-LLM counsel from 3-5 expert personas before research"
+    },
+    {
+      "name": "cariak-planning",
+      "path": "skills/cariak-planning",
+      "description": "Decompose spec into sub-agent tasks + route output documents"
+    },
+    {
+      "name": "cariak-researching",
+      "path": "skills/cariak-researching",
+      "description": "Dispatch 5 parallel sub-agents to research internet/social/academic/news/market"
+    },
+    {
+      "name": "cariak-synthesizing",
+      "path": "skills/cariak-synthesizing",
+      "description": "Cross-source merge, deduplicate, resolve contradictions, confidence-grade"
+    },
+    {
+      "name": "cariak-validating",
+      "path": "skills/cariak-validating",
+      "description": "Falsification-based claim validation with Iron Laws"
+    },
+    {
+      "name": "cariak-reflecting",
+      "path": "skills/cariak-reflecting",
+      "description": "Auto-reflection quality gate — PASS or RE-RESEARCH loop"
+    },
+    {
+      "name": "cariak-remembering",
+      "path": "skills/cariak-remembering",
+      "description": "Multi-session memory via Memory MCP — 6 entity types"
+    },
+    {
+      "name": "cariak-closing",
+      "path": "skills/cariak-closing",
+      "description": "Terminal pipeline stage — reconcile verdicts, archive, closeout"
+    }
+  ],
+  "commands": {
+    "setup": "npx cariak-pi setup",
+    "doctor": "npx cariak-pi doctor"
+  },
+  "minAppVersion": "1.0.0"
+}

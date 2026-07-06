@@ -1,0 +1,65 @@
+# Cariak v1.1 — Deep Research Agent
+> Multi-source research (internet, social, academic, news, market) with Pocketto-inspired skill pipeline. Bilingual ID+EN.
+
+## Install
+```bash
+npx skills add EgiStr/cariak
+npx cariak-pi setup
+npx cariak-pi doctor
+```
+
+## Pipeline (9 skills)
+cariak-pitching → cariak-grinding → cariak-advising → cariak-planning → cariak-researching → cariak-synthesizing → cariak-validating → cariak-reflecting → cariak-remembering
+
+## Trigger Phrases
+"cariak", "research this", "deep research", "gali ini", "cariak ini", "I want to explore", "teliti ini"
+
+## Hard Gates
+- Clarify Gate (pitching): Problem must be clearly defined before grinding
+- Quality Gate (reflecting): Output must pass confidence/bias/source-coverage checks
+- Validation Gate (validating): Every claim must have a source (Iron Law)
+
+## Sub-agents (5, run in parallel)
+- internet-researcher (web-search-mcp, tavily, playwright)
+- social-researcher (web-search-mcp: Reddit/HN/X)
+- academic-researcher (paper-search-mcp, Semantic Scholar, arXiv)
+- news-researcher (tavily, web-search-mcp: news)
+- market-researcher (tavily, web-search-mcp, playwright)
+
+## Always-On Outputs
+- research-report.md — main synthesis document
+- references.json — structured citation graph
+
+## On-Demand Document Templates (12)
+prd, tech-spec, adr, competitive-analysis, risk-register, literature-review,
+experiment-design, feasibility-study, implementation-roadmap, research-proposal,
+technical-report, recommendation-report
+
+## Required MCP Servers
+web-search-mcp, paper-search-mcp, tavily, fetch, playwright, memory, github, context7
+
+## Reference CSVs (7)
+advisor-personas, brainstorming-methods, citation-standards, coverage-matrix,
+question-frameworks, research-methods, source-taxonomy
+
+## File Structure
+```
+cariak/
+├── skills/         # 9 SKILL.md (pipeline phases)
+├── subagents/      # 5 researcher sub-agents
+├── templates/      # 12 output document templates
+├── references/     # 7 CSV + 5 MD/YAML reference files
+├── cli/            # cariak-pi CLI (setup, doctor, validate)
+├── assets/         # logos, branding
+├── docs/examples/  # example research outputs
+├── package.json    # npm package config
+├── llms.txt        # this file
+├── README.md       # English docs
+└── README.id.md    # Indonesian docs
+```
+
+## Key URLs
+- GitHub: https://github.com/EgiStr/cariak
+- npm: https://www.npmjs.com/package/cariak
+- Issue tracker: https://github.com/EgiStr/cariak/issues
+- Skill registry: npx skills add EgiStr/cariak

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Cariak Discussion
+    url: https://github.com/EgiStr/cariak/discussions
+    about: Ask questions or discuss ideas
+  - name: Cariak Documentation
+    url: https://github.com/EgiStr/cariak#readme
+    about: Read the README first
