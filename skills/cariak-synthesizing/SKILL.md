@@ -15,6 +15,14 @@ description: Resolve multiple research findings into a coherent, cited, confiden
 
 A summary lists what each sub-agent found. A synthesis resolves those findings—reconciling contradictions, deduplicating overlapping sources, filling gaps, and grading confidence—into a single coherent narrative that a reader can trust. If two sub-agents contradict each other, the synthesis must say so explicitly, present both sides, and explain why. Hiding contradictions behind a bland "on the other hand" is forbidden.
 
+### Structural Method
+
+This phase uses:
+- **M07 — Cross-Source Synthesis**: build a cited claim registry, deduplicate evidence, map claims to RQs, resolve contradictions, and compute confidence.
+- **M08 — Expert Technical Report**: for technical topics, produce implementation-ready reporting with first principles, field methods, architecture, roadmap, data strategy, evaluation, failure modes, alternatives, gaps, and recommendation.
+
+Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, and `references/synthesis-template.md` during preflight.
+
 ### When to Use
 
 - `cariak-researching` has produced 5 findings files and handed off
@@ -85,8 +93,9 @@ The Contradiction Hunter + Devil's Advocate advisor challenge (Phase 3.5) is not
 2. Verify all 5 findings files exist (GATE 0)
 3. Load `research-spec.md` to recover research questions
 4. Load `references/citation-standards.csv` for citation format
-5. Create output directory: `docs/cariak/synthesized/YYYY-MM-DD-slug/`
-6. Log synthesis start to Memory MCP
+5. Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, and `references/synthesis-template.md`
+6. Create output directory: `docs/cariak/synthesized/YYYY-MM-DD-slug/`
+7. Log synthesis start to Memory MCP
 
 **Gate 0 check:** All 5 files present? If no → halt.
 
@@ -196,6 +205,9 @@ This is the THESIS → ANTITHESIS step. The cross-referenced, deduplicated claim
 ## Executive Summary
 [2-3 paragraph overview of key findings]
 
+## Problem Framing
+[What decision this research supports, what is in/out of scope, and what success means]
+
 ## Research Questions Answered
 
 ### RQ-1: [Question]
@@ -209,6 +221,47 @@ This is the THESIS → ANTITHESIS step. The cross-referenced, deduplicated claim
 
 ### RQ-2: [Question]
 ...
+
+## Expert Technical Deep Dive (mandatory for technical topics)
+
+### First-Principles Explanation
+[Physical, mathematical, system, or operational mechanism behind the solution]
+
+### State of the Art
+[Methods used in academic literature, mature products, and production engineering]
+
+### Methods Used in the Field
+[What industry/operators actually use, including non-AI or hybrid methods]
+
+### Method Comparison Matrix
+| Method | Accuracy potential | Data need | Cost | Latency | Complexity | Field risk | Best use |
+|---|---:|---:|---:|---:|---:|---|---|
+
+### Recommended Architecture
+[Components, data flow, deployment target, integration points, calibration/monitoring]
+
+### Implementation Roadmap
+| Phase | Goal | Build | Validation | Exit criteria |
+|---|---|---|---|---|
+
+### Data Strategy
+[Datasets, labels, sampling, calibration, quality checks, governance]
+
+### Evaluation Protocol
+[Metrics, baseline, acceptance thresholds, experiment design]
+
+### Failure Modes & Mitigations
+| Failure mode | Cause | Impact | Detection | Mitigation |
+|---|---|---|---|---|
+
+### Alternatives and Build-vs-Buy Options
+[Simpler methods, commercial options, open-source options, hybrid/fallback approach]
+
+### Gaps / Unknowns / Required Experiments
+[What remains unproven and what prototype or field test is needed]
+
+### Final Technical Recommendation
+[Recommended path, what to avoid, when to revisit]
 
 ## Contradictions & Resolutions
 [All contradictions explicitly addressed]
@@ -317,6 +370,8 @@ Each RQ gets its own confidence score based on:
 
 | Reference File | Phase | Purpose |
 |---|---|---|
+| `references/structural-research-methods.csv` | Phase 0, 4 | Method registry for M07/M08 |
+| `references/structural-research-methods.md` | Phase 0, 4 | Expert Technical Report structure and quality bar |
 | `references/citation-standards.csv` | Phase 4, 5 | Citation format per source type |
 | `references/synthesis-template.md` | Phase 2, 3 | Structure for synthesized findings |
 | `research-spec.md` | Phase 0, 1 | Recover RQs to map findings |

@@ -47,6 +47,7 @@ Before any decomposition begins, verify:
 2. The spec contains at least one `### RQ-N: [Question]` block with GWT format.
 3. The spec has a `## Scope` section.
 4. The spec has a `## Success Metrics` section.
+5. If the topic is technical, scientific, ML, data, hardware, infrastructure, product, or implementation-heavy, the spec has a `## Engineering Lens` section.
 
 If ANY check fails → STOP. Do not decompose. Report the missing element and direct the user to `cariak-grinding`.
 
@@ -75,6 +76,14 @@ The System Architect + Ops Reviewer advisor challenge (Phase 3.5) is not optiona
 
 Present the plan summary to the user. Do NOT auto-invoke `cariak-researching`. The user must confirm or request changes. Only after explicit confirmation ("yes", "go", "execute", "lanjut") may the handoff proceed.
 
+### Structural Method
+
+This phase uses:
+- **M04 — Source Taxonomy Planning**: every RQ maps to explicit source domains, query families, and output documents.
+- **M03 — Engineering Lens Canvas** from grinding: when present, convert each lens into search assignments so implementation evidence is not missed.
+
+Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, and `references/source-taxonomy.csv` during preflight.
+
 ### Phases
 
 #### Phase 0: Preflight
@@ -86,6 +95,8 @@ Present the plan summary to the user. Do NOT auto-invoke `cariak-researching`. T
 2. Scan for existing `research-spec.md`:
    - Look in `docs/cariak/spec/` for the most recent spec matching the current topic.
 3. Load reference data:
+   - `references/structural-research-methods.csv` — phase method registry.
+   - `references/structural-research-methods.md` — Engineering Lens and report quality bar.
    - `references/source-taxonomy.csv` — source types each sub-agent covers.
    - `references/citation-standards.csv` — citation format per source type.
 4. Identify the working directory slug (date + topic keyword).
@@ -110,6 +121,17 @@ Present the plan summary to the user. Do NOT auto-invoke `cariak-researching`. T
      Then: expected finding
    RQ-2: ...
    ```
+4. If `## Engineering Lens` exists, build an implementation evidence registry:
+   - First principles → academic + official docs + standards
+   - State of the art → academic + engineering blogs + benchmarks
+   - Field practice → industry reports + case studies + commercial docs
+   - Implementation architecture → GitHub + docs + engineering blogs
+   - Data strategy → datasets + labeling guides + model cards + field protocols
+   - Evaluation protocol → papers + benchmarks + standards
+   - Failure modes → incident reports + forums + papers + practitioner blogs
+   - Tradeoffs → market + benchmarks + architecture docs
+   - Alternatives → competitor products + non-AI methods + hybrid systems
+   - Unknowns → experiment design + prototype validation tasks
 
 #### Phase 2: Route Output Documents
 
@@ -161,6 +183,22 @@ Present the plan summary to the user. Do NOT auto-invoke `cariak-researching`. T
    - For market: include competitor names and industry terms.
 
 **Gate 1 check:** Every RQ has at least one sub-agent assignment with queries.
+
+#### Phase 3.1: Implementation Evidence Plan (Technical Topics Only)
+
+If the spec contains `## Engineering Lens`, add an implementation-evidence plan. This plan is mandatory for technical research and must include search assignments for:
+
+| Evidence type | Required sources | Example queries |
+|---|---|---|
+| Repositories | GitHub, GitLab, examples, SDKs | `topic implementation github`, `topic benchmark repo` |
+| Official docs | vendor docs, standards, API docs | `topic official documentation`, `topic calibration guide` |
+| Benchmarks | papers, MLPerf-style reports, vendor benchmarks | `topic benchmark accuracy latency cost` |
+| Datasets / model cards | Kaggle, Hugging Face, papers, dataset portals | `topic dataset`, `topic model card` |
+| Standards / patents | ISO, IEEE, WIPO, Google Patents | `topic patent`, `topic standard` |
+| Commercial products | product pages, manuals, pricing, case studies | `topic product`, `topic industrial system` |
+| Field practice | operator workflows, industry case studies, maintenance docs | `topic field deployment`, `topic production failure` |
+
+**Gate:** If implementation evidence is missing, the research plan must explicitly say `NO IMPLEMENTATION EVIDENCE FOUND YET` and assign re-search queries. Do not let synthesizing pretend implementation guidance is proven without evidence.
 
 #### Phase 3.5: Advisor Coverage Check (ANTITHESIS)
 
@@ -221,6 +259,15 @@ Spec: docs/cariak/spec/YYYY-MM-DD-slug/research-spec.md
 ### RQ-2: [Question]
 ...
 
+## Implementation Evidence Plan
+- Repositories: [queries + expected sources]
+- Official docs: [queries + expected sources]
+- Benchmarks: [queries + expected sources]
+- Datasets / model cards: [queries + expected sources]
+- Standards / patents: [queries + expected sources]
+- Commercial products: [queries + expected sources]
+- Field practice: [queries + expected sources]
+
 ## Execution Order
 All sub-agents dispatched in parallel (see cariak-researching GATE 1).
 
@@ -260,6 +307,8 @@ If user chooses option 3 → save and exit.
 
 | Trigger | File | Phase |
 |---|---|---|
+| Structural method registry | `references/structural-research-methods.csv` | Phase 0 |
+| Engineering Lens guide | `references/structural-research-methods.md` | Phase 0, 3.1 |
 | Source type mapping | `references/source-taxonomy.csv` | Phase 3 |
 | Citation format per source | `references/citation-standards.csv` | Phase 4 |
 | Sub-agent definitions | `subagents/*.md` | Phase 3 |

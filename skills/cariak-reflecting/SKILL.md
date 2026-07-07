@@ -17,6 +17,13 @@ Reflection is not a summary. It is a critical self-assessment that asks: Did we 
 
 ---
 
+### Structural Method
+
+This phase uses:
+- **M10 — Quality Reflection Rubric**: decide whether the research is good enough to deliver by scoring confidence, coverage, source diversity, technical depth, alternatives, failure modes, and implementation actionability.
+
+Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, `references/quality-thresholds.yaml`, and `references/reflection-template.md` during preflight.
+
 ### When to Use
 
 - After cariak-synthesizing produces research-report.md
@@ -88,6 +95,8 @@ These thresholds determine PASS vs RE-RESEARCH:
 | Sub-agent Coverage | All 5 sub-agents returned findings | RE-RESEARCH (re-dispatch missing) |
 | Contradiction Count | <= 3 unresolved contradictions | RE-RESEARCH |
 | Question Coverage | >= 80% of research questions answered | RE-RESEARCH |
+| Technical Depth | Technical reports include first principles, methods, architecture, data, metrics, failure modes, alternatives | RE-RESEARCH |
+| Implementation Actionability | Report answers what to build first, how to test it, and what to avoid | RE-RESEARCH |
 
 **If ANY threshold is below minimum → decision = RE-RESEARCH**
 
@@ -100,10 +109,15 @@ These thresholds determine PASS vs RE-RESEARCH:
 Before beginning reflection:
 
 1. **Verify artifacts exist** (GATE 0)
-2. **Check memory MCP** for project context:
+2. **Load structural method references:**
+   - `references/structural-research-methods.csv`
+   - `references/structural-research-methods.md`
+   - `references/quality-thresholds.yaml`
+   - `references/reflection-template.md`
+3. **Check memory MCP** for project context:
    - Search for project entity: `memory_search_nodes(query="{project_name}")`
    - Retrieve session history
-3. **Load research artifacts:**
+4. **Load research artifacts:**
    - Read `research-report.md`
    - Read `references.json`
    - Read `validation-report.md` if it exists
@@ -231,6 +245,23 @@ Compare what was asked vs what was answered:
    - Is there a legacy bias (only old, established sources)?
 
 ---
+
+### Phase 4.1: Technical Report Quality Audit
+
+If the report is technical, audit whether it is implementation-ready:
+
+| Check | Pass condition |
+|---|---|
+| First principles | Explains why the method can work, not just that it works |
+| Field methods | Covers what industry or operators actually use |
+| Architecture | Shows components, data flow, deployment target, integration points |
+| Data strategy | Lists data, labels, calibration, sampling, and quality risks |
+| Evaluation | Defines metrics, baseline, thresholds, validation design |
+| Failure modes | Lists production risks and mitigations |
+| Alternatives | Includes simpler, non-AI, commercial, and hybrid options |
+| Roadmap | Gives phases, exit criteria, and first build step |
+
+If any check fails, decision = RE-RESEARCH unless the user explicitly accepts the limitation.
 
 ### Phase 5: Decision — PASS or RE-RESEARCH
 
@@ -404,6 +435,8 @@ This requires human judgment:
 
 | Trigger | Location | Used in Phase |
 |---|---|---|
+| `references/structural-research-methods.csv` | references/ | Phase 0, 4.1, 5 |
+| `references/structural-research-methods.md` | references/ | Phase 0, 4.1, 5 |
 | `references/quality-thresholds.yaml` | references/ | Phase 5 (Decision) |
 | `references/reflection-template.md` | references/ | Phase 6 (Write Report) |
 | `references/coverage-matrix.csv` | references/ | Phase 2 (Coverage) |

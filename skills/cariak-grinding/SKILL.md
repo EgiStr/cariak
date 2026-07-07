@@ -13,6 +13,14 @@ description: Refine a pitch into a precise research specification. Use AFTER car
 
 > Specify the research questions. Vague problems produce vague research.
 
+### Structural Method
+
+This phase uses:
+- **M02 — BDD Research Specification**: turn research directions into testable Given/When/Then questions.
+- **M03 — Engineering Lens Canvas**: for technical topics, force first principles, field practice, implementation architecture, data, metrics, failure modes, tradeoffs, alternatives, and unknowns.
+
+Load `references/structural-research-methods.csv` and `references/structural-research-methods.md` during preflight. If the topic is technical, scientific, ML, data, hardware, infrastructure, or product implementation, M03 is mandatory.
+
 ### When to Use
 
 - A pitch-exploration.md exists and the user wants to refine it into research questions.
@@ -61,7 +69,8 @@ Before handing off to planning, present the research-spec.md to the user for app
 #### Phase 0: Preflight
 1. Check memory MCP for existing project sessions: `memory_search_nodes(query: "research project")`.
 2. Scan `docs/cariak/spec/` for existing pitch-exploration.md files.
-3. If pitch exists, load it and extract:
+3. Load `references/structural-research-methods.csv` and `references/structural-research-methods.md`.
+4. If pitch exists, load it and extract:
    - Problem statement
    - Research directions (2-3)
    - Advisor counsel notes
@@ -97,6 +106,27 @@ Use question-frameworks.csv to select appropriate frameworks:
 - First Principles
 - MECE (Mutually Exclusive, Collectively Exhaustive)
 - Hypothesis-Driven
+
+#### Phase 2.1: Engineering Lens Canvas (Technical Topics Only)
+
+If the topic is technical, scientific, ML, data, hardware, infrastructure, product, or implementation-heavy, add the Engineering Lens Canvas to the spec. This is mandatory for questions like computer vision, weight estimation, edge inference, sensors, production ML, data pipelines, APIs, databases, security, or DevOps.
+
+For each technical research direction, define:
+
+| Lens | Required answer |
+|---|---|
+| First principles | What mechanism makes the solution possible? |
+| State of the art | What methods appear in papers, products, and mature engineering practice? |
+| Field practice | What is actually done in industry or operations? |
+| Implementation architecture | What components, data flow, interfaces, and deployment targets are implied? |
+| Data strategy | What data, labels, calibration, and sampling are required? |
+| Evaluation protocol | What metrics, baselines, and acceptance thresholds prove success? |
+| Failure modes | What breaks in production: environment, sensors, users, distribution shift, cost? |
+| Tradeoffs | Accuracy vs cost vs latency vs complexity vs maintainability. |
+| Alternatives | Simpler, non-AI, commercial, hybrid, or fallback approaches. |
+| Unknowns | What must be prototyped or measured before commitment? |
+
+**Gate:** If the final report would not let an engineer plan implementation, the spec is incomplete. Add missing Engineering Lens questions before Phase 2.5.
 
 #### Phase 2.5: Advisor Granularity Check (ANTITHESIS)
 
@@ -134,10 +164,11 @@ For each research question, define:
 Write `docs/cariak/spec/YYYY-MM-DD-slug/research-spec.md` with sections:
 1. **Problem Statement** (carried from pitch)
 2. **Research Questions** (GWT format)
-3. **Scope & Boundaries**
-4. **Success Metrics**
-5. **Risk Register** (what could go wrong)
-6. **Output Document Plan** (which on-demand docs the user wants)
+3. **Engineering Lens** (mandatory for technical topics)
+4. **Scope & Boundaries**
+5. **Success Metrics**
+6. **Risk Register** (what could go wrong)
+7. **Output Document Plan** (which on-demand docs the user wants)
 
 #### Phase 5: Handoff
 Present the spec to the user. Offer 3 options:
@@ -172,6 +203,20 @@ File: `docs/cariak/spec/YYYY-MM-DD-slug/research-spec.md`
 
 ### RQ2: ...
 
+## Engineering Lens
+| Lens | Research need | Source targets | Success evidence |
+|---|---|---|---|
+| First principles | ... | ... | ... |
+| State of the art | ... | ... | ... |
+| Field practice | ... | ... | ... |
+| Implementation architecture | ... | ... | ... |
+| Data strategy | ... | ... | ... |
+| Evaluation protocol | ... | ... | ... |
+| Failure modes | ... | ... | ... |
+| Tradeoffs | ... | ... | ... |
+| Alternatives | ... | ... | ... |
+| Unknowns | ... | ... | ... |
+
 ## Scope & Boundaries
 [Overall scope]
 
@@ -195,6 +240,8 @@ File: `docs/cariak/spec/YYYY-MM-DD-slug/research-spec.md`
 
 | Trigger File | Phase Used | Purpose |
 |---|---|---|
+| `references/structural-research-methods.csv` | Phase 0, 2.1 | Method registry for BDD spec and Engineering Lens Canvas |
+| `references/structural-research-methods.md` | Phase 0, 2.1 | Engineering Lens details and technical-report quality bar |
 | `references/question-frameworks.csv` | Phase 2 | Select frameworks for structuring research questions |
 | `references/research-spec-template.md` | Phase 4 | Template for research-spec.md structure |
 | `references/advisor-personas.csv` | Phase 2 (optional) | If advising is called to stress-test questions |

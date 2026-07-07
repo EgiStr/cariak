@@ -15,6 +15,14 @@ description: Execute research by dispatching 5 parallel sub-agents across intern
 
 Research is not a single-threaded Google search. It is the simultaneous deployment of multiple specialized lenses—each with its own source taxonomy, citation standards, and bias profile—whose findings are later reconciled into a single coherent report. No finding enters the synthesis without a source. No source enters without a citation.
 
+### Structural Method
+
+This phase uses:
+- **M05 — Multi-Lens Parallel Research**: run the five source lenses concurrently.
+- **M06 — Implementation Evidence Harvest**: for technical topics, collect implementation artifacts: repos, docs, benchmarks, datasets, model cards, standards, patents, commercial products, and field deployments.
+
+Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, and the `Implementation Evidence Plan` from `research-plan.md` during preflight.
+
 ### When to Use
 
 - `cariak-planning` has produced an approved `research-plan.md`
@@ -87,6 +95,7 @@ GATE 4: PER-FINDING ADVISOR REVIEW MANDATORY (ANTITHESIS)
    - Research questions
    - Assigned sub-agents per question
    - Query templates
+   - Implementation Evidence Plan (if present)
    - Output directory path
 4. Create the output directory: `docs/cariak/research/YYYY-MM-DD-slug/`
 5. Check for re-research flag from `cariak-reflecting` (if re-research, load reflection report for adjusted queries)
@@ -112,6 +121,7 @@ Extract from `research-plan.md`:
 | Source taxonomy | Allowed/disallowed sources per domain |
 | Citation standard | APA, IEEE, or inline-numbered |
 | Depth setting | Number of results per source (from Clarify Gate) |
+| Implementation Evidence Plan | Technical evidence targets: repos, docs, benchmarks, datasets, patents, products, field practice |
 
 For each sub-agent, construct a dispatch payload:
 
@@ -126,6 +136,22 @@ depth: 10
 ```
 
 Repeat for all 5 sub-agents.
+
+If the plan contains `## Implementation Evidence Plan`, add an `implementation_evidence_targets` block to each relevant payload:
+
+```yaml
+implementation_evidence_targets:
+  repositories: [queries]
+  official_docs: [queries]
+  benchmarks: [queries]
+  datasets_model_cards: [queries]
+  standards_patents: [queries]
+  commercial_products: [queries]
+  field_practice: [queries]
+required_output_section: "Implementation Evidence"
+```
+
+For non-technical topics, omit this block.
 
 ### Phase 2: Dispatch 5 Sub-Agents IN PARALLEL
 
@@ -198,6 +224,7 @@ For each findings file, check:
 | Query coverage | All assigned questions addressed | Flag for re-run |
 | Contradiction flag | Internal contradictions noted | Pass to synthesizing |
 | Bias flag | Source bias noted | Pass to synthesizing |
+| Implementation evidence | Technical topics include repos/docs/benchmarks/datasets/standards/products/field practice, or explicitly state none found | Flag for re-run |
 
 This is a QUICK audit, not a deep review. The deep review happens in `cariak-synthesizing` and `cariak-validating`.
 
@@ -262,6 +289,8 @@ Present the user with the handoff menu:
 
 | Trigger | Location | Purpose |
 |---|---|---|
+| `references/structural-research-methods.csv` | Phase 0, 1 | Method registry for M05/M06 |
+| `references/structural-research-methods.md` | Phase 0, 1, 4 | Implementation Evidence Harvest guidance |
 | `references/source-taxonomy.csv` | Phase 1 | Determines allowed sources per sub-agent |
 | Sub-agent definitions (`subagents/*.md`) | Phase 2 | Provides tool lists and output formats |
 | `research-plan.md` | Phase 0, 1 | Source of queries and assignments |

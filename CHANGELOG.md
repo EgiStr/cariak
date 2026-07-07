@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.1] - 2026-07-07
+
+### Added
+- Structural research method registry: `references/structural-research-methods.csv` and `.md`.
+- Engineering Lens Canvas for technical grinding: first principles, field practice, architecture, data, metrics, failure modes, tradeoffs, alternatives, unknowns.
+- Implementation Evidence Plan in planning/researching: repos, docs, benchmarks, datasets, model cards, standards, patents, commercial products, field deployments.
+- Expert Technical Report structure in synthesizing and `templates/technical-report.md`.
+- Technical report quality audit in reflecting: implementation actionability, alternatives, failure modes, roadmap.
+- Documentation: `docs/structural-research-methods.md`, README/README.id references.
+
+### Changed
+- Pitching now loads structural method references before handoff.
+- Grinding/planning/researching/synthesizing/validating/reflecting/closing now each declares its structural method.
+
 All notable changes to Cariak will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),

@@ -48,6 +48,13 @@ Pitching is the entry point of the CariaK research lifecycle. It exists because 
 | Purpose | Pre-research exploration | Post-synthesis falsification |
 | Stage | Before research begins | After synthesis completes |
 
+### Structural Method
+
+This phase uses:
+- **M01 — Structured Brainstorming Matrix**: select 3-5 methods from `brainstorming-methods.csv` using `best_for` and `fallback_method`, then converge into 2-3 directions.
+
+Load `references/structural-research-methods.csv` and `references/structural-research-methods.md` so the pitch can hand off cleanly into BDD grinding and engineering-report methods.
+
 ### Hard Gates
 
 **GATE 0: PREFLIGHT MUST COMPLETE BEFORE GREETING USER**
@@ -55,9 +62,11 @@ Pitching is the entry point of the CariaK research lifecycle. It exists because 
 Before any user interaction, silently:
 1. Scan the project directory for existing `docs/cariak/spec/` directories.
 2. Query memory MCP for existing `ResearchProject` entities related to the topic.
-3. Load `references/brainstorming-methods.csv` silently.
-4. Load `references/advisor-personas.csv` silently.
-5. Load `references/pitch-brief-template.md` silently.
+3. Load `references/structural-research-methods.csv` silently.
+4. Load `references/structural-research-methods.md` silently.
+5. Load `references/brainstorming-methods.csv` silently.
+6. Load `references/advisor-personas.csv` silently.
+7. Load `references/pitch-brief-template.md` silently.
 
 NO OUTPUT until preflight is complete. If preflight fails (files missing), note the missing files and proceed with available context. Do not block the user on missing reference files — degrade gracefully.
 
@@ -294,6 +303,8 @@ What's next?
 
 | Reference | When to Load |
 |---|---|
+| `references/structural-research-methods.csv` | Phase 0, 5: method registry for the full Cariak pipeline |
+| `references/structural-research-methods.md` | Phase 0, 5: technical research quality bar for downstream handoff |
 | `references/brainstorming-methods.csv` | Phase 2: select methods for diverge |
 | `references/method-selection.md` | Phase 2: method selection criteria and fallback rules |
 | `references/advisor-personas.csv` | Phase 3: select personas for counsel |

@@ -2,7 +2,7 @@
 
 [![Lisensi: MIT](https://img.shields.io/badge/Lisensi-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![OpenCode Skill](https://img.shields.io/badge/OpenCode-Skill-blue.svg)](https://github.com/sst/opencode)
-[![Versi](https://img.shields.io/badge/versi-v1.3.0-green.svg)](CHANGELOG.md)
+[![Versi](https://img.shields.io/badge/versi-v1.3.1-green.svg)](CHANGELOG.md)
 [![Dwibahasa](https://img.shields.io/badge/bahasa-ID%20%2B%20EN-orange.svg)](README.md)
 
 > **Hukum Besi: TIDAK ADA KLAIM TANPA SUMBER.**
@@ -10,6 +10,15 @@
 
 ---
 
+## Apa itu Cariak?
+
+Cariak adalah agen riset mendalam open-source yang dibangun sebagai kumpulan [OpenCode](https://github.com/sst/opencode) skills, terinspirasi dari arsitektur skill-based agent [Pocketto](https://github.com/rfxlamia/pocketto). Cariak melakukan riset komprehensif melintasi internet, media sosial, makalah akademik, berita, dan sumber pasar — lalu mensintesis temuan menjadi dokumen proyek yang bersumber dan dinilai tingkat kepercayaannya.
+
+Alih-alih satu prompt monolitik, Cariak mengurai riset menjadi **9 skill khusus** yang membentuk pipeline: dari pitching (mengklarifikasi niat) melalui grinding (riset paralel) hingga reflecting (gerbang kualitas) dan remembering (persistensi memori). Setiap skill memiliki satu tanggung jawab, kontrak input/output yang jelas, dan Hard Gate yang mencegah kemajuan fase sebelum kriteria kualitas terpenuhi.
+
+Cariak bersifat **dwibahasa** — beroperasi dalam Bahasa Indonesia dan Inggris, menyesuaikan bahasa pengguna sepanjang siklus riset.
+
+---
 ## Filosofi Inti
 
 Cariak dibangun di atas metode dialektika: setiap output di setiap fase ditantang oleh persona advisor independen sebelum melanjutkan.
@@ -38,16 +47,6 @@ Setiap tantangan advisor dicatat di `advisor-phase-mapping.csv` dan bersifat waj
 
 ---
 
-## Apa itu Cariak?
-
-Cariak adalah agen riset mendalam open-source yang dibangun sebagai kumpulan [OpenCode](https://github.com/sst/opencode) skills, terinspirasi dari arsitektur skill-based agent [Pocketto](https://github.com/rfxlamia/pocketto). Cariak melakukan riset komprehensif melintasi internet, media sosial, makalah akademik, berita, dan sumber pasar — lalu mensintesis temuan menjadi dokumen proyek yang bersumber dan dinilai tingkat kepercayaannya.
-
-Alih-alih satu prompt monolitik, Cariak mengurai riset menjadi **9 skill khusus** yang membentuk pipeline: dari pitching (mengklarifikasi niat) melalui grinding (riset paralel) hingga reflecting (gerbang kualitas) dan remembering (persistensi memori). Setiap skill memiliki satu tanggung jawab, kontrak input/output yang jelas, dan Hard Gate yang mencegah kemajuan fase sebelum kriteria kualitas terpenuhi.
-
-Cariak bersifat **dwibahasa** — beroperasi dalam Bahasa Indonesia dan Inggris, menyesuaikan bahasa pengguna sepanjang siklus riset.
-
----
-
 ## Fitur
 
 - **9 Skill** — pipeline riset lengkap: pitching → grinding → planning → researching → synthesizing → validating → reflecting → remembering
@@ -61,6 +60,7 @@ Cariak bersifat **dwibahasa** — beroperasi dalam Bahasa Indonesia dan Inggris,
 - **Gerbang Kualitas Auto-Reflection** — skill `reflecting` mengevaluasi setiap output terhadap kriteria kepercayaan, cakupan sumber, dan bias sebelum dirilis
 - **Dwibahasa (Indonesia + Inggris)** — setiap skill, prompt, dan template output mendukung kedua bahasa
 - **Setiap Klaim Bersumber** — Hukum Besi: *TIDAK ADA KLAIM TANPA SUMBER*. Klaim tanpa sumber ditandai dan ditolak di gerbang validasi
+- **Metode Riset Terstruktur** — setiap fase memakai registry metode eksplisit (`references/structural-research-methods.csv`): brainstorming terstruktur, BDD research spec, Engineering Lens Canvas, implementation evidence harvest, expert technical report, falsification, dan reflection QA
 
 ---
 
@@ -125,6 +125,14 @@ Picu Cariak dengan salah satu frasa berikut di sesi OpenCode Anda:
 | `research this` | EN | Menjalankan pipeline lengkap |
 | `deep research` | EN | Menjalankan pipeline lengkap dengan kedalaman ekstra |
 | `gali ini` | ID | Menjalankan pipeline lengkap (output Indonesia) |
+
+### Metode riset terstruktur
+
+Cariak membawa registry metode per fase agar setiap skill memakai teknik akademis/industri yang auditable, bukan prompt generik.
+
+Lihat: [`docs/structural-research-methods.md`](docs/structural-research-methods.md) dan [`references/structural-research-methods.csv`](references/structural-research-methods.csv).
+
+Untuk topik teknis, Cariak memakai **Engineering Lens Canvas** dan **Expert Technical Report**. Laporan akhir wajib membahas first principles, state of the art, praktik lapangan, arsitektur implementasi, strategi data, protokol evaluasi, failure modes, alternatif, unknowns, dan roadmap build konkret.
 
 ### Contoh sesi
 

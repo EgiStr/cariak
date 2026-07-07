@@ -15,6 +15,13 @@ description: Falsification-based verification of research findings. Use AFTER ca
 
 Validation is the falsification phase. It does not seek to confirm what the synthesis already concluded—it seeks to break those conclusions. A claim that survives a genuine attempt to refute it is worth more than a claim that was only ever supported. This mirrors the structured-research methodology: every key claim becomes a falsifiable question, every question gets a research method, and at least one method must actively seek counter-evidence.
 
+### Structural Method
+
+This phase uses:
+- **M09 — Falsification Validation**: extract high-stakes claims, seek counter-evidence, verify sources, and grade Confirmed / Refuted / Inconclusive.
+
+Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, and `references/research-methods.csv` during preflight.
+
 ### Iron Laws
 
 These laws are non-negotiable. Violating them invalidates the entire validation report.
@@ -82,9 +89,10 @@ Every piece of evidence in the validation report must have a citation. Uncited e
 
 1. Check Memory MCP for project context and prior validation attempts
 2. Verify `research-report.md` exists at the expected path (GATE 0)
-3. Load `references/research-methods.csv` to enumerate available methods
-4. Create output path: `docs/cariak/synthesized/YYYY-MM-DD-slug/validation-report.md`
-5. Log validation start to Memory MCP
+3. Load `references/structural-research-methods.csv` and `references/structural-research-methods.md`
+4. Load `references/research-methods.csv` to enumerate available methods
+5. Create output path: `docs/cariak/synthesized/YYYY-MM-DD-slug/validation-report.md`
+6. Log validation start to Memory MCP
 
 **Gate 0 check:** Report exists? If no → halt.
 
@@ -295,6 +303,8 @@ Write to `docs/cariak/synthesized/YYYY-MM-DD-slug/validation-report.md`:
 
 | Reference File | Phase | Purpose |
 |---|---|---|
+| `references/structural-research-methods.csv` | Phase 0, 3 | Method registry for M09 |
+| `references/structural-research-methods.md` | Phase 0, 3 | Quality bar for validation handoff |
 | `references/research-methods.csv` | Phase 3 | Method selection |
 | `references/citation-standards.csv` | Phase 4, 6 | Citation format for evidence |
 | `research-report.md` | Phase 1 | Source of claims to validate |

@@ -54,6 +54,13 @@ Closing runs after cariak-reflecting returns `PASS` (or after cariak-validating 
 | cariak-remembering  | Sub-routine | Called to update entity graph (Phase 2)              |
 | (Export tools)      | Downstream  | User may export PDFs/ZIP after closing (Phase 4)     |
 
+### Structural Method
+
+This phase uses:
+- **M11 — Research Knowledge Closure**: verify artifacts, verdicts, advisor gates, memory updates, and closeout summary so completed research becomes reusable knowledge.
+
+Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, and `references/closeout-template.md` during preflight.
+
 ### Hard Gates
 
 #### GATE 0: PREFLIGHT MUST COMPLETE BEFORE CLOSING
@@ -144,10 +151,10 @@ Run all steps before changing any state. Any failure blocks closure.
    - Extract total source count.
    - Extract source type distribution (academic, news, social, market, internet).
 
-6. **Check memory MCP availability:**
-   - Attempt `memory_search_nodes(query="{project_name}")`.
-   - If unavailable → note for graceful degradation in Phase 2.
-   - If available → load existing entity graph.
+6. **Load structural method references:**
+   - `references/structural-research-methods.csv`
+   - `references/structural-research-methods.md`
+   - `references/closeout-template.md`
 
 **Output:** Preflight report (silent unless blocked).
 

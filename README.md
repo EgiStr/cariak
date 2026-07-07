@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![OpenCode Skill](https://img.shields.io/badge/OpenCode-Skill-blue.svg)](https://github.com/sst/opencode)
-[![Version](https://img.shields.io/badge/version-v1.3.0-green.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-v1.3.1-green.svg)](CHANGELOG.md)
 [![Bilingual](https://img.shields.io/badge/language-ID%20%2B%20EN-orange.svg)](README.id.md)
 
 > **Iron Law: NO CLAIM WITHOUT SOURCE.**
@@ -10,6 +10,15 @@
 
 ---
 
+## What is Cariak?
+
+Cariak is an open-source deep research agent built as a suite of [OpenCode](https://github.com/sst/opencode) skills, inspired by [Pocketto](https://github.com/rfxlamia/pocketto)'s skill-based agent architecture. It conducts comprehensive research across the internet, social media, academic papers, news, and market sources — then synthesizes findings into cited, confidence-graded project documents.
+
+Rather than a single monolithic prompt, Cariak decomposes research into **9 specialized skills** that form a pipeline: from pitching (clarifying intent) through grinding (parallel research) to reflecting (quality gates) and remembering (memory persistence). Each skill has a single responsibility, a defined input/output contract, and Hard Gates that prevent phase advancement until quality criteria are met.
+
+Cariak is **bilingual** — it operates in both Indonesian (Bahasa Indonesia) and English, matching the user's language throughout the research lifecycle.
+
+---
 ## Core Philosophy
 
 Cariak is built on the dialectic method: every output at every phase is challenged by an independent advisor persona before advancing.
@@ -38,15 +47,6 @@ Every advisor challenge is recorded in `advisor-phase-mapping.csv` and is mandat
 
 ---
 
-## What is Cariak?
-
-Cariak is an open-source deep research agent built as a suite of [OpenCode](https://github.com/sst/opencode) skills, inspired by [Pocketto](https://github.com/rfxlamia/pocketto)'s skill-based agent architecture. It conducts comprehensive research across the internet, social media, academic papers, news, and market sources — then synthesizes findings into cited, confidence-graded project documents.
-
-Rather than a single monolithic prompt, Cariak decomposes research into **9 specialized skills** that form a pipeline: from pitching (clarifying intent) through grinding (parallel research) to reflecting (quality gates) and remembering (memory persistence). Each skill has a single responsibility, a defined input/output contract, and Hard Gates that prevent phase advancement until quality criteria are met.
-
-Cariak is **bilingual** — it operates in both Indonesian (Bahasa Indonesia) and English, matching the user's language throughout the research lifecycle.
-
----
 
 ## Features
 
@@ -61,6 +61,7 @@ Cariak is **bilingual** — it operates in both Indonesian (Bahasa Indonesia) an
 - **Auto-Reflection Quality Gate** — the `reflecting` skill evaluates every output against confidence, source coverage, and bias criteria before release
 - **Bilingual (Indonesian + English)** — every skill, prompt, and output template supports both languages
 - **Every Claim Sourced** — the Iron Law: *NO CLAIM WITHOUT SOURCE*. Unsourced claims are flagged and rejected at the validation gate
+- **Structural Research Methods** — every phase uses an explicit method registry (`references/structural-research-methods.csv`): structured brainstorming, BDD research specs, Engineering Lens Canvas, implementation evidence harvest, expert technical reporting, falsification, and reflection QA
 
 ---
 
@@ -125,6 +126,14 @@ Trigger Cariak with any of the following phrases in your OpenCode session:
 | `research this` | EN | Full pipeline run |
 | `deep research` | EN | Full pipeline with extended depth |
 | `gali ini` | ID | Full pipeline run (Indonesian output) |
+
+### Structural research methods
+
+Cariak ships a phase-by-phase method registry so each skill uses an auditable academic/industry technique, not a generic prompt.
+
+See: [`docs/structural-research-methods.md`](docs/structural-research-methods.md) and [`references/structural-research-methods.csv`](references/structural-research-methods.csv).
+
+For technical topics, Cariak applies the **Engineering Lens Canvas** and **Expert Technical Report** method. The final report must cover first principles, state of the art, field practice, implementation architecture, data strategy, evaluation protocol, failure modes, alternatives, unknowns, and a concrete build roadmap.
 
 ### Example session
 
