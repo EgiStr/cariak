@@ -137,7 +137,7 @@ function cmdReport(argv, jsonMode) {
 }
 
 // --- setup ---
-function cmdSetup(targetAgent, jsonMode) {
+function cmdSetup(targetAgent, jsonMode, dryRun) {
   const agents = detectAgents();
   const results = {};
 
@@ -157,69 +157,90 @@ function cmdSetup(targetAgent, jsonMode) {
     return;
   }
 
+  if (dryRun) console.log('[DRY RUN] Would install to:');
+
   for (const agent of filtered) {
     try {
       switch (agent.type) {
         case 'opencode':
-          results[agent.name] = setupOpenCode(agent.configPath);
+          results[agent.name] = setupOpenCode(agent.configPath, dryRun);
           break;
         case 'claude':
-          results[agent.name] = setupClaude(agent.configPath);
+          results[agent.name] = setupClaude(agent.configPath, dryRun);
           break;
         case 'codex':
-          results[agent.name] = setupCodex(agent.configPath);
+          results[agent.name] = setupCodex(agent.configPath, dryRun);
           break;
       }
-      if (!jsonMode) console.log(`  [${results[agent.name]}] ${agent.name}`);
     } catch (err) {
       results[agent.name] = 'failed';
       if (!jsonMode) console.log(`  [failed] ${agent.name}: ${err.message}`);
     }
   }
 
+  if (!dryRun && !jsonMode) {
+    console.log('\n✓ All Cariak skills installed globally. They now work from any project folder.');
+  }
+
   if (jsonMode) return { ok: true, setup: results };
 }
 
-function setupOpenCode(configPath) {
-  const config = readJSON(configPath) || {};
-  if (!config.skills) config.skills = {};
-  if (!config.skills.paths) config.skills.paths = [];
+function setupOpenCode(configPath, dryRun) {
+  const skillsDest = path.join(HOME, '.config', 'opencode', 'skills');
+  const result = copySkillsDir(SKILLS_DIR, skillsDest, dryRun);
 
-  const paths = config.skills.paths;
-  if (!paths.includes(SKILLS_DIR)) {
-    paths.push(SKILLS_DIR);
-    writeJSON(configPath, config);
-    return 'linked';
+  // Copy subagents
+  const subagentsSrc = path.join(ROOT, 'subagents');
+  const subagentsDest = path.join(skillsDest, 'cariak-subagents');
+  if (exists(subagentsSrc)) {
+    if (dryRun) {
+      console.log(`  Would copy subagents to ${subagentsDest}`);
+    } else {
+      copyDirRecursive(subagentsSrc, subagentsDest);
+      console.log(`  ✓ cariak-subagents installed globally`);
+    }
   }
-  return 'already_linked';
+
+  return result;
 }
 
-function setupClaude(claudeDir) {
-  const dest = path.join(claudeDir, 'skills', 'cariak');
-  return copySkillsDir(SKILLS_DIR, dest);
+function setupClaude(claudeDir, dryRun) {
+  const dest = path.join(claudeDir, 'skills');
+  return copySkillsDir(SKILLS_DIR, dest, dryRun);
 }
 
-function setupCodex(codexDir) {
-  const dest = path.join(codexDir, 'skills', 'cariak');
-  return copySkillsDir(SKILLS_DIR, dest);
+function setupCodex(codexDir, dryRun) {
+  const dest = path.join(codexDir, 'skills');
+  return copySkillsDir(SKILLS_DIR, dest, dryRun);
 }
 
-function copySkillsDir(src, dest) {
-  if (!exists(dest)) fs.mkdirSync(dest, { recursive: true });
-
+function copySkillsDir(src, dest, dryRun) {
   const entries = fs.readdirSync(src, { withFileTypes: true });
-  let copied = 0;
+  let installed = 0;
+  let skipped = 0;
+
   for (const entry of entries) {
     if (!entry.isDirectory()) continue;
     const skillMd = path.join(src, entry.name, 'SKILL.md');
     if (!exists(skillMd)) continue;
 
     const destDir = path.join(dest, entry.name);
-    if (!exists(destDir)) fs.mkdirSync(destDir, { recursive: true });
-    fs.copyFileSync(skillMd, path.join(destDir, 'SKILL.md'));
-    copied++;
+    if (exists(destDir)) {
+      if (!dryRun) console.log(`  ✓ ${entry.name} already installed`);
+      skipped++;
+      continue;
+    }
+
+    if (dryRun) {
+      console.log(`  Would copy ${entry.name} to ${destDir}`);
+    } else {
+      copyDirRecursive(path.join(src, entry.name), destDir);
+      console.log(`  ✓ ${entry.name} installed globally`);
+    }
+    installed++;
   }
-  return copied > 0 ? 'copied' : 'no_skills_found';
+
+  return installed > 0 ? 'installed' : (skipped > 0 ? 'already_installed' : 'no_skills_found');
 }
 
 // --- doctor ---
@@ -510,6 +531,7 @@ function cmdBundle(skillName, outputPath, jsonMode) {
 }
 
 function copyDirRecursive(src, dest) {
+  fs.mkdirSync(dest, { recursive: true });
   const entries = fs.readdirSync(src, { withFileTypes: true });
   for (const entry of entries) {
     const srcPath = path.join(src, entry.name);
@@ -536,7 +558,7 @@ function cmdHelp() {
     'Usage: npx cariak-pi <command> [options]',
     '',
     'Commands:',
-    '  setup [--agent <name>]             Link skills to AI agents (default: all)',
+    '  setup [--agent <name>] [--dry-run]  Install skills globally to AI agents (default: all)',
     '  doctor [--strict]                  Verify Cariak environment',
     '  validate                           Validate project files (CSV, frontmatter, templates)',
     '  bundle [skill-name] [--output <dir>]  Package skill(s) into .skill ZIP archives',
@@ -548,6 +570,7 @@ function cmdHelp() {
     'Options:',
     '  --json     Machine-readable JSON output',
     '  --strict   Exit with code 1 on any doctor failure',
+    '  --dry-run  Show what would be installed without copying',
     '',
     'Examples:',
     '  npx cariak-pi setup',
@@ -566,6 +589,7 @@ function main() {
   const flags = [];
   let jsonMode = false;
   let strictMode = false;
+  let dryRun = false;
   let agentTarget = '';
   let outputPath = '';
 
@@ -574,6 +598,7 @@ function main() {
     const a = argv[i];
     if (a === '--json') { jsonMode = true; continue; }
     if (a === '--strict') { strictMode = true; continue; }
+    if (a === '--dry-run') { dryRun = true; continue; }
     if (a === '--agent' && i + 1 < argv.length) {
       agentTarget = argv[i + 1];
       i++;
@@ -594,7 +619,7 @@ function main() {
     case 'setup': {
       // agent target: --agent flag takes priority, then first positional arg, else 'all'
       const target = agentTarget || cmdArgs[0] || 'all';
-      const result = cmdSetup(target, jsonMode);
+      const result = cmdSetup(target, jsonMode, dryRun);
       if (jsonMode && result) console.log(JSON.stringify(result));
       break;
     }

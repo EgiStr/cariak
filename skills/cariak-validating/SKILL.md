@@ -296,7 +296,7 @@ Write to `docs/cariak/synthesized/YYYY-MM-DD-slug/validation-report.md`:
 | Reference File | Phase | Purpose |
 |---|---|---|
 | `references/research-methods.csv` | Phase 3 | Method selection |
-| `../../references/citation-standards.csv` | Phase 4, 6 | Citation format for evidence |
+| `references/citation-standards.csv` | Phase 4, 6 | Citation format for evidence |
 | `research-report.md` | Phase 1 | Source of claims to validate |
 | `subagents/*.md` | Phase 4 | Sub-agents for evidence gathering |
 | Memory MCP | Phase 0, 7 | Project context and decision storage |
@@ -493,7 +493,7 @@ Tulis ke `docs/cariak/synthesized/YYYY-MM-DD-slug/validation-report.md` dengan s
 | File Referensi | Fase | Tujuan |
 |---|---|---|
 | `references/research-methods.csv` | Fase 3 | Pemilihan metode |
-| `../../references/citation-standards.csv` | Fase 4, 6 | Format kutipan untuk bukti |
+| `references/citation-standards.csv` | Fase 4, 6 | Format kutipan untuk bukti |
 | `research-report.md` | Fase 1 | Sumber klaim untuk divalidasi |
 | `subagents/*.md` | Fase 4 | Sub-agen untuk pengumpulan bukti |
 | Memory MCP | Fase 0, 7 | Konteks proyek dan penyimpanan keputusan |

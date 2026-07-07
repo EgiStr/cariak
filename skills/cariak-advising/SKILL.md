@@ -194,8 +194,8 @@ Steps:
 |---|---|---|
 | `references/advisor-personas.csv` | Phase 1 | Load to enumerate and select personas |
 | `references/advisor-phase-mapping.csv` | Phase 1 | Full mapping of phase → thesis → advisor persona → challenge type |
-| `../../references/brainstorming-methods.csv` | Phase 2 (if pitching context) | Reference for divergent framing |
-| `../../references/citation-standards.csv` | Phase 2 (Gate 1) | Validate citation format in counsel responses |
+| `references/brainstorming-methods.csv` | Phase 2 (if pitching context) | Reference for divergent framing |
+| `references/citation-standards.csv` | Phase 2 (Gate 1) | Validate citation format in counsel responses |
 
 ### Handoff
 
@@ -379,8 +379,8 @@ Langkah:
 |---|---|---|
 | `references/advisor-personas.csv` | Phase 1 | Muat untuk enumerasi dan seleksi persona |
 | `references/advisor-phase-mapping.csv` | Phase 1 | Pemetaan lengkap fase → tesis → persona advisor → tipe challenge |
-| `../../references/brainstorming-methods.csv` | Phase 2 (jika konteks pitching) | Referensi untuk framing divergen |
-| `../../references/citation-standards.csv` | Phase 2 (Gate 1) | Validasi format sitiran dalam respons nasihat |
+| `references/brainstorming-methods.csv` | Phase 2 (jika konteks pitching) | Referensi untuk framing divergen |
+| `references/citation-standards.csv` | Phase 2 (Gate 1) | Validasi format sitiran dalam respons nasihat |
 
 ### Handoff
 
