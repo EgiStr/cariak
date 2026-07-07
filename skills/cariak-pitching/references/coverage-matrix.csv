@@ -1,6 +1,0 @@
-research_question_id,sub_agent,source_count,source_diversity,confidence_score,status
-RQ-01,@cariak-researcher,7,4,0.88,PASS
-RQ-02,@cariak-researcher,5,3,0.76,PASS
-RQ-03,@cariak-researcher,3,2,0.58,RE-RESEARCH
-RQ-04,@cariak-validator,6,4,0.82,PASS
-RQ-05,@cariak-researcher,4,3,0.71,PASS

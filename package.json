@@ -34,7 +34,6 @@
     "!skills/**/__pycache__/**",
     "subagents/**",
     "templates/**",
-    "references/**",
     "cli/**",
     "assets/**",
     "docs/examples/**",

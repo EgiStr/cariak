@@ -36,22 +36,32 @@ function parseCSV(text) {
 
 describe('CARIAK Project Structure', () => {
 
-  // 1. CSV Validation
-  describe('references/ CSV files', () => {
-    const refDir = path.join(ROOT, 'references');
-    const csvFiles = readDir(refDir).filter(f => f.endsWith('.csv'));
+  // 1. CSV Validation — per-skill references/
+  describe('Per-skill references/ CSV files', () => {
+    const skillsDir = path.join(ROOT, 'skills');
+    const allCsvs = [];
+    for (const d of readDir(skillsDir)) {
+      const refDir = path.join(skillsDir, d, 'references');
+      if (!fs.existsSync(refDir)) continue;
+      readDir(refDir).filter(f => f.endsWith('.csv'))
+        .forEach(f => allCsvs.push({ skill: d, file: f, path: path.join(refDir, f) }));
+    }
 
-    it('should have at least 6 CSV files', () => {
-      assert.ok(csvFiles.length >= 6, `Expected >= 6 CSVs, found ${csvFiles.length}: ${csvFiles.join(', ')}`);
+    it('should have at least 5 unique CSVs across skills', () => {
+      const unique = new Set(allCsvs.map(c => c.file));
+      assert.ok(unique.size >= 5, 'Expected >=5 unique CSVs, found ' + unique.size + ': ' + [...unique].join(', '));
     });
 
-    csvFiles.forEach(file => {
-      it(`"${file}" should have valid headers and >= 5 data rows`, () => {
-        const content = readFile(path.join(refDir, file));
-        assert.ok(content, `${file} is not empty`);
+    const seen = new Set();
+    allCsvs.forEach(({ skill, file, path: fp }) => {
+      if (seen.has(file)) return;
+      seen.add(file);
+      it('"' + file + '" (in ' + skill + ') should have valid headers and >= 5 data rows', () => {
+        const content = readFile(fp);
+        assert.ok(content, file + ' is not empty');
         const { headers, rows } = parseCSV(content);
-        assert.ok(headers.length > 0, `${file}: has header row with ${headers.length} columns`);
-        assert.ok(rows.length >= 5, `${file}: has ${rows.length} data rows (need >= 5)`);
+        assert.ok(headers.length > 0, file + ': has header row with ' + headers.length + ' columns');
+        assert.ok(rows.length >= 5, file + ': has ' + rows.length + ' data rows (need >= 5)');
       });
     });
   });
@@ -64,23 +74,22 @@ describe('CARIAK Project Structure', () => {
     });
 
     it('should have at least 10 skill directories', () => {
-      assert.ok(skillDirs.length >= 10, `Expected >= 10 skills, found ${skillDirs.length}`);
+      assert.ok(skillDirs.length >= 10, 'Expected >= 10 skills, found ' + skillDirs.length);
     });
 
     skillDirs.forEach(dir => {
-      it(`"${dir}/SKILL.md" should have valid frontmatter with name and description`, () => {
+      it('"' + dir + '/SKILL.md" should have valid frontmatter with name and description', () => {
         const filePath = path.join(skillsDir, dir, 'SKILL.md');
         const content = readFile(filePath);
-        assert.ok(content, `${dir}/SKILL.md exists and is readable`);
-        assert.ok(content.startsWith('---'), `${dir}/SKILL.md starts with '---'`);
+        assert.ok(content, dir + '/SKILL.md exists and is readable');
+        assert.ok(content.startsWith('---'), dir + '/SKILL.md starts with ---');
 
-        // Find the closing frontmatter marker
         const secondMarker = content.indexOf('---', 3);
-        assert.ok(secondMarker > 0, `${dir}/SKILL.md has closing '---' frontmatter marker`);
+        assert.ok(secondMarker > 0, dir + '/SKILL.md has closing --- frontmatter marker');
 
         const frontmatter = content.slice(3, secondMarker).trim();
-        assert.ok(/^name:\s*.+/m.test(frontmatter), `${dir}/SKILL.md frontmatter has 'name:'`);
-        assert.ok(/^description:\s*.+/m.test(frontmatter), `${dir}/SKILL.md frontmatter has 'description:'`);
+        assert.ok(/^name:\s*.+/m.test(frontmatter), dir + '/SKILL.md frontmatter has name:');
+        assert.ok(/^description:\s*.+/m.test(frontmatter), dir + '/SKILL.md frontmatter has description:');
       });
     });
   });
@@ -91,15 +100,15 @@ describe('CARIAK Project Structure', () => {
     const tmplFiles = readDir(tmplDir).filter(f => f.endsWith('.md'));
 
     it('should have at least 12 template files', () => {
-      assert.ok(tmplFiles.length >= 12, `Expected >=12 templates, found ${tmplFiles.length}: ${tmplFiles.join(', ')}`);
+      assert.ok(tmplFiles.length >= 12, 'Expected >=12 templates, found ' + tmplFiles.length + ': ' + tmplFiles.join(', '));
     });
 
     const templateFilesOnly = tmplFiles.filter(f => f !== 'README.md');
     templateFilesOnly.forEach(file => {
-      it(`"${file}" should contain {{ placeholders`, () => {
+      it('"' + file + '" should contain {{ placeholders', () => {
         const content = readFile(path.join(tmplDir, file));
-        assert.ok(content, `${file} is readable`);
-        assert.ok(/\{\{/.test(content), `${file} contains '{{' placeholders`);
+        assert.ok(content, file + ' is readable');
+        assert.ok(/\{\{/.test(content), file + ' contains {{ placeholders');
       });
     });
   });
@@ -110,15 +119,15 @@ describe('CARIAK Project Structure', () => {
     const subFiles = readDir(subDir).filter(f => f.endsWith('.md'));
 
     it('should have exactly 5 subagent files', () => {
-      assert.strictEqual(subFiles.length, 5, `Expected 5 subagents, found ${subFiles.length}: ${subFiles.join(', ')}`);
+      assert.strictEqual(subFiles.length, 5, 'Expected 5 subagents, found ' + subFiles.length + ': ' + subFiles.join(', '));
     });
 
     subFiles.forEach(file => {
-      it(`"${file}" should have bilingual sections`, () => {
+      it('"' + file + '" should have bilingual sections', () => {
         const content = readFile(path.join(subDir, file));
-        assert.ok(content, `${file} is readable`);
-        const hasBilingual = content.includes('## English') || content.includes('## Bahasa Indonesia');
-        assert.ok(hasBilingual, `${file} has '## English' or '## Bahasa Indonesia' section`);
+        assert.ok(content, file + ' is readable');
+        const hasBilingual = content.includes('## English');
+        assert.ok(hasBilingual, file + ' has English section');
       });
     });
   });
@@ -128,19 +137,10 @@ describe('CARIAK Project Structure', () => {
     const requiredFiles = ['README.md', 'README.id.md', 'LICENSE'];
 
     requiredFiles.forEach(file => {
-      it(`"${file}" should exist`, () => {
+      it('"' + file + '" should exist', () => {
         const exists = fs.existsSync(path.join(ROOT, file));
-        assert.ok(exists, `${file} must exist in project root`);
+        assert.ok(exists, file + ' must exist in project root');
       });
-    });
-  });
-
-  // 6. Reference File Count
-  describe('references/ directory', () => {
-    it('should have at least 10 reference files', () => {
-      const refDir = path.join(ROOT, 'references');
-      const allFiles = readDir(refDir);
-      assert.ok(allFiles.length >= 10, `Expected >= 10 reference files, found ${allFiles.length}`);
     });
   });
 

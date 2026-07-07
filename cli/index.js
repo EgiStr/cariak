@@ -11,7 +11,6 @@ const cp = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const SKILLS_DIR = path.join(ROOT, 'skills');
-const REFERENCES_DIR = path.join(ROOT, 'references');
 const TEMPLATES_DIR = path.join(ROOT, 'templates');
 
 function readJSON(filePath) {
@@ -235,7 +234,8 @@ function copySkillsDir(src, dest, dryRun) {
       console.log(`  Would copy ${entry.name} to ${destDir}`);
     } else {
       copyDirRecursive(path.join(src, entry.name), destDir);
-      console.log(`  ✓ ${entry.name} installed globally`);
+      const refs = exists(path.join(destDir, 'references')) ? fs.readdirSync(path.join(destDir, 'references')).length : 0;
+      console.log(`  ✓ ${entry.name} installed (${refs} references)`);
     }
     installed++;
   }
@@ -298,17 +298,22 @@ function cmdDoctor(strictMode, jsonMode) {
   });
   if (!skillAllOk) failures++;
 
-  // 4. CSV references
+  // 4. CSV references (per-skill references/)
   let csvOk = 0, csvFail = 0;
-  if (isDir(REFERENCES_DIR)) {
-    const csvFiles = fs.readdirSync(REFERENCES_DIR).filter(f => f.endsWith('.csv'));
-    for (const f of csvFiles) {
-      try {
-        const content = fs.readFileSync(path.join(REFERENCES_DIR, f), 'utf8');
-        parseCsvContent(content);
-        csvOk++;
-      } catch {
-        csvFail++;
+  if (isDir(SKILLS_DIR)) {
+    const seen = new Set();
+    for (const d of fs.readdirSync(SKILLS_DIR)) {
+      const refDir = path.join(SKILLS_DIR, d, 'references');
+      if (!isDir(refDir)) continue;
+      for (const f of fs.readdirSync(refDir)) {
+        if (!f.endsWith('.csv')) continue;
+        if (seen.has(f)) continue;
+        seen.add(f);
+        try {
+          const content = fs.readFileSync(path.join(refDir, f), 'utf8');
+          parseCsvContent(content);
+          csvOk++;
+        } catch { csvFail++; }
       }
     }
   }
@@ -367,31 +372,38 @@ function cmdDoctor(strictMode, jsonMode) {
 function cmdValidate(jsonMode) {
   const errors = [];
 
-  // CSV validation
-  if (isDir(REFERENCES_DIR)) {
-    const csvFiles = fs.readdirSync(REFERENCES_DIR).filter(f => f.endsWith('.csv'));
-    for (const f of csvFiles) {
-      const fp = path.join(REFERENCES_DIR, f);
-      try {
-        const content = fs.readFileSync(fp, 'utf8');
-        const rows = parseCsvContent(content);
-        if (rows.length < 2) {
-          errors.push({ file: `references/${f}`, line: 1, message: 'CSV has no data rows' });
-          continue;
-        }
-        const headerCols = rows[0].length;
-        for (let i = 1; i < rows.length; i++) {
-          if (rows[i].length === 1 && rows[i][0] === '') continue; // skip empty rows
-          if (rows[i].length !== headerCols) {
-            errors.push({
-              file: `references/${f}`,
-              line: i + 1,
-              message: `column mismatch: expected ${headerCols}, got ${rows[i].length}`
-            });
+  // CSV validation (per-skill references/)
+  if (isDir(SKILLS_DIR)) {
+    const seen = new Set();
+    for (const d of fs.readdirSync(SKILLS_DIR)) {
+      const refDir = path.join(SKILLS_DIR, d, 'references');
+      if (!isDir(refDir)) continue;
+      for (const f of fs.readdirSync(refDir)) {
+        if (!f.endsWith('.csv')) continue;
+        if (seen.has(f)) continue;
+        seen.add(f);
+        const fp = path.join(refDir, f);
+        try {
+          const content = fs.readFileSync(fp, 'utf8');
+          const rows = parseCsvContent(content);
+          if (rows.length < 2) {
+            errors.push({ file: `references/${f}`, line: 1, message: 'CSV has no data rows' });
+            continue;
           }
+          const headerCols = rows[0].length;
+          for (let i = 1; i < rows.length; i++) {
+            if (rows[i].length === 1 && rows[i][0] === '') continue;
+            if (rows[i].length !== headerCols) {
+              errors.push({
+                file: `references/${f}`,
+                line: i + 1,
+                message: `column mismatch: expected ${headerCols}, got ${rows[i].length}`
+              });
+            }
+          }
+        } catch (err) {
+          errors.push({ file: `references/${f}`, line: 0, message: `parse error: ${err.message}` });
         }
-      } catch (err) {
-        errors.push({ file: `references/${f}`, line: 0, message: `parse error: ${err.message}` });
       }
     }
   }
