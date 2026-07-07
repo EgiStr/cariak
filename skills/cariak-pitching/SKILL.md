@@ -128,11 +128,7 @@ Output docs: ...
 
 **Goal:** Explore the problem space using structured brainstorming methods.
 
-1. **Select 3-5 methods** from `brainstorming-methods.csv` based on problem type:
-   - If the problem is about *understanding a phenomenon* → select exploratory methods.
-   - If the problem is about *making a decision* → select decision-structuring methods.
-   - If the problem is about *finding opportunities* → select generative methods.
-   - If the problem is about *risk/feasibility* → select critical methods.
+1. **Select 3-5 methods** from `brainstorming-methods.csv` based on `best_for` column matching problem type. If a selected method's `best_for` doesn't match, use its `fallback_method` instead. See `references/method-selection.md` for full selection criteria and default trio.
 2. **Run each method** and output results to the conversation:
 
 For each method:
@@ -299,6 +295,7 @@ What's next?
 | Reference | When to Load |
 |---|---|
 | `references/brainstorming-methods.csv` | Phase 2: select methods for diverge |
+| `references/method-selection.md` | Phase 2: method selection criteria and fallback rules |
 | `references/advisor-personas.csv` | Phase 3: select personas for counsel |
 | `references/pitch-brief-template.md` | Phase 5: pitch doc format |
 | `docs/cariak/spec/YYYY-MM-DD-slug/pitch-exploration.md` | Phase 5: output path |
@@ -438,11 +435,7 @@ Dokumen output: ...
 
 **Tujuan:** Mengeksplorasi ruang masalah menggunakan metode brainstorming terstruktur.
 
-1. **Pilih 3-5 metode** dari `brainstorming-methods.csv` berdasarkan tipe masalah:
-   - Jika masalah tentang *memahami fenomena* → pilih metode eksploratori.
-   - Jika masalah tentang *membuat keputusan* → pilih metode strukturasi keputusan.
-   - Jika masalah tentang *mencari peluang* → pilih metode generatif.
-   - Jika masalah tentang *risiko/kelayakan* → pilih metode kritis.
+1. **Pilih 3-5 metode** dari `brainstorming-methods.csv` berdasarkan kolom `best_for` yang cocok dengan tipe masalah. Jika `best_for` metode yang dipilih tidak cocok, gunakan `fallback_method`-nya. Lihat `references/method-selection.md` untuk kriteria seleksi lengkap dan trio default.
 2. **Jalankan setiap metode** dan output hasil ke percakapan:
 
 Untuk setiap metode:
@@ -609,6 +602,7 @@ Selanjutnya apa?
 | Referensi | Kapan Dimuat |
 |---|---|
 | `references/brainstorming-methods.csv` | Fase 2: pilih metode untuk divergen |
+| `references/method-selection.md` | Fase 2: kriteria seleksi metode dan aturan fallback |
 | `references/advisor-personas.csv` | Fase 3: pilih persona untuk konsultasi |
 | `references/pitch-brief-template.md` | Fase 5: format pitch doc |
 | `docs/cariak/spec/YYYY-MM-DD-slug/pitch-exploration.md` | Fase 5: path output |
