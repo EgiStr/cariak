@@ -244,6 +244,20 @@ function copySkillsDir(src, dest, dryRun) {
 }
 
 // --- doctor ---
+function cmdPresent(argv, jsonMode) {
+  const { run } = require('./presentation');
+  const reportArgv = [];
+  for (let i = 0; i < argv.length; i++) {
+    const a = argv[i];
+    reportArgv.push(a);
+    if ((a === '--input' || a === '--output') && i + 1 < argv.length) {
+      reportArgv.push(argv[++i]);
+    }
+  }
+  if (jsonMode && !reportArgv.includes('--json')) reportArgv.push('--json');
+  run(reportArgv);
+}
+
 function cmdDoctor(strictMode, jsonMode) {
   const checks = [];
   let failures = 0;
@@ -564,6 +578,8 @@ function cmdHelp() {
     '  bundle [skill-name] [--output <dir>]  Package skill(s) into .skill ZIP archives',
     '  report --input <json> [--template <name>] [--output <file.docx>]',
     '                                     Generate professional DOCX report',
+  '  present --input <json> [--output <file.pptx>]',
+  '                                     Generate consulting-grade PPTX presentation',
     '  version                            Print version',
     '  help                               Show this help',
     '',
@@ -640,6 +656,9 @@ function main() {
     }
     case 'report':
       cmdReport(cmdArgs, jsonMode);
+      break;
+    case 'present':
+      cmdPresent(cmdArgs, jsonMode);
       break;
     case 'version':
       cmdVersion();

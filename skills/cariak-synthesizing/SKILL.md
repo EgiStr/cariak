@@ -20,8 +20,10 @@ A summary lists what each sub-agent found. A synthesis resolves those findings�
 This phase uses real academic methods:
 - **Thematic Synthesis** (Thomas & Harden, 2008, BMC Medical Research Methodology) — line-by-line coding of findings → descriptive themes → analytical themes → map to RQs.
 - **Framework Synthesis** (Carroll et al., 2013, BMC Medical Research Methodology) — index findings against an a-priori framework, refine with new data.
-- Output structures derived from **Technology Assessment** (US GAO, 2021) and **Feasibility Study methodology** (USACE, 2023).
+- **Report methodology**: **Pyramid Principle** (Minto, 1987, McKinsey) — governing thought → key arguments → evidence. **MECE** (McKinsey/BCG) — Mutually Exclusive, Collectively Exhaustive sections. **Evidence-to-Decision (EtD)** (GRADE/WHO, 2022) — evidence grading → recommendations.
+- Output: DOCX (docx npm) + PPTX (pptxgenjs) + MD fallback. Generate via `npx cariak-pi report` and `npx cariak-pi present`.
 
+Load `references/research-methods.csv` during preflight.
 
 ### When to Use
 
