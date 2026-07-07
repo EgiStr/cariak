@@ -1,0 +1,20 @@
+# Cariak Reflecting - Quality Thresholds v1.1
+
+reflection:
+  max_iterations: 2
+  manual_gate_on_iteration: 3
+  triggers:
+    re_research:
+      - condition: confidence_score_lt
+        threshold: 0.7
+      - condition: source_count_lt
+        threshold: 5
+      - condition: contradiction_count_gt
+        threshold: 3
+  coverage:
+    minimum_sources_per_question: 3
+    minimum_source_diversity: 3  # at least 3 different source types
+  confidence:
+    high: 0.85
+    medium: 0.7
+    low: 0.5
