@@ -1,6 +1,6 @@
-# Structural Research Methods
+# Structural Research Methods — Sourced
 
-Cariak v1.3.1 adds an explicit structural method layer to every phase. This prevents deep research from becoming a generic web-search summary and makes each skill auditable.
+Cariak v1.3.1 uses only real, cited research methodologies. Zero synthetic/AI-hallucinated methods.
 
 ## Why this exists
 
@@ -21,75 +21,52 @@ and receive a report that explains:
 - what alternatives exist,
 - what should be built first.
 
-## Method registry
+## Method Registry
 
-See: `references/structural-research-methods.csv`.
+See: `references/structural-research-methods.csv` (17 methods with full citations).
 
-| ID | Method | Phase |
-|---|---|---|
-| M01 | Structured Brainstorming Matrix | pitching |
-| M02 | BDD Research Specification | grinding |
-| M03 | Engineering Lens Canvas | grinding |
-| M04 | Source Taxonomy Planning | planning |
-| M05 | Multi-Lens Parallel Research | researching |
-| M06 | Implementation Evidence Harvest | researching |
-| M07 | Cross-Source Synthesis | synthesizing |
-| M08 | Expert Technical Report | synthesizing |
-| M09 | Falsification Validation | validating |
-| M10 | Quality Reflection Rubric | reflecting |
-| M11 | Research Knowledge Closure | closing |
+| Phase | Methods |
+|---|---|
+| **pitching** | SCAMPER (Eberle 1996), Five Whys (Ohno 1988), Design Thinking (Brown 2008, HBR) |
+| **grinding** | PICO Framework (Richardson et al. 1995, ACP Journal Club), PRISMA-P 2015 (Moher et al. 2015, Systematic Reviews) |
+| **planning** | Systematic Review Protocol (Kitchenham & Charters 2007, EBSE TR), Cochrane Handbook (Higgins & Green 2011) |
+| **researching** | OSINT Cycle (NATO 2001; Williams & Blum 2018, RAND), Cochrane Systematic Search (Higgins & Green 2011) |
+| **synthesizing** | Thematic Synthesis (Thomas & Harden 2008, BMC Med Res Methodol), Framework Synthesis (Carroll et al. 2013, BMC Med Res Methodol) |
+| **synthesizing output** | Technology Assessment (US GAO 2021, GAO-21-347G), Feasibility Study (USACE 2023, ER 1105-2-100) |
+| **validating** | GRADE (Guyatt et al. 2008, BMJ), CASP Checklists (UK NHS 2018, casp-uk.net) |
+| **reflecting** | AMSTAR 2 (Shea et al. 2017, BMJ j4008), PRISMA 2020 Checklist (Page et al. 2021, BMJ n71) |
+| **closing** | FAIR Data Principles (Wilkinson et al. 2016, Scientific Data/Nature) |
 
-## Engineering Lens Canvas
+## Engineering Heuristic (not a novel method)
 
-Technical topics must include this canvas in the spec and final report:
+The technical report structure below is a *practical synthesis* of Technology Assessment + Feasibility Study + Engineering Design Review, not a claimed novel method:
 
-1. First principles
-2. State of the art
-3. Field practice
-4. Implementation architecture
-5. Data strategy
-6. Evaluation protocol
-7. Failure modes
-8. Tradeoffs
-9. Alternatives
-10. Unknowns / required experiments
+1. Executive Summary
+2. Problem Framing
+3. First-Principles Explanation
+4. State of the Art
+5. Methods Used in the Field
+6. Method Comparison Matrix
+7. Recommended Architecture
+8. Implementation Roadmap
+9. Data Strategy
+10. Evaluation Protocol
+11. Failure Modes & Mitigations
+12. Alternatives and Build-vs-Buy Options
+13. Gaps / Unknowns / Required Experiments
+14. Final Recommendation
+15. References
 
-## Implementation Evidence Harvest
+Every section above traces to a source method — see the full mapping in `references/structural-research-methods.md`.
 
-Technical research plans must search for:
+## Key References
 
-- repositories,
-- official docs,
-- benchmarks,
-- datasets / model cards,
-- standards / patents,
-- commercial products,
-- field practice / deployment reports.
-
-If evidence is not found, the report must say so explicitly. Do not invent implementation guidance.
-
-## Expert Technical Report quality bar
-
-The final report should let a practitioner answer:
-
-- What should we build first?
-- What method should we avoid and why?
-- What data do we need?
-- How do we know it works?
-- What breaks in production?
-- What simpler / cheaper / commercial alternatives exist?
-- Which claims are strong, weak, or uncertain?
-
-## Files changed by this method layer
-
-- `references/structural-research-methods.csv`
-- `references/structural-research-methods.md`
-- `skills/cariak-pitching/SKILL.md`
-- `skills/cariak-grinding/SKILL.md`
-- `skills/cariak-planning/SKILL.md`
-- `skills/cariak-researching/SKILL.md`
-- `skills/cariak-synthesizing/SKILL.md`
-- `skills/cariak-validating/SKILL.md`
-- `skills/cariak-reflecting/SKILL.md`
-- `skills/cariak-closing/SKILL.md`
-- `templates/technical-report.md`
+1. **Brown, T. (2008).** Design Thinking. HBR. → Problem exploration
+2. **Richardson, W.S., et al. (1995).** PICO. ACP Journal Club. → Research question formulation
+3. **Kitchenham, B., & Charters, S. (2007).** SLR Guidelines. EBSE TR. → Search protocol
+4. **NATO (2001).** OSINT Handbook. → Multi-source collection
+5. **Thomas, J., & Harden, A. (2008).** Thematic Synthesis. BMC Med Res Methodol. → Evidence synthesis
+6. **US GAO (2021).** Technology Assessment. GAO-21-347G. → Technical evaluation
+7. **Guyatt, G.H., et al. (2008).** GRADE. BMJ. → Evidence quality
+8. **Shea, B.J., et al. (2017).** AMSTAR 2. BMJ. → Review quality
+9. **Wilkinson, M.D., et al. (2016).** FAIR Principles. Scientific Data. → Knowledge preservation

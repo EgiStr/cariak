@@ -78,9 +78,9 @@ Present the plan summary to the user. Do NOT auto-invoke `cariak-researching`. T
 
 ### Structural Method
 
-This phase uses:
-- **M04 — Source Taxonomy Planning**: every RQ maps to explicit source domains, query families, and output documents.
-- **M03 — Engineering Lens Canvas** from grinding: when present, convert each lens into search assignments so implementation evidence is not missed.
+This phase uses real academic methods:
+- **Systematic Review Protocol** (Kitchenham & Charters, 2007, EBSE Technical Report) — reproducible search strategy, source taxonomy, inclusion/exclusion criteria.
+- Also draws from **Cochrane Handbook Chapter 4** (Higgins & Green, 2011) for systematic search design.
 
 Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, and `references/source-taxonomy.csv` during preflight.
 

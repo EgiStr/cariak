@@ -50,10 +50,12 @@ Pitching is the entry point of the CariaK research lifecycle. It exists because 
 
 ### Structural Method
 
-This phase uses:
-- **M01 — Structured Brainstorming Matrix**: select 3-5 methods from `brainstorming-methods.csv` using `best_for` and `fallback_method`, then converge into 2-3 directions.
+This phase uses real academic/industry methods:
+- **SCAMPER** (Eberle, 1996) — 7 creative operators for structured ideation.
+- **Five Whys** (Ohno, 1988 — Toyota Production System) — root-cause problem exploration.
+- **Design Thinking** (Brown, 2008, Harvard Business Review) — Empathize → Define → Ideate for wicked problems.
 
-Load `references/structural-research-methods.csv` and `references/structural-research-methods.md` so the pitch can hand off cleanly into BDD grinding and engineering-report methods.
+Load `references/structural-research-methods.csv` and `references/structural-research-methods.md` during preflight.
 
 ### Hard Gates
 

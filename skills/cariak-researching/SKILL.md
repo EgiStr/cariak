@@ -17,11 +17,11 @@ Research is not a single-threaded Google search. It is the simultaneous deployme
 
 ### Structural Method
 
-This phase uses:
-- **M05 — Multi-Lens Parallel Research**: run the five source lenses concurrently.
-- **M06 — Implementation Evidence Harvest**: for technical topics, collect implementation artifacts: repos, docs, benchmarks, datasets, model cards, standards, patents, commercial products, and field deployments.
+This phase uses real methods:
+- **OSINT Cycle** (NATO, 2001 — Direction → Collection → Processing → Analysis → Dissemination) for multi-source intelligence gathering across surface web, deep web, social media, academic databases, news, and market data.
+- **Cochrane Systematic Search** (Higgins & Green, 2011, Cochrane Handbook Chapter 4) for reproducible database search strategy.
 
-Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, and the `Implementation Evidence Plan` from `research-plan.md` during preflight.
+Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, and the research plan during preflight.
 
 ### When to Use
 

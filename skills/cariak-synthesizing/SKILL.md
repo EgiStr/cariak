@@ -17,9 +17,10 @@ A summary lists what each sub-agent found. A synthesis resolves those findings�
 
 ### Structural Method
 
-This phase uses:
-- **M07 — Cross-Source Synthesis**: build a cited claim registry, deduplicate evidence, map claims to RQs, resolve contradictions, and compute confidence.
-- **M08 — Expert Technical Report**: for technical topics, produce implementation-ready reporting with first principles, field methods, architecture, roadmap, data strategy, evaluation, failure modes, alternatives, gaps, and recommendation.
+This phase uses real academic methods:
+- **Thematic Synthesis** (Thomas & Harden, 2008, BMC Medical Research Methodology) — line-by-line coding of findings → descriptive themes → analytical themes → map to RQs.
+- **Framework Synthesis** (Carroll et al., 2013, BMC Medical Research Methodology) — index findings against an a-priori framework, refine with new data.
+- Output structures derived from **Technology Assessment** (US GAO, 2021) and **Feasibility Study methodology** (USACE, 2023).
 
 Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, and `references/synthesis-template.md` during preflight.
 

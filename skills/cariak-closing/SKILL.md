@@ -56,8 +56,8 @@ Closing runs after cariak-reflecting returns `PASS` (or after cariak-validating 
 
 ### Structural Method
 
-This phase uses:
-- **M11 — Research Knowledge Closure**: verify artifacts, verdicts, advisor gates, memory updates, and closeout summary so completed research becomes reusable knowledge.
+This phase uses the real knowledge-preservation method:
+- **FAIR Data Principles** (Wilkinson et al., 2016, Scientific Data/Nature) — Findable, Accessible, Interoperable, Reusable.
 
 Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, and `references/closeout-template.md` during preflight.
 

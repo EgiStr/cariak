@@ -61,7 +61,7 @@ Every advisor challenge is recorded in `advisor-phase-mapping.csv` and is mandat
 - **Auto-Reflection Quality Gate** — the `reflecting` skill evaluates every output against confidence, source coverage, and bias criteria before release
 - **Bilingual (Indonesian + English)** — every skill, prompt, and output template supports both languages
 - **Every Claim Sourced** — the Iron Law: *NO CLAIM WITHOUT SOURCE*. Unsourced claims are flagged and rejected at the validation gate
-- **Structural Research Methods** — every phase uses an explicit method registry (`references/structural-research-methods.csv`): structured brainstorming, BDD research specs, Engineering Lens Canvas, implementation evidence harvest, expert technical reporting, falsification, and reflection QA
+- **Structural Research Methods** — every phase uses real, cited academic/industry methods (SCAMPER, PICO, PRISMA-P, OSINT Cycle, Thematic Synthesis, GRADE, AMSTAR 2, FAIR, etc.) — see `references/structural-research-methods.csv` for full source citations
 
 ---
 

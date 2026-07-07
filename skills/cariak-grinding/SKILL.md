@@ -15,11 +15,13 @@ description: Refine a pitch into a precise research specification. Use AFTER car
 
 ### Structural Method
 
-This phase uses:
-- **M02 — BDD Research Specification**: turn research directions into testable Given/When/Then questions.
-- **M03 — Engineering Lens Canvas**: for technical topics, force first principles, field practice, implementation architecture, data, metrics, failure modes, tradeoffs, alternatives, and unknowns.
+This phase uses real academic methods:
+- **PICO Framework** (Richardson et al., 1995, ACP Journal Club) — Population, Intervention, Comparison, Outcome for structured question formulation.
+- **PRISMA-P 2015** (Moher et al., 2015, Systematic Reviews) — protocol development before evidence collection.
 
-Load `references/structural-research-methods.csv` and `references/structural-research-methods.md` during preflight. If the topic is technical, scientific, ML, data, hardware, infrastructure, or product implementation, M03 is mandatory.
+For technical topics, Cariak also applies a heuristic derived from Technology Assessment (US GAO, 2021) and Feasibility Study methodology (USACE, 2023) to structure implementation-oriented research.
+
+Load `references/structural-research-methods.csv` and `references/structural-research-methods.md` during preflight.
 
 ### When to Use
 

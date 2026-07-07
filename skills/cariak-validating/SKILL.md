@@ -17,8 +17,9 @@ Validation is the falsification phase. It does not seek to confirm what the synt
 
 ### Structural Method
 
-This phase uses:
-- **M09 — Falsification Validation**: extract high-stakes claims, seek counter-evidence, verify sources, and grade Confirmed / Refuted / Inconclusive.
+This phase uses real evidence-quality methods:
+- **GRADE** (Guyatt et al., 2008, BMJ) — rates evidence quality as High/Moderate/Low/Very Low based on risk of bias, imprecision, inconsistency, indirectness, publication bias.
+- **CASP Checklists** (Critical Appraisal Skills Programme, UK NHS, 2018) — structured critical appraisal of individual sources (10-12 questions per study type).
 
 Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, and `references/research-methods.csv` during preflight.
 

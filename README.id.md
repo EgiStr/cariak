@@ -60,7 +60,7 @@ Setiap tantangan advisor dicatat di `advisor-phase-mapping.csv` dan bersifat waj
 - **Gerbang Kualitas Auto-Reflection** — skill `reflecting` mengevaluasi setiap output terhadap kriteria kepercayaan, cakupan sumber, dan bias sebelum dirilis
 - **Dwibahasa (Indonesia + Inggris)** — setiap skill, prompt, dan template output mendukung kedua bahasa
 - **Setiap Klaim Bersumber** — Hukum Besi: *TIDAK ADA KLAIM TANPA SUMBER*. Klaim tanpa sumber ditandai dan ditolak di gerbang validasi
-- **Metode Riset Terstruktur** — setiap fase memakai registry metode eksplisit (`references/structural-research-methods.csv`): brainstorming terstruktur, BDD research spec, Engineering Lens Canvas, implementation evidence harvest, expert technical report, falsification, dan reflection QA
+- **Metode Riset Terstruktur** — setiap fase memakai metode akademis/industri asli yang bersumber (SCAMPER, PICO, PRISMA-P, OSINT Cycle, Thematic Synthesis, GRADE, AMSTAR 2, FAIR, dll.) — lihat `references/structural-research-methods.csv` untuk sumber lengkap
 
 ---
 

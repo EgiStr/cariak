@@ -19,8 +19,9 @@ Reflection is not a summary. It is a critical self-assessment that asks: Did we 
 
 ### Structural Method
 
-This phase uses:
-- **M10 — Quality Reflection Rubric**: decide whether the research is good enough to deliver by scoring confidence, coverage, source diversity, technical depth, alternatives, failure modes, and implementation actionability.
+This phase uses real review-quality methods:
+- **AMSTAR 2** (Shea et al., 2017, BMJ) — 16-item checklist assessing methodological quality of completed reviews.
+- **PRISMA 2020 Checklist** (Page et al., 2021, BMJ) — 27-item standard for reporting completeness of systematic reviews.
 
 Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, `references/quality-thresholds.yaml`, and `references/reflection-template.md` during preflight.
 
