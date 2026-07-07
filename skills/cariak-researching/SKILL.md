@@ -21,7 +21,6 @@ This phase uses real methods:
 - **OSINT Cycle** (NATO, 2001 — Direction → Collection → Processing → Analysis → Dissemination) for multi-source intelligence gathering across surface web, deep web, social media, academic databases, news, and market data.
 - **Cochrane Systematic Search** (Higgins & Green, 2011, Cochrane Handbook Chapter 4) for reproducible database search strategy.
 
-Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, and the research plan during preflight.
 
 ### When to Use
 
@@ -289,8 +288,6 @@ Present the user with the handoff menu:
 
 | Trigger | Location | Purpose |
 |---|---|---|
-| `references/structural-research-methods.csv` | Phase 0, 1 | Method registry for M05/M06 |
-| `references/structural-research-methods.md` | Phase 0, 1, 4 | Implementation Evidence Harvest guidance |
 | `references/source-taxonomy.csv` | Phase 1 | Determines allowed sources per sub-agent |
 | Sub-agent definitions (`subagents/*.md`) | Phase 2 | Provides tool lists and output formats |
 | `research-plan.md` | Phase 0, 1 | Source of queries and assignments |

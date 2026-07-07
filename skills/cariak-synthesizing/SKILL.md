@@ -22,7 +22,6 @@ This phase uses real academic methods:
 - **Framework Synthesis** (Carroll et al., 2013, BMC Medical Research Methodology) — index findings against an a-priori framework, refine with new data.
 - Output structures derived from **Technology Assessment** (US GAO, 2021) and **Feasibility Study methodology** (USACE, 2023).
 
-Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, and `references/synthesis-template.md` during preflight.
 
 ### When to Use
 
@@ -94,7 +93,6 @@ The Contradiction Hunter + Devil's Advocate advisor challenge (Phase 3.5) is not
 2. Verify all 5 findings files exist (GATE 0)
 3. Load `research-spec.md` to recover research questions
 4. Load `references/citation-standards.csv` for citation format
-5. Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, and `references/synthesis-template.md`
 6. Create output directory: `docs/cariak/synthesized/YYYY-MM-DD-slug/`
 7. Log synthesis start to Memory MCP
 
@@ -371,8 +369,6 @@ Each RQ gets its own confidence score based on:
 
 | Reference File | Phase | Purpose |
 |---|---|---|
-| `references/structural-research-methods.csv` | Phase 0, 4 | Method registry for M07/M08 |
-| `references/structural-research-methods.md` | Phase 0, 4 | Expert Technical Report structure and quality bar |
 | `references/citation-standards.csv` | Phase 4, 5 | Citation format per source type |
 | `references/synthesis-template.md` | Phase 2, 3 | Structure for synthesized findings |
 | `research-spec.md` | Phase 0, 1 | Recover RQs to map findings |

@@ -59,7 +59,6 @@ Closing runs after cariak-reflecting returns `PASS` (or after cariak-validating 
 This phase uses the real knowledge-preservation method:
 - **FAIR Data Principles** (Wilkinson et al., 2016, Scientific Data/Nature) — Findable, Accessible, Interoperable, Reusable.
 
-Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, and `references/closeout-template.md` during preflight.
 
 ### Hard Gates
 
@@ -152,8 +151,6 @@ Run all steps before changing any state. Any failure blocks closure.
    - Extract source type distribution (academic, news, social, market, internet).
 
 6. **Load structural method references:**
-   - `references/structural-research-methods.csv`
-   - `references/structural-research-methods.md`
    - `references/closeout-template.md`
 
 **Output:** Preflight report (silent unless blocked).

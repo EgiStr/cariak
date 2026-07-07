@@ -23,7 +23,6 @@ This phase uses real review-quality methods:
 - **AMSTAR 2** (Shea et al., 2017, BMJ) — 16-item checklist assessing methodological quality of completed reviews.
 - **PRISMA 2020 Checklist** (Page et al., 2021, BMJ) — 27-item standard for reporting completeness of systematic reviews.
 
-Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, `references/quality-thresholds.yaml`, and `references/reflection-template.md` during preflight.
 
 ### When to Use
 
@@ -111,8 +110,6 @@ Before beginning reflection:
 
 1. **Verify artifacts exist** (GATE 0)
 2. **Load structural method references:**
-   - `references/structural-research-methods.csv`
-   - `references/structural-research-methods.md`
    - `references/quality-thresholds.yaml`
    - `references/reflection-template.md`
 3. **Check memory MCP** for project context:
@@ -436,8 +433,6 @@ This requires human judgment:
 
 | Trigger | Location | Used in Phase |
 |---|---|---|
-| `references/structural-research-methods.csv` | references/ | Phase 0, 4.1, 5 |
-| `references/structural-research-methods.md` | references/ | Phase 0, 4.1, 5 |
 | `references/quality-thresholds.yaml` | references/ | Phase 5 (Decision) |
 | `references/reflection-template.md` | references/ | Phase 6 (Write Report) |
 | `references/coverage-matrix.csv` | references/ | Phase 2 (Coverage) |

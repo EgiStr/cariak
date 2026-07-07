@@ -21,7 +21,6 @@ This phase uses real academic methods:
 
 For technical topics, Cariak also applies a heuristic derived from Technology Assessment (US GAO, 2021) and Feasibility Study methodology (USACE, 2023) to structure implementation-oriented research.
 
-Load `references/structural-research-methods.csv` and `references/structural-research-methods.md` during preflight.
 
 ### When to Use
 
@@ -71,7 +70,6 @@ Before handing off to planning, present the research-spec.md to the user for app
 #### Phase 0: Preflight
 1. Check memory MCP for existing project sessions: `memory_search_nodes(query: "research project")`.
 2. Scan `docs/cariak/spec/` for existing pitch-exploration.md files.
-3. Load `references/structural-research-methods.csv` and `references/structural-research-methods.md`.
 4. If pitch exists, load it and extract:
    - Problem statement
    - Research directions (2-3)
@@ -242,8 +240,6 @@ File: `docs/cariak/spec/YYYY-MM-DD-slug/research-spec.md`
 
 | Trigger File | Phase Used | Purpose |
 |---|---|---|
-| `references/structural-research-methods.csv` | Phase 0, 2.1 | Method registry for BDD spec and Engineering Lens Canvas |
-| `references/structural-research-methods.md` | Phase 0, 2.1 | Engineering Lens details and technical-report quality bar |
 | `references/question-frameworks.csv` | Phase 2 | Select frameworks for structuring research questions |
 | `references/research-spec-template.md` | Phase 4 | Template for research-spec.md structure |
 | `references/advisor-personas.csv` | Phase 2 (optional) | If advising is called to stress-test questions |

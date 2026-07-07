@@ -23,7 +23,7 @@ and receive a report that explains:
 
 ## Method Registry
 
-See: `references/structural-research-methods.csv` (17 methods with full citations).
+See: `references/research-methods.csv` (17 methods with full citations appended to existing catalog).
 
 | Phase | Methods |
 |---|---|
@@ -57,7 +57,7 @@ The technical report structure below is a *practical synthesis* of Technology As
 14. Final Recommendation
 15. References
 
-Every section above traces to a source method — see the full mapping in `references/structural-research-methods.md`.
+Every section above traces to a source method — see the full mapping in `references/research-methods.csv`.
 
 ## Key References
 

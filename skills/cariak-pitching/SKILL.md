@@ -55,7 +55,7 @@ This phase uses real academic/industry methods:
 - **Five Whys** (Ohno, 1988 — Toyota Production System) — root-cause problem exploration.
 - **Design Thinking** (Brown, 2008, Harvard Business Review) — Empathize → Define → Ideate for wicked problems.
 
-Load `references/structural-research-methods.csv` and `references/structural-research-methods.md` during preflight.
+Load `references/research-methods.csv` during preflight.
 
 ### Hard Gates
 
@@ -64,11 +64,10 @@ Load `references/structural-research-methods.csv` and `references/structural-res
 Before any user interaction, silently:
 1. Scan the project directory for existing `docs/cariak/spec/` directories.
 2. Query memory MCP for existing `ResearchProject` entities related to the topic.
-3. Load `references/structural-research-methods.csv` silently.
-4. Load `references/structural-research-methods.md` silently.
-5. Load `references/brainstorming-methods.csv` silently.
-6. Load `references/advisor-personas.csv` silently.
-7. Load `references/pitch-brief-template.md` silently.
+3. Load `references/research-methods.csv` silently.
+4. Load `references/brainstorming-methods.csv` silently.
+5. Load `references/advisor-personas.csv` silently.
+6. Load `references/pitch-brief-template.md` silently.
 
 NO OUTPUT until preflight is complete. If preflight fails (files missing), note the missing files and proceed with available context. Do not block the user on missing reference files — degrade gracefully.
 
@@ -305,9 +304,7 @@ What's next?
 
 | Reference | When to Load |
 |---|---|
-| `references/structural-research-methods.csv` | Phase 0, 5: method registry (see also research-methods.csv for source citations) |
-| `references/structural-research-methods.md` | Phase 0, 5: technical research quality bar for downstream handoff |
-| `references/research-methods.csv` | Phase 0, 5: full method catalog with source citations (SCAMPER, PICO, PRISMA-P, OSINT, etc.) |
+| `references/research-methods.csv` | Phase 0-5: full method catalog with source citations (SCAMPER, PICO, PRISMA-P, OSINT, etc.) |
 | `references/brainstorming-methods.csv` | Phase 2: select methods for diverge |
 | `references/method-selection.md` | Phase 2: method selection criteria and fallback rules |
 | `references/advisor-personas.csv` | Phase 3: select personas for counsel |

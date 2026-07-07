@@ -82,7 +82,6 @@ This phase uses real academic methods:
 - **Systematic Review Protocol** (Kitchenham & Charters, 2007, EBSE Technical Report) — reproducible search strategy, source taxonomy, inclusion/exclusion criteria.
 - Also draws from **Cochrane Handbook Chapter 4** (Higgins & Green, 2011) for systematic search design.
 
-Load `references/structural-research-methods.csv`, `references/structural-research-methods.md`, and `references/source-taxonomy.csv` during preflight.
 
 ### Phases
 
@@ -95,8 +94,6 @@ Load `references/structural-research-methods.csv`, `references/structural-resear
 2. Scan for existing `research-spec.md`:
    - Look in `docs/cariak/spec/` for the most recent spec matching the current topic.
 3. Load reference data:
-   - `references/structural-research-methods.csv` — phase method registry.
-   - `references/structural-research-methods.md` — Engineering Lens and report quality bar.
    - `references/source-taxonomy.csv` — source types each sub-agent covers.
    - `references/citation-standards.csv` — citation format per source type.
 4. Identify the working directory slug (date + topic keyword).
@@ -307,8 +304,6 @@ If user chooses option 3 → save and exit.
 
 | Trigger | File | Phase |
 |---|---|---|
-| Structural method registry | `references/structural-research-methods.csv` | Phase 0 |
-| Engineering Lens guide | `references/structural-research-methods.md` | Phase 0, 3.1 |
 | Source type mapping | `references/source-taxonomy.csv` | Phase 3 |
 | Citation format per source | `references/citation-standards.csv` | Phase 4 |
 | Sub-agent definitions | `subagents/*.md` | Phase 3 |

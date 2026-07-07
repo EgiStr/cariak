@@ -60,7 +60,7 @@ Setiap tantangan advisor dicatat di `advisor-phase-mapping.csv` dan bersifat waj
 - **Gerbang Kualitas Auto-Reflection** — skill `reflecting` mengevaluasi setiap output terhadap kriteria kepercayaan, cakupan sumber, dan bias sebelum dirilis
 - **Dwibahasa (Indonesia + Inggris)** — setiap skill, prompt, dan template output mendukung kedua bahasa
 - **Setiap Klaim Bersumber** — Hukum Besi: *TIDAK ADA KLAIM TANPA SUMBER*. Klaim tanpa sumber ditandai dan ditolak di gerbang validasi
-- **Metode Riset Terstruktur** — setiap fase memakai metode akademis/industri asli yang bersumber (SCAMPER, PICO, PRISMA-P, OSINT Cycle, Thematic Synthesis, GRADE, AMSTAR 2, FAIR, dll.) — lihat `references/structural-research-methods.csv` untuk sumber lengkap
+- **Metode Riset Terstruktur** — setiap fase memakai metode akademis/industri asli yang bersumber — lihat `references/research-methods.csv` untuk sumber lengkap (SCAMPER, PICO, PRISMA-P, OSINT Cycle, Thematic Synthesis, GRADE, AMSTAR 2, FAIR, dll.)
 
 ---
 
@@ -130,7 +130,7 @@ Picu Cariak dengan salah satu frasa berikut di sesi OpenCode Anda:
 
 Cariak membawa registry metode per fase agar setiap skill memakai teknik akademis/industri yang auditable, bukan prompt generik.
 
-Lihat: [`docs/structural-research-methods.md`](docs/structural-research-methods.md) dan [`references/structural-research-methods.csv`](references/structural-research-methods.csv).
+Lihat: [`docs/structural-research-methods.md`](docs/structural-research-methods.md) dan [`references/research-methods.csv`](references/research-methods.csv).
 
 Untuk topik teknis, Cariak memakai **Engineering Lens Canvas** dan **Expert Technical Report**. Laporan akhir wajib membahas first principles, state of the art, praktik lapangan, arsitektur implementasi, strategi data, protokol evaluasi, failure modes, alternatif, unknowns, dan roadmap build konkret.
 

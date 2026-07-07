@@ -61,7 +61,7 @@ Every advisor challenge is recorded in `advisor-phase-mapping.csv` and is mandat
 - **Auto-Reflection Quality Gate** — the `reflecting` skill evaluates every output against confidence, source coverage, and bias criteria before release
 - **Bilingual (Indonesian + English)** — every skill, prompt, and output template supports both languages
 - **Every Claim Sourced** — the Iron Law: *NO CLAIM WITHOUT SOURCE*. Unsourced claims are flagged and rejected at the validation gate
-- **Structural Research Methods** — every phase uses real, cited academic/industry methods (SCAMPER, PICO, PRISMA-P, OSINT Cycle, Thematic Synthesis, GRADE, AMSTAR 2, FAIR, etc.) — see `references/structural-research-methods.csv` for full source citations
+- **Structural Research Methods** — every phase uses real, cited academic/industry methods — see `references/research-methods.csv` for full source citations (SCAMPER, PICO, PRISMA-P, OSINT Cycle, Thematic Synthesis, GRADE, AMSTAR 2, FAIR, etc.)
 
 ---
 
@@ -131,7 +131,7 @@ Trigger Cariak with any of the following phrases in your OpenCode session:
 
 Cariak ships a phase-by-phase method registry so each skill uses an auditable academic/industry technique, not a generic prompt.
 
-See: [`docs/structural-research-methods.md`](docs/structural-research-methods.md) and [`references/structural-research-methods.csv`](references/structural-research-methods.csv).
+See: [`docs/structural-research-methods.md`](docs/structural-research-methods.md) and [`references/research-methods.csv`](references/research-methods.csv).
 
 For technical topics, Cariak applies the **Engineering Lens Canvas** and **Expert Technical Report** method. The final report must cover first principles, state of the art, field practice, implementation architecture, data strategy, evaluation protocol, failure modes, alternatives, unknowns, and a concrete build roadmap.
 
