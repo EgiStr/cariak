@@ -305,8 +305,9 @@ What's next?
 
 | Reference | When to Load |
 |---|---|
-| `references/structural-research-methods.csv` | Phase 0, 5: method registry for the full Cariak pipeline |
+| `references/structural-research-methods.csv` | Phase 0, 5: method registry (see also research-methods.csv for source citations) |
 | `references/structural-research-methods.md` | Phase 0, 5: technical research quality bar for downstream handoff |
+| `references/research-methods.csv` | Phase 0, 5: full method catalog with source citations (SCAMPER, PICO, PRISMA-P, OSINT, etc.) |
 | `references/brainstorming-methods.csv` | Phase 2: select methods for diverge |
 | `references/method-selection.md` | Phase 2: method selection criteria and fallback rules |
 | `references/advisor-personas.csv` | Phase 3: select personas for counsel |

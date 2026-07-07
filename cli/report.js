@@ -469,12 +469,196 @@ function dispatchTemplate(templateName, data) {
       (data.steps || data.next_steps || []).forEach(s => sections.push(bullet(s)));
       break;
 
+    case 'engineering-deep-dive':
+      return buildEngineeringDeepDive(data);
+
     default:
       // fallback to research-report
       return buildResearchReport(data);
   }
 
   return { sections, title, subtitle, applyCover };
+}
+
+// ── engineering-deep-dive builder (comprehensive single-file report) ──────
+
+function buildEngineeringDeepDive(data) {
+  const sections = [];
+  const title = data.title || data.report_title || 'Engineering Deep Dive';
+
+  // 1. Layperson's Summary
+  sections.push(heading('1. Ringkasan untuk Orang Awam'));
+  sections.push(para(data.layperson_summary || data.executive_summary || data.summary || ''));
+
+  // 2. Problem
+  sections.push(heading('2. Masalah yang Diselesaikan'));
+  sections.push(boldLead('Konteks: ', data.problem_context || ''));
+  sections.push(boldLead('Mengapa penting: ', data.problem_importance || ''));
+  sections.push(boldLead('Yang terdampak: ', data.problem_stakeholders || ''));
+  if (data.problem_cost_of_inaction) sections.push(boldLead('Biaya jika tidak diselesaikan: ', data.problem_cost_of_inaction));
+
+  // 3. Research Questions
+  const rqs = data.research_questions || data.questions || [];
+  if (rqs.length > 0) {
+    sections.push(heading('3. Pertanyaan Riset'));
+    rqs.forEach((rq, i) => {
+      sections.push(heading(`RQ-${i + 1}: ${rq.question || rq.title || rq.text || ''}`, HeadingLevel.HEADING_2));
+      if (rq.given) sections.push(boldLead('Yang sudah diketahui: ', rq.given));
+      if (rq.investigated) sections.push(boldLead('Yang diselidiki: ', rq.investigated));
+      if (rq.expected) sections.push(boldLead('Yang diharapkan ditemukan: ', rq.expected));
+    });
+  }
+
+  // 4. Methods
+  sections.push(heading('4. Metode Penelitian'));
+  sections.push(boldLead('Pendekatan: ', data.methodology_approach || data.approach || ''));
+  const sd = data.source_diversity || {};
+  sections.push(para(`Sumber: ${data.total_sources || sd.total || 0} total (internet: ${sd.internet || 0}, social: ${sd.social || 0}, akademik: ${sd.academic || 0}, berita: ${sd.news || 0}, pasar: ${sd.market || 0})`));
+  sections.push(boldLead('Validasi: ', 'GRADE (Guyatt et al., 2008, BMJ) + CASP Checklist (UK NHS, 2018)'));
+
+  // 5. First Principles
+  sections.push(heading('5. Penjelasan dari Dasar (First Principles)'));
+  sections.push(para(data.first_principles_explanation || data.first_principles || ''));
+
+  // 6. State of the Art
+  sections.push(heading('6. Apa yang Sudah Ada Sekarang (State of the Art)'));
+  sections.push(heading('6a. Literatur Akademik', HeadingLevel.HEADING_2));
+  sections.push(para(data.academic_state_of_art || data.academic_literature || ''));
+  sections.push(heading('6b. Produk dan Industri', HeadingLevel.HEADING_2));
+  sections.push(para(data.industry_state_of_art || data.industry_products || ''));
+  sections.push(heading('6c. Praktik Lapangan', HeadingLevel.HEADING_2));
+  sections.push(para(data.field_practice || data.industry_practice || ''));
+
+  // 7. Method Comparison Matrix
+  const methods = data.method_comparison || data.methods || [];
+  if (methods.length > 0) {
+    sections.push(heading('7. Perbandingan Metode'));
+    sections.push(makeTable(
+      ['Metode', 'Akurasi', 'Data', 'Biaya', 'Kecepatan', 'Kompleksitas', 'Risiko', 'Paling Cocok'],
+      methods.map(m => [m.name || '', m.accuracy || '', m.data || '', m.cost || '', m.latency || m.speed || '', m.complexity || '', m.risk || '', m.best_use || '']),
+      [14, 12, 10, 10, 10, 10, 10, 24]
+    ));
+  }
+
+  // 8. Recommended Architecture
+  sections.push(heading('8. Arsitektur yang Direkomendasikan'));
+  sections.push(para(data.recommended_architecture || data.architecture || ''));
+  const components = data.components || [];
+  if (components.length > 0) {
+    components.forEach(c => sections.push(bullet(`${c.name || c.component}: ${c.description || c.role || ''}`)));
+  }
+  if (data.data_flow) sections.push(boldLead('Aliran data: ', data.data_flow));
+  if (data.deployment_target) sections.push(boldLead('Target deployment: ', data.deployment_target));
+
+  // 9. Implementation Roadmap
+  const phases = data.phases || data.roadmap || [];
+  if (phases.length > 0) {
+    sections.push(heading('9. Peta Jalan Implementasi'));
+    sections.push(makeTable(
+      ['Fase', 'Target', 'Dibangun', 'Validasi', 'Exit Criteria'],
+      phases.map(p => [p.name || p.phase || '', p.goal || '', p.build || '', p.validation || '', p.exit || p.exit_criteria || '']),
+      [10, 18, 22, 22, 28]
+    ));
+  }
+
+  // 10. Data Strategy
+  sections.push(heading('10. Strategi Data'));
+  sections.push(boldLead('Dataset: ', data.dataset_requirements || data.datasets || ''));
+  sections.push(boldLead('Label/Anotasi: ', data.label_requirements || data.labels || ''));
+  if (data.calibration_requirements) sections.push(boldLead('Kalibrasi: ', data.calibration_requirements));
+  if (data.sampling_plan) sections.push(boldLead('Sampling: ', data.sampling_plan));
+  if (data.data_quality_risks) sections.push(boldLead('Risiko kualitas: ', data.data_quality_risks));
+
+  // 11. Evaluation Protocol
+  sections.push(heading('11. Protokol Evaluasi'));
+  sections.push(boldLead('Metrik utama: ', data.primary_metric || ''));
+  if (data.secondary_metrics) sections.push(boldLead('Metrik pendukung: ', data.secondary_metrics));
+  sections.push(boldLead('Baseline: ', data.baseline || ''));
+  sections.push(boldLead('Threshold diterima: ', data.acceptance_threshold || ''));
+  if (data.validation_design) sections.push(boldLead('Desain validasi: ', data.validation_design));
+
+  // 12. Failure Modes
+  const failures = data.failure_modes || data.failures || [];
+  if (failures.length > 0) {
+    sections.push(heading('12. Apa yang Bisa Gagal'));
+    sections.push(para('Setiap teknologi punya titik lemah. Berikut yang teridentifikasi:'));
+    sections.push(makeTable(
+      ['Mode Kegagalan', 'Penyebab', 'Dampak', 'Deteksi', 'Mitigasi'],
+      failures.map(f => [f.name || f.mode || '', f.cause || '', f.impact || '', f.detection || '', f.mitigation || '']),
+      [22, 20, 20, 18, 20]
+    ));
+  }
+
+  // 13. Alternatives
+  sections.push(heading('13. Alternatif dan Opsi Make vs Buy'));
+  sections.push(para(data.alternatives_analysis || data.alternatives || ''));
+  const options = data.options || data.alternatives_list || [];
+  if (options.length > 0) {
+    options.forEach(o => {
+      sections.push(boldLead(`${o.name || o.option || ''}: `, `${o.description || ''} — ${o.verdict || ''}`));
+    });
+  }
+
+  // 14. Knowledge Gaps
+  sections.push(heading('14. Celah Pengetahuan'));
+  sections.push(para(data.knowledge_gaps || data.gaps_summary || ''));
+  const gaps = data.gaps || data.knowledge_gaps_list || [];
+  if (gaps.length > 0) {
+    gaps.forEach(g => sections.push(bullet(typeof g === 'string' ? g : g.description || g.text || '')));
+  }
+
+  // 15. Final Recommendation
+  sections.push(heading('15. Rekomendasi Final'));
+  sections.push(para(data.final_recommendation || data.recommendation || ''));
+  const actions = data.actions || data.next_steps || data.recommended_actions || [];
+  if (actions.length > 0) {
+    sections.push(boldLead('Yang harus dilakukan:', ''));
+    actions.forEach((a, i) => sections.push(bullet(`${i + 1}. ${typeof a === 'string' ? a : a.text || a.action || ''}`)));
+  }
+  const avoids = data.avoid || data.things_to_avoid || [];
+  if (avoids.length > 0) {
+    sections.push(boldLead('Yang harus dihindari:', ''));
+    avoids.forEach(a => sections.push(bullet(typeof a === 'string' ? a : a.text || '')));
+  }
+  if (data.reevaluation_trigger) sections.push(boldLead('Evaluasi ulang: ', data.reevaluation_trigger));
+
+  // 16. Confidence
+  sections.push(heading('16. Tingkat Kepercayaan'));
+  sections.push(boldLead('Skor keseluruhan: ', `${data.confidence || data.confidence_score || 'N/A'}/1.0`));
+  sections.push(boldLead('Kualitas bukti (GRADE): ', data.grade_rating || data.evidence_quality || ''));
+  sections.push(boldLead('Klaim kuat: ', `${data.strong_claims || 0}/${data.total_claims || 0}`));
+  sections.push(boldLead('Klaim lemah: ', `${data.weak_claims || 0}/${data.total_claims || 0}`));
+  if (data.unresolved_contradictions || data.contradictions) {
+    const uc = typeof data.unresolved_contradictions === 'number' ? data.unresolved_contradictions : (Array.isArray(data.contradictions) ? data.contradictions.length : 0);
+    sections.push(boldLead('Kontradiksi belum teratasi: ', `${uc}`));
+  }
+
+  // 17. References
+  const sources = data.sources || data.references || [];
+  if (sources.length > 0) {
+    sections.push(heading('17. Referensi'));
+    sources.forEach((s, i) => {
+      const author = s.authors ? (Array.isArray(s.authors) ? s.authors.join(', ') : s.authors) : '';
+      const year = s.year || s.published_date || s.date || '';
+      const venue = s.venue || s.journal || s.publisher || '';
+      const url = s.url || '';
+      const ref = [author, year ? `(${year})` : '', s.title || '', venue].filter(Boolean).join('. ');
+      sections.push(para(`[${i + 1}] ${ref}${url ? ' ' + url : ''}`, { size: 18 }));
+    });
+  }
+
+  // Contradictions (if present in data)
+  if (data.contradictions && Array.isArray(data.contradictions) && data.contradictions.length > 0) {
+    sections.push(heading('Kontradiksi & Resolusi'));
+    data.contradictions.forEach(c => {
+      const left = c.source_a || c.claim_a || 'Sumber A';
+      const right = c.source_b || c.claim_b || 'Sumber B';
+      const resolution = c.resolution || c.description || '';
+      sections.push(boldLead(`${left} vs ${right}: `, resolution));
+    });
+  }
+
+  return { sections, title, subtitle: 'Laporan Komprehensif — Deep Research', applyCover: true };
 }
 
 // ── research-report builder ────────────────────────────────────────────────
@@ -636,7 +820,7 @@ function run(argv) {
     'research-report', 'prd', 'tech-spec', 'adr', 'competitive-analysis',
     'risk-register', 'literature-review', 'experiment-design',
     'implementation-roadmap', 'research-proposal', 'feasibility-study',
-    'technical-report', 'recommendation-report',
+    'technical-report', 'recommendation-report', 'engineering-deep-dive',
   ];
 
   try {
@@ -676,7 +860,7 @@ module.exports = { run, generateReport, VALID_TEMPLATES: [
   'research-report', 'prd', 'tech-spec', 'adr', 'competitive-analysis',
   'risk-register', 'literature-review', 'experiment-design',
   'implementation-roadmap', 'research-proposal', 'feasibility-study',
-  'technical-report', 'recommendation-report',
+  'technical-report', 'recommendation-report', 'engineering-deep-dive',
 ] };
 
 // direct execution
