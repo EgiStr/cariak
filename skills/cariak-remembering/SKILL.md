@@ -42,6 +42,10 @@ description: Persistent memory and session management across the research lifecy
 | cariak-reflecting     | Remembering loads all artifacts for reflection; stores reflection AFTER    |
 | cariak-advising       | Remembering loads advisor context; stores counsel AFTER                    |
 
+### Structural Method
+
+Load references/research-methods.csv during preflight.
+
 ### Hard Gates
 
 **GATE 0: PREFLIGHT MUST COMPLETE BEFORE ANY MEMORY OPERATION**

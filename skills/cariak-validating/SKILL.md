@@ -22,6 +22,9 @@ This phase uses real evidence-quality methods:
 - **CASP Checklists** (Critical Appraisal Skills Programme, UK NHS, 2018) — structured critical appraisal of individual sources (10-12 questions per study type).
 
 
+
+Load references/research-methods.csv during preflight.
+
 ### Iron Laws
 
 These laws are non-negotiable. Violating them invalidates the entire validation report.

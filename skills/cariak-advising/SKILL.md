@@ -59,6 +59,10 @@ See the persona rotation table in `references/advisor-phase-mapping.csv` for the
 | Validating | Claim verification | Falsificationist (Popper-style) | "How would you PROVE this wrong? What evidence would flip the verdict?" |
 | Reflecting | Quality assessment | Blind Spot Auditor | "What did we NOT research? What source types are missing? What's the weakest finding?" |
 
+### Structural Method
+
+Load references/research-methods.csv during preflight.
+
 ### Hard Gates
 
 - **GATE 0: MINIMUM 3 PERSONAS SELECTED** — Fewer than 3 personas provides no meaningful diversity. HARD STOP if fewer than 3 are selected from advisor-personas.csv. The skill MUST refuse to proceed and prompt the user to add more.

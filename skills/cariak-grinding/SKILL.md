@@ -21,6 +21,10 @@ This phase uses real academic methods:
 
 For technical topics, Cariak also applies a heuristic derived from Technology Assessment (US GAO, 2021) and Feasibility Study methodology (USACE, 2023) to structure implementation-oriented research.
 
+Load `references/research-methods.csv` during preflight.
+
+
+Load references/research-methods.csv during preflight.
 
 ### When to Use
 

@@ -60,6 +60,9 @@ This phase uses the real knowledge-preservation method:
 - **FAIR Data Principles** (Wilkinson et al., 2016, Scientific Data/Nature) — Findable, Accessible, Interoperable, Reusable.
 
 
+
+Load references/research-methods.csv during preflight.
+
 ### Hard Gates
 
 #### GATE 0: PREFLIGHT MUST COMPLETE BEFORE CLOSING

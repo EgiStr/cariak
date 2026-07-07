@@ -83,6 +83,9 @@ This phase uses real academic methods:
 - Also draws from **Cochrane Handbook Chapter 4** (Higgins & Green, 2011) for systematic search design.
 
 
+
+Load references/research-methods.csv during preflight.
+
 ### Phases
 
 #### Phase 0: Preflight

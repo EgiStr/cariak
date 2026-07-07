@@ -57,6 +57,9 @@ This phase uses real academic/industry methods:
 
 Load `references/research-methods.csv` during preflight.
 
+
+Load references/research-methods.csv during preflight.
+
 ### Hard Gates
 
 **GATE 0: PREFLIGHT MUST COMPLETE BEFORE GREETING USER**

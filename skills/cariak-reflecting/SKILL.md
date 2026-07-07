@@ -24,6 +24,9 @@ This phase uses real review-quality methods:
 - **PRISMA 2020 Checklist** (Page et al., 2021, BMJ) — 27-item standard for reporting completeness of systematic reviews.
 
 
+
+Load references/research-methods.csv during preflight.
+
 ### When to Use
 
 - After cariak-synthesizing produces research-report.md

@@ -25,6 +25,9 @@ This phase uses real academic methods:
 
 Load `references/research-methods.csv` during preflight.
 
+
+Load references/research-methods.csv during preflight.
+
 ### When to Use
 
 - `cariak-researching` has produced 5 findings files and handed off

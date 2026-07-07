@@ -22,6 +22,9 @@ This phase uses real methods:
 - **Cochrane Systematic Search** (Higgins & Green, 2011, Cochrane Handbook Chapter 4) for reproducible database search strategy.
 
 
+
+Load references/research-methods.csv during preflight.
+
 ### When to Use
 
 - `cariak-planning` has produced an approved `research-plan.md`
