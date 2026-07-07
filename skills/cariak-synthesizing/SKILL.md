@@ -1,6 +1,6 @@
 ---
 name: cariak-synthesizing
-description: Resolve multiple research findings into a coherent, cited, confidence-graded report. Use AFTER cariak-researching when 5 sub-agent findings files exist. Cross-references sources, deduplicates, resolves contradictions, generates research-report.docx (primary DOCX output) + research-report.md (plain text fallback) + references.json, and computes a confidence score. Trigger on "synthesize", "compile research", "merge findings", "sintesis", "gabungkan temuan", or when cariak-researching hands off with 5 findings files.
+description: Resolve multiple research findings into a coherent, cited, confidence-graded report. Use AFTER cariak-researching when 6 sub-agent findings files exist. Cross-references sources, deduplicates, resolves contradictions, generates research-report.docx (primary DOCX output) + research-report.md (plain text fallback) + references.json, and computes a confidence score. Trigger on "synthesize", "compile research", "merge findings", "sintesis", "gabungkan temuan", or when cariak-researching hands off with 6 findings files.
 ---
 
 # Synthesizing / Mensintesis
@@ -30,14 +30,14 @@ Load references/research-methods.csv during preflight.
 
 ### When to Use
 
-- `cariak-researching` has produced 5 findings files and handed off
+- `cariak-researching` has produced 6 findings files and handed off
 - User says "synthesize", "compile research", "merge findings", "sintesis"
 - Re-research loop completed and a new synthesis is needed
 - User wants the final report generated from existing findings
 
 ### Do NOT Use
 
-- Fewer than 5 findings files exist (return to `cariak-researching`)
+- Fewer than 6 findings files exist (return to `cariak-researching`)
 - The research spec doesn't exist (synthesis needs the spec to map findings to questions)
 - User wants to validate findings (use `cariak-validating` after synthesis)
 - User wants a quick summary, not a full report (just ask for a brief)
@@ -46,7 +46,7 @@ Load references/research-methods.csv during preflight.
 
 | Adjacent Skill | Relationship | Boundary Rule |
 |---|---|---|
-| `cariak-researching` | Upstream | Provides 5 findings files; synthesizing does not re-run research |
+| `cariak-researching` | Upstream | Provides 6 findings files; synthesizing does not re-run research |
 | `cariak-validating` | Downstream | Consumes research-report.md to extract key claims for refutation |
 | `cariak-reflecting` | Downstream (alt) | May receive synthesis if validation is skipped |
 | `cariak-planning` | Feedback loop | May trigger re-planning if synthesis reveals gap |
@@ -54,7 +54,7 @@ Load references/research-methods.csv during preflight.
 
 ### Hard Gates
 
-**GATE 0: ALL 5 FINDINGS MUST EXIST**
+**GATE 0: ALL 6 FINDINGS MUST EXIST**
 
 Before any synthesis work begins, verify:
 ```
@@ -95,7 +95,7 @@ The Contradiction Hunter + Devil's Advocate advisor challenge (Phase 3.5) is not
 **Goal:** Verify all inputs exist before synthesis.
 
 1. Check Memory MCP for project context and research plan
-2. Verify all 5 findings files exist (GATE 0)
+2. Verify all 6 findings files exist (GATE 0)
 3. Load `research-spec.md` to recover research questions
 4. Load `references/citation-standards.csv` for citation format
 6. Create output directory: `docs/cariak/synthesized/YYYY-MM-DD-slug/`
@@ -116,7 +116,7 @@ For each findings file:
    ```
 4. Extract all unique sources into a preliminary bibliography
 
-After loading all 5 files, you should have:
+After loading all 6 files, you should have:
 - N total claims
 - M unique sources (after dedup)
 
@@ -377,7 +377,7 @@ Each RQ gets its own confidence score based on:
 | `references/citation-standards.csv` | Phase 4, 5 | Citation format per source type |
 | `references/synthesis-template.md` | Phase 2, 3 | Structure for synthesized findings |
 | `research-spec.md` | Phase 0, 1 | Recover RQs to map findings |
-| 5 findings files | Phase 1 | Source claims and citations |
+| 6 findings files | Phase 1 | Source claims and citations |
 | Memory MCP | Phase 0, 7 | Project context and artifact storage |
 
 ---

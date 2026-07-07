@@ -118,8 +118,8 @@ describe('CARIAK Project Structure', () => {
     const subDir = path.join(ROOT, 'subagents');
     const subFiles = readDir(subDir).filter(f => f.endsWith('.md'));
 
-    it('should have exactly 5 subagent files', () => {
-      assert.strictEqual(subFiles.length, 5, 'Expected 5 subagents, found ' + subFiles.length + ': ' + subFiles.join(', '));
+    it('should have exactly 6 subagent files', () => {
+      assert.strictEqual(subFiles.length, 6, 'Expected 6 subagents, found ' + subFiles.length + ': ' + subFiles.join(', '));
     });
 
     subFiles.forEach(file => {

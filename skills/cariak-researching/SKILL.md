@@ -1,6 +1,6 @@
 ---
 name: cariak-researching
-description: Execute research by dispatching 5 parallel sub-agents across internet, social, academic, news, and market domains. Use AFTER cariak-planning produces a research-plan.md. Each sub-agent searches its domain, cites every source, and produces a findings.md file. Trigger on "execute research", "run research", "start research", "jalankan riset", "eksekusi riset", or when cariak-planning hands off with an approved plan.
+description: Execute research by dispatching 6 parallel sub-agents across internet, social, academic, news, market, and domain-expert domains. Use AFTER cariak-planning produces a research-plan.md. Each sub-agent searches its domain, cites every source, and produces a findings.md file. Trigger on "execute research", "run research", "start research", "jalankan riset", "eksekusi riset", or when cariak-planning hands off with an approved plan.
 ---
 
 # cariak-researching / Kemampuan-Penelitian-Cariak
@@ -44,7 +44,7 @@ Load references/research-methods.csv during preflight.
 | Adjacent Skill | Relationship | Boundary Rule |
 |---|---|---|
 | `cariak-planning` | **Upstream** — provides the plan | Cannot start without approved `research-plan.md` |
-| `cariak-synthesizing` | **Downstream** — consumes findings | Hands off all 5 findings files |
+| `cariak-synthesizing` | **Downstream** — consumes findings | Hands off all 6 findings files |
 | `cariak-reflecting` | **Loop target** — may send back | Re-research loops return here, max 2 iterations |
 | `cariak-advising` | **Orthogonal** — can be called mid-research | Only if sub-agent findings reveal a critical perspective gap |
 | Sub-agents | **Children** — dispatched by this skill | This skill orchestrates; sub-agents execute |
@@ -60,7 +60,7 @@ GATE 0: PLAN VERIFICATION
   If MISSING → halt and invoke cariak-planning
 
 GATE 1: ALL SUB-AGENTS DISPATCHED IN ONE PARALLEL CALL
-  All 5 sub-agents (internet, social, academic, news, market) MUST be
+  All 6 sub-agents (internet, social, academic, news, market) MUST be
   dispatched in a SINGLE message with parallel tool calls.
   If dispatched sequentially → ABORT and re-dispatch in parallel.
   Rationale: parallelism is the entire point. Sequential execution
@@ -137,7 +137,7 @@ output_path: docs/cariak/research/YYYY-MM-DD-slug/internet-findings.md
 depth: 10
 ```
 
-Repeat for all 5 sub-agents.
+Repeat for all 6 sub-agents.
 
 If the plan contains `## Implementation Evidence Plan`, add an `implementation_evidence_targets` block to each relevant payload:
 
@@ -155,11 +155,11 @@ required_output_section: "Implementation Evidence"
 
 For non-technical topics, omit this block.
 
-### Phase 2: Dispatch 5 Sub-Agents IN PARALLEL
+### Phase 2: Dispatch 6 Sub-Agents IN PARALLEL
 
-**Objective:** Launch all 5 research sub-agents simultaneously.
+**Objective:** Launch all 6 research sub-agents simultaneously.
 
-**THIS IS THE CRITICAL PHASE.** All 5 sub-agents MUST be dispatched in a single message with parallel tool calls.
+**THIS IS THE CRITICAL PHASE.** All 6 sub-agents MUST be dispatched in a single message with parallel tool calls.
 
 | Sub-Agent | Domain | Primary Tools |
 |---|---|---|
@@ -168,6 +168,7 @@ For non-technical topics, omit this block.
 | `academic-researcher` | arXiv, PubMed, Semantic Scholar, CrossRef, OpenAlex, DOAJ | `search_arxiv`, `search_pubmed`, `search_semantic`, `search_crossref`, `search_openalex`, `search_doaj` |
 | `news-researcher` | News articles, industry reports, press releases | `search_web` (news type), `tavily_search` |
 | `market-researcher` | Market data, competitor info, pricing, industry analysis | `search_web`, `search_exa`, `tavily_search`, `tavily_extract` |
+| `domain-expert-researcher` | Domain science: biology, physics, chemistry, engineering, materials, geometry | `search_web`, `search_arxiv`, `paper-search`, `tavily_search` |
 
 **Dispatch protocol:**
 
@@ -179,6 +180,7 @@ For non-technical topics, omit this block.
 → academic-researcher.md    (with dispatch payload)
 → news-researcher.md        (with dispatch payload)
 → market-researcher.md      (with dispatch payload)
+→ domain-expert-researcher.md  (with dispatch payload)
 ```
 
 Each sub-agent:
@@ -192,7 +194,7 @@ Each sub-agent:
 
 ### Phase 3: Collect Results
 
-**Objective:** Gather all 5 findings files and verify completeness.
+**Objective:** Gather all 6 findings files and verify completeness.
 
 After all sub-agents return:
 
@@ -202,6 +204,7 @@ After all sub-agents return:
    - `docs/cariak/research/YYYY-MM-DD-slug/academic-findings.md`
    - `docs/cariak/research/YYYY-MM-DD-slug/news-findings.md`
    - `docs/cariak/research/YYYY-MM-DD-slug/market-findings.md`
+   - `docs/cariak/research/YYYY-MM-DD-slug/domain-expert-findings.md`
 
 2. Check each file for:
    - Non-empty content (GATE 2: no silent block)
@@ -260,13 +263,13 @@ This is the THESIS → ANTITHESIS step for each research lens. Each sub-agent's 
 
 **Objective:** Transfer all findings to `cariak-synthesizing`.
 
-**Handoff artifact:** All 5 findings files + audit summary.
+**Handoff artifact:** All 6 findings files + audit summary.
 
 Present the user with the handoff menu:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│  RESEARCH COMPLETE — 5 findings files generated         │
+│  RESEARCH COMPLETE — 6 findings files generated         │
 │  Output: docs/cariak/research/YYYY-MM-DD-slug/          │
 ├─────────────────────────────────────────────────────────┤
 │  Sub-agent       │ Sources │ Findings │ Status          │
@@ -285,7 +288,7 @@ Present the user with the handoff menu:
 
 **Default action:** If user selects [1], invoke `cariak-synthesizing`.
 
-**Auto-invoke condition:** If all 5 sub-agents returned complete results with no flags, auto-invoke `cariak-synthesizing` behind a confirmation prompt.
+**Auto-invoke condition:** If all 6 sub-agents returned complete results with no flags, auto-invoke `cariak-synthesizing` behind a confirmation prompt.
 
 ### Reference Triggers
 
@@ -307,3 +310,4 @@ Each sub-agent is defined in `D:\programming\automation\cariak\subagents\`:
 | `academic-researcher.md` | Academic papers | `academic-findings.md` |
 | `news-researcher.md` | News & media | `news-findings.md` |
 | `market-researcher.md` | Market & competitor | `market-findings.md` |
+| `domain-expert-researcher.md` | Domain science | `domain-expert-findings.md` |
