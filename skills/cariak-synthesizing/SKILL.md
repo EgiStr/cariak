@@ -1,383 +1,163 @@
 ---
 name: cariak-synthesizing
-description: Resolve multiple research findings into a coherent, cited, confidence-graded report. Use AFTER cariak-researching when 6 sub-agent findings files exist. Cross-references sources, deduplicates, resolves contradictions, generates research-report.docx (primary DOCX output) + research-report.md (plain text fallback) + references.json, and computes a confidence score. Trigger on "synthesize", "compile research", "merge findings", "sintesis", "gabungkan temuan", or when cariak-researching hands off with 6 findings files.
+description: Resolve multiple research findings into a coherent, cited, confidence-graded report. Use AFTER cariak-researching when 6 sub-agent findings files exist. Cross-references sources, deduplicates, resolves contradictions, generates research-report.docx (primary DOCX output) + research-report.md (plain text fallback) + references.json, and computes a confidence score. Trigger on "synthesize", "compile research", "merge findings", or when cariak-researching hands off with 6 findings files.
 ---
 
-# Synthesizing / Mensintesis
+# Synthesizing
 
 <!-- CARIAK SKILL: cariak-synthesizing - v1.1 -->
 
-## English
-
-### Core Principle
-
-> **"Synthesis is not summary. It is the resolution of multiple perspectives into a coherent, cited, confidence-graded whole."**
-
-A summary lists what each sub-agent found. A synthesis resolves those findings—reconciling contradictions, deduplicating overlapping sources, filling gaps, and grading confidence—into a single coherent narrative that a reader can trust. If two sub-agents contradict each other, the synthesis must say so explicitly, present both sides, and explain why. Hiding contradictions behind a bland "on the other hand" is forbidden.
-
-### Structural Method
-
-This phase uses real academic methods:
-- **Thematic Synthesis** (Thomas & Harden, 2008, BMC Medical Research Methodology) — line-by-line coding of findings → descriptive themes → analytical themes → map to RQs.
-- **Framework Synthesis** (Carroll et al., 2013, BMC Medical Research Methodology) — index findings against an a-priori framework, refine with new data.
-- **Report methodology**: **Pyramid Principle** (Minto, 1987, McKinsey) — governing thought → key arguments → evidence. **MECE** (McKinsey/BCG) — Mutually Exclusive, Collectively Exhaustive sections. **Evidence-to-Decision (EtD)** (GRADE/WHO, 2022) — evidence grading → recommendations.
-- Output: DOCX (docx npm) + PPTX (pptxgenjs) + MD fallback. Generate via `npx cariak-pi report` and `npx cariak-pi present`.
-
-Load `references/research-methods.csv` during preflight.
-
-
-Load references/research-methods.csv during preflight.
-
 ### When to Use
 
-- `cariak-researching` has produced 6 findings files and handed off
-- User says "synthesize", "compile research", "merge findings", "sintesis"
-- Re-research loop completed and a new synthesis is needed
-- User wants the final report generated from existing findings
+- cariak-researching produced 6 findings files and handed off
+- User says "synthesize", "compile research", "merge findings"
+- Re-research loop completed, new synthesis needed
+- Generate final report from existing findings
 
 ### Do NOT Use
 
-- Fewer than 6 findings files exist (return to `cariak-researching`)
-- The research spec doesn't exist (synthesis needs the spec to map findings to questions)
-- User wants to validate findings (use `cariak-validating` after synthesis)
-- User wants a quick summary, not a full report (just ask for a brief)
+- Fewer than 6 findings files exist (return to cariak-researching)
+- No research spec (needs spec to map findings to questions)
+- User wants validation (use cariak-validating after synthesis)
+- User wants quick summary (just ask for brief)
 
 ### Boundary Table
 
-| Adjacent Skill | Relationship | Boundary Rule |
+| Skill | Relationship | Rule |
 |---|---|---|
-| `cariak-researching` | Upstream | Provides 6 findings files; synthesizing does not re-run research |
-| `cariak-validating` | Downstream | Consumes research-report.md to extract key claims for refutation |
-| `cariak-reflecting` | Downstream (alt) | May receive synthesis if validation is skipped |
-| `cariak-planning` | Feedback loop | May trigger re-planning if synthesis reveals gap |
-| `cariak-advising` | Orthogonal | Not typically called during synthesis |
+| cariak-researching | Upstream | Provides 6 findings files |
+| cariak-validating | Downstream | Consumes report for claim refutation |
+| cariak-reflecting | Downstream (alt) | May receive synthesis if validation skipped |
+| cariak-planning | Feedback loop | May trigger re-planning if gap found |
 
 ### Hard Gates
 
-**GATE 0: ALL 6 FINDINGS MUST EXIST**
+**GATE 0: All 6 findings must exist.** Verify all files in `docs/cariak/research/YYYY-MM-DD-slug/`. If any missing → STOP, invoke cariak-researching.
 
-Before any synthesis work begins, verify:
-```
-docs/cariak/research/YYYY-MM-DD-slug/
-  ├── internet-findings.md     ✓
-  ├── social-findings.md       ✓
-  ├── academic-findings.md     ✓
-  ├── news-findings.md         ✓
-  └── market-findings.md       ✓
-```
+**GATE 1: No claim without source.** Every assertion must have inline citation `[N]` mapping to references.json. Uncited → mark as `[UNSOURCED]` and flag.
 
-If ANY file is missing → STOP. Do not synthesize with partial data. Report the missing file and invoke `cariak-researching` to re-run the failed sub-agent.
+**GATE 2: Contradictions must be explicitly resolved.** Both sides cited, named explicitly, explained (methodology/timing/definition difference). If unresolvable → state "unresolved" and lower confidence. Averaging/hiding is FORBIDDEN.
 
-**GATE 1: NO CLAIM WITHOUT SOURCE**
-
-Every assertion in `research-report.md` MUST have an inline citation `[N]` that maps to an entry in `references.json`. Uncited claims are FORBIDDEN. If a claim cannot be sourced, it must be marked as `[UNSOURCED]` and flagged for the user.
-
-**GATE 2: CONTRADICTIONS MUST BE EXPLICITLY RESOLVED**
-
-When two findings contradict each other:
-1. Both perspectives must be presented with citations
-2. The contradiction must be named explicitly ("Source A claims X; Source B claims Y")
-3. The synthesis must explain the contradiction (different methodologies, different timeframes, different definitions)
-4. If resolution is impossible, the report must say "unresolved contradiction" and lower the confidence score
-
-Averaging or hiding contradictions is FORBIDDEN.
-
-**GATE 2.5: ADVISOR CONTRADICTION CHALLENGE MANDATORY — ANTITHESIS BEFORE REPORT**
-
-The Contradiction Hunter + Devil's Advocate advisor challenge (Phase 3.5) is not optional. Before writing the final research report:
-1. The cross-referenced claim registry (thesis) must be challenged by an independent advisor (antithesis).
-2. The advisor must hunt for missed contradictions, cherry-picking, and forced narratives.
-3. Any newly found contradictions must be resolved (loop back to Phase 3) before proceeding.
-4. Do not skip the antithesis step. The synthesis engine's own contradiction detection has blind spots — the independent advisor catches what was missed.
+**GATE 2.5: Advisor Contradiction Challenge mandatory (ANTITHESIS) before final report.** Contradiction Hunter + Devil's Advocate must hunt for missed contradictions, cherry-picking, forced narratives.
 
 ### Phase 0: Preflight
 
-**Goal:** Verify all inputs exist before synthesis.
-
 1. Check Memory MCP for project context and research plan
 2. Verify all 6 findings files exist (GATE 0)
-3. Load `research-spec.md` to recover research questions
-4. Load `references/citation-standards.csv` for citation format
-6. Create output directory: `docs/cariak/synthesized/YYYY-MM-DD-slug/`
-7. Log synthesis start to Memory MCP
+3. Load research-spec.md for RQs
+4. Load references/citation-standards.csv
+5. Create output dir: `docs/cariak/synthesized/YYYY-MM-DD-slug/`
 
-**Gate 0 check:** All 5 files present? If no → halt.
+### Phase 1: Load 6 Findings
 
-### Phase 1: Load 5 Findings
+Per findings file: parse structure, extract claims with citations, build internal claim registry:
 
-**Goal:** Parse all findings into a unified internal representation.
+```
+claim_id | source_subagent | claim_text | citation_id | source_url | confidence_note
+```
 
-For each findings file:
-1. Parse the markdown structure (headings, claims, citations)
-2. Extract all claims with their citations
-3. Build an internal claim registry:
-   ```
-   claim_id | source_subagent | claim_text | citation_id | source_url | confidence_note
-   ```
-4. Extract all unique sources into a preliminary bibliography
-
-After loading all 6 files, you should have:
-- N total claims
-- M unique sources (after dedup)
+Extract all unique sources into preliminary bibliography.
 
 ### Phase 2: Cross-reference & Deduplicate
 
-**Goal:** Identify overlapping sources and redundant claims.
-
-**Source deduplication:**
-1. Group sources by URL (canonical form)
-2. For sources with same title but different URLs, flag as "possibly same source"
-3. Merge duplicate source entries
-
-**Claim deduplication:**
-1. Group claims by semantic similarity (same assertion, different phrasing)
-2. For each group, merge into a single claim with multiple supporting citations
-3. Track which sub-agents contributed to each merged claim
-
-**Cross-referencing:**
-1. For each research question (from spec), collect all claims that address it
-2. Tag each claim with the RQ it answers
-3. Identify claims that don't map to any RQ (flag as "off-topic")
-
-**Output:** Internal deduplicated claim registry.
+**Source dedup:** Group by URL, merge duplicates.
+**Claim dedup:** Group by semantic similarity, merge into single claim with multiple supporting citations. Track contributing sub-agents.
+**Cross-referencing:** Map each claim to RQ from spec. Flag claims not mapping to any RQ as off-topic.
 
 ### Phase 3: Resolve Contradictions
 
-**Goal:** Identify and resolve conflicting findings.
+For each RQ, examine all claims. Classify contradictions:
+- Factual: Source A says X, Source B says ¬X
+- Methodological: Different methods yield different results
+- Temporal: Different time periods disagree
+- Definitional: Different definitions of same term
 
-**Contradiction detection:**
-1. For each RQ, examine all claims that address it
-2. Identify pairs/groups of claims that assert opposite conclusions
-3. For each contradiction, classify:
-   - **Factual contradiction:** Source A says X is true; Source B says X is false
-   - **Methodological contradiction:** Different methodologies yield different results
-   - **Temporal contradiction:** Sources from different time periods disagree
-   - **Definitional contradiction:** Sources use different definitions of the same term
-
-**Resolution protocol:**
-For each contradiction:
-1. Present both sides with full citations
-2. Analyze why they contradict (methodology, timing, definition, bias)
-3. If one side has stronger evidence (more sources, higher quality, more recent), note the lean
-4. If unresolvable, mark as "unresolved" and reduce confidence for that RQ
-
-**Gate 2 enforcement:** Every contradiction must appear in the report with both perspectives.
+Resolution: present both sides with citations, analyze why (methodology/timing/definition/bias), note lean if evidence stronger. If unresolvable, mark as "unresolved" and reduce confidence.
 
 ### Phase 3.5: Advisor Contradiction Challenge (ANTITHESIS)
 
-**Goal:** Dispatch a Contradiction Hunter + Devil's Advocate advisor to independently challenge the cross-source merge BEFORE writing the final report.
+1. Dispatch Contradiction Hunter + Devil's Advocate via cariak-advising (different model/persona)
+2. Advisor hunts for: missed contradictions, cherry-picking, forced narratives, weak-evidence RQs
+3. Advisor MUST cite specific sources for every contradiction claimed
+4. Output feeds back into Phase 3 — resolve any newly found contradictions before Phase 4
 
-This is the THESIS → ANTITHESIS step. The cross-referenced, deduplicated claim registry is the thesis. Now an independent advisor must hunt for contradictions that the synthesis may have missed or suppressed.
+**Gate 2.5 check:** Advisor challenge executed BEFORE writing final report.
 
-1. **Dispatch a Contradiction Hunter + Devil's Advocate advisor sub-agent** (via `cariak-advising`):
-   - The advisor is a **different model/persona**, not self-critique.
-   - The advisor's job: find contradictions, cherry-picking, forced narratives in the cross-source merge.
-   - The advisor MUST cite specific sources for every contradiction they claim.
-2. **Advisor challenge questions:**
-   - "Where do sources disagree? What contradictions did the cross-reference phase miss?"
-   - "What evidence is being cherry-picked? What sources that don't fit the narrative were excluded?"
-   - "What narrative is being forced by the synthesis? What alternative interpretations exist?"
-   - "Which RQs have the weakest evidence base? Where is the confidence over-estimated?"
-3. **Advisor returns:**
-   - List of specific contradictions that need explicit resolution (with source citations).
-   - Evidence of cherry-picking or narrative-forcing.
-   - RQs with weak evidence where confidence should be lowered.
-   - Recommendations: what to re-examine before writing the final report.
+### Phase 4: Generate Report
 
-**Gate 2.5 check:** Advisor contradiction challenge executed BEFORE writing the final research report? If no → halt and run the challenge. The advisor output feeds back into Phase 3 (resolve any newly found contradictions) before proceeding to Phase 4.
+Primary: DOCX (via `npx cariak-pi report --template research-report`)
+Fallback: MD
 
-**Output:** Advisor contradiction report — unresolved contradictions, cherry-picking flags, weak-evidence RQs.
-
-### Phase 4: Generate research-report.docx (primary) + research-report.md (fallback)
-
-**Goal:** Write the synthesized research report in professional DOCX format, with a plain-text markdown fallback.
-
-**DOCX generation uses the `npx cariak-pi report` CLI command internally, which drives the `docx` npm package (v9.7.1).**
-
-**Primary output format: DOCX** (McKinsey/BCG-grade professional report with cover page, headers, footers, styled tables, and inline citations).
-
-**Fallback output format: Markdown** — same structure for plain-text consumers.
-
-**Structure (applies to both formats):**
+Structure:
 ```markdown
 # Research Report: [Topic]
-**Date:** YYYY-MM-DD
-**Slug:** [slug]
-**Status:** Synthesized
-**Confidence Score:** [computed in Phase 7]
+**Confidence Score:** [X.XX]
 
 ## Executive Summary
-[2-3 paragraph overview of key findings]
-
-## Problem Framing
-[What decision this research supports, what is in/out of scope, and what success means]
 
 ## Research Questions Answered
-
 ### RQ-1: [Question]
 **Finding:** [synthesized answer]
-**Evidence:**
-- [Claim 1] [1]
-- [Claim 2] [2, 3]
-- [Claim 3] [4]
-**Contradictions:** [if any, with both sides]
-**Confidence:** [0.0-1.0] — [rationale]
+**Evidence:** [Claim] [1], [Claim] [2,3]
+**Contradictions:** [both sides]
+**Confidence:** [0.0-1.0]
 
-### RQ-2: [Question]
-...
-
-## Expert Technical Deep Dive (mandatory for technical topics)
-
+## Expert Technical Deep Dive (technical topics)
 ### First-Principles Explanation
-[Physical, mathematical, system, or operational mechanism behind the solution]
-
 ### State of the Art
-[Methods used in academic literature, mature products, and production engineering]
-
 ### Methods Used in the Field
-[What industry/operators actually use, including non-AI or hybrid methods]
-
 ### Method Comparison Matrix
-| Method | Accuracy potential | Data need | Cost | Latency | Complexity | Field risk | Best use |
-|---|---:|---:|---:|---:|---:|---|---|
-
+| Method | Accuracy | Data | Cost | Latency | Complexity | Risk |
 ### Recommended Architecture
-[Components, data flow, deployment target, integration points, calibration/monitoring]
-
 ### Implementation Roadmap
-| Phase | Goal | Build | Validation | Exit criteria |
-|---|---|---|---|---|
-
 ### Data Strategy
-[Datasets, labels, sampling, calibration, quality checks, governance]
-
 ### Evaluation Protocol
-[Metrics, baseline, acceptance thresholds, experiment design]
-
 ### Failure Modes & Mitigations
-| Failure mode | Cause | Impact | Detection | Mitigation |
-|---|---|---|---|---|
-
-### Alternatives and Build-vs-Buy Options
-[Simpler methods, commercial options, open-source options, hybrid/fallback approach]
-
+### Build-vs-Buy Options
 ### Gaps / Unknowns / Required Experiments
-[What remains unproven and what prototype or field test is needed]
-
-### Final Technical Recommendation
-[Recommended path, what to avoid, when to revisit]
 
 ## Contradictions & Resolutions
-[All contradictions explicitly addressed]
 
 ## Source Diversity
-- Internet sources: [N]
-- Social sources: [N]
-- Academic sources: [N]
-- News sources: [N]
-- Market sources: [N]
-- Total unique sources: [N]
+- Internet: [N], Social: [N], Academic: [N], News: [N], Market: [N]
 
 ## Gaps Identified
-[Claims that couldn't be sourced, RQs with thin evidence]
 
 ## References
-[Numbered bibliography — also written to references.json]
 ```
 
-Write DOCX to: `docs/cariak/synthesized/YYYY-MM-DD-slug/research-report.docx`
-Write MD fallback to: `docs/cariak/synthesized/YYYY-MM-DD-slug/research-report.md`
+Write: `docs/cariak/synthesized/YYYY-MM-DD-slug/research-report.docx` and `research-report.md`
 
 ### Phase 5: Generate references.json
 
-**Goal:** Machine-readable citation database.
-
-```json
-{
-  "project_slug": "YYYY-MM-DD-slug",
-  "generated_at": "ISO-8601 timestamp",
-  "citation_standard": "inline-numbered",
-  "sources": [
-    {
-      "id": 1,
-      "type": "web|academic|social|news|market",
-      "title": "...",
-      "authors": ["..."],
-      "url": "...",
-      "published_date": "YYYY-MM-DD",
-      "accessed_date": "YYYY-MM-DD",
-      "subagents_citing": ["internet", "academic"],
-      "reliability_tier": 1
-    }
-  ],
-  "total_sources": N
-}
-```
+Machine-readable citation database with id, type, title, authors, url, published_date, accessed_date, subagents_citing, reliability_tier.
 
 Write to: `docs/cariak/synthesized/YYYY-MM-DD-slug/references.json`
 
 ### Phase 6: Compute Confidence Score
 
-**Goal:** Quantify the reliability of the synthesis.
-
-**Confidence formula:**
 ```
-confidence = (
-  (source_diversity_score * 0.25) +
-  (source_count_score * 0.20) +
-  (contradiction_penalty * 0.20) +
-  (citation_coverage_score * 0.20) +
-  (recency_score * 0.15)
-)
+confidence = (source_diversity * 0.25) + (source_count * 0.20) + (contradiction_penalty * 0.20) + (citation_coverage * 0.20) + (recency * 0.15)
 ```
 
-**Sub-scores:**
-- **Source diversity (0-1):** (number of distinct source types / 5)
-- **Source count (0-1):** min(total_sources / 20, 1.0)
-- **Contradiction penalty (0-1):** max(1 - (unresolved_contradictions / 5), 0)
-- **Citation coverage (0-1):** (cited_claims / total_claims)
-- **Recency (0-1):** (sources from last 12 months / total_sources)
-
-**Per-RQ confidence:**
-Each RQ gets its own confidence score based on:
-- Number of sources addressing it (min 3 for confidence > 0.5)
-- Whether contradictions were resolved
-- Source diversity for that specific question
-
-**Output:** Confidence score added to research-report.md header.
+Per-RQ confidence: based on sources addressing it (min 3 for > 0.5), contradiction resolution, source diversity.
 
 ### Phase 7: Handoff
 
-**Goal:** Present the synthesis and hand off.
+Present: paths to report.docx, report.md, references.json, confidence score, contradiction count, gaps.
 
-**Present to user:**
-- Path to `research-report.docx` (primary), `research-report.md` (fallback), and `references.json`
-- Confidence score (overall + per-RQ)
-- Number of contradictions (resolved / unresolved)
-- Gaps identified
+Options: 1. Validate findings → cariak-validating [RECOMMENDED], 2. Reflect → cariak-reflecting, 3. Save and stop.
 
-**3-option menu:**
-```
-1. Validate findings → invoke cariak-validating [RECOMMENDED]
-2. Reflect on quality → invoke cariak-reflecting (skips validation)
-3. Save and stop → report preserved, resume later
-```
+Auto-invoke: if confidence ≥ 0.7 and no unresolved contradictions → cariak-validating behind confirmation. If < 0.7 → recommend cariak-reflecting.
 
-**Auto-invoke rule:** If confidence ≥ 0.7 and no unresolved contradictions, auto-invoke `cariak-validating` behind a confirmation prompt. If confidence < 0.7, recommend `cariak-reflecting` to trigger re-research.
-
-**Memory update:**
-- Store `ResearchArtifact` (path=research-report.docx, type="report", confidence, sources_count)
-- Store `ResearchInsight` for each key finding
-- Store `ResearchGap` for each unresolved gap
+Memory: store ResearchArtifact (report), ResearchInsight (key findings), ResearchGap (unresolved gaps).
 
 ### Reference Triggers
 
-| Reference File | Phase | Purpose |
+| File | Phase | Purpose |
 |---|---|---|
-| `references/citation-standards.csv` | Phase 4, 5 | Citation format per source type |
-| `references/synthesis-template.md` | Phase 2, 3 | Structure for synthesized findings |
-| `research-spec.md` | Phase 0, 1 | Recover RQs to map findings |
-| 6 findings files | Phase 1 | Source claims and citations |
-| Memory MCP | Phase 0, 7 | Project context and artifact storage |
-
----
+| references/citation-standards.csv | 4, 5 | Citation format |
+| references/synthesis-template.md | 2, 3 | Structure template |
+| research-spec.md | 0, 1 | RQs for mapping |
+| 6 findings files | 1 | Source claims |
+| Memory MCP | 0, 7 | Context and artifact storage |
